@@ -1,9 +1,17 @@
 <script setup>
-import {Gauge, Eye, Share} from "lucide-vue-next";
+import {Gauge} from "lucide-vue-next";
+
+defineProps({
+    sellerType: {
+        type: String,
+        default: "Private Seller"
+    }
+})
 </script>
 
 <template>
-    <div class="w-full max-w-lg rounded-lg flex flex-col shadow-md bg-gray-50">
+    <div class="py-3">
+    <div class="w-full max-w-xs rounded-lg flex flex-col shadow-md bg-gray-50 h-fit">
         <img class="object-cover h-40 rounded-t-lg" src="../../../../public/assets/images/pl.jpg">
         <div class="flex flex-col space-y-2.5 px-3 py-3 text-xs">
             <div class="flex w-full justify-between">
@@ -28,16 +36,14 @@ import {Gauge, Eye, Share} from "lucide-vue-next";
             </div>
 
             <div class="border-t flex justify-between pt-3 items-center text-xs">
-                <div class="flex space-x-1 items-center">
-                    <Share size="14"/>
-                    <div class="">Share</div>
+                <div class="">
+                    3 days ago
                 </div>
-                <div class="flex space-x-1 items-center bg-stone-800 px-2 py-1 rounded-lg text-white">
-                    <Eye size="14"/>
-                    <div>Quick View</div>
-                </div>
+
+                <div :class="sellerType ==='Broker' ? 'bg-red-600':'bg-blue-600'" class="px-2 py-1 text-white rounded-md">{{sellerType}}</div>
             </div>
         </div>
+    </div>
     </div>
 </template>
 
