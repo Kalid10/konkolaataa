@@ -10,17 +10,17 @@ defineProps({
 </script>
 
 <template>
-    <div class="py-3">
-    <div class="w-full max-w-xs rounded-lg flex flex-col shadow-md bg-gray-50 h-fit">
-        <img class="object-cover h-40 rounded-t-lg" src="../../../../public/assets/images/pl.jpg">
+    <div class="pb-4 flex justify-center w-full md:w-fit">
+    <div class=" w-full min-w-72 max-w-xs rounded-lg flex flex-col shadow-md bg-gray-50 h-fit">
+        <img class="object-cover h-40 w-full rounded-t-lg" src="../../../../public/assets/images/pl.jpg">
         <div class="flex flex-col space-y-2.5 px-3 py-3 text-xs">
             <div class="flex w-full justify-between">
-                <div class="">Used Suzuki Dzire </div>
-                <div class="text-xs">2022</div>
+                <div class="">Used VW Polo </div>
+                <div class="text-xs">2002</div>
             </div>
 
             <div class="flex justify-between">
-                <div class="font-semibold text-lg border border-gray-600 px-1 rounded-md">3,100,000 Br</div>
+                <div class="font-semibold text-lg border border-gray-600 px-1 rounded-md">940,000 Br</div>
                 <div class="flex items-center space-x-1 text-xs">
                     <Gauge size="16"/>
                     <div>20k (KM)</div>
@@ -46,7 +46,3 @@ defineProps({
     </div>
     </div>
 </template>
-
-<style scoped>
-
-</style>

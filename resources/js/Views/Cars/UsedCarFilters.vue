@@ -4,7 +4,7 @@ import SelectBoxRangeFilter from "@/Views/Filters/SelectBoxRangeFilter.vue";
 import {Input} from "@/Components/shadcn/ui/input/index.js";
 import InputRangeFilter from "@/Views/Filters/InputRangeFilter.vue";
 import CheckBoxFilter from "@/Views/Filters/CheckBoxFilter.vue";
-import {Cog, Fuel, CalendarDays, Gauge, DollarSign, Palette} from "lucide-vue-next";
+import {Cog, Fuel, CalendarDays, Gauge, DollarSign, Palette, Percent, Car} from "lucide-vue-next";
 
 const minYears = [
     {name: '2020', value: '2020'},
@@ -33,8 +33,6 @@ const transmissionTypes = [
 ];
 
 const colors = [
-    {name: 'Red', value: '#FF0000'},
-    {name: 'Blue', value: '#0000FF'},
     {name: 'Green', value: '#008000'},
     {name: 'Yellow', value: '#FFFF00'},
     {name: 'Black', value: '#000000'},
@@ -45,6 +43,29 @@ const colors = [
     {name: 'Orange', value: '#FFA500'},
     {name: 'Purple', value: '#800080'},
 ]
+
+const sellerType = [
+    {name: 'Private', value: 'private'},
+    {name: 'Broker', value: 'broker'},
+];
+
+const carBrands = [
+    {name: 'Toyota', value: 'toyota'},
+    {name: 'Volkswagen', value: 'volkswagen'},
+    {name: 'Mercedes', value: 'mercedes'},
+    {name: 'BMW', value: 'bmw'},
+    {name: 'Audi', value: 'audi'},
+    {name: 'Nissan', value: 'nissan'},
+    {name: 'Honda', value: 'honda'},
+    {name: 'Hyundai', value: 'hyundai'},
+    {name: 'Kia', value: 'kia'},
+    {name: 'Mazda', value: 'mazda'},
+    {name: 'Land Rover', value: 'land-rover'},
+    {name: 'Peugeot', value: 'peugeot'},
+    {name: 'Suzuki', value: 'suzuki'},
+    {name: 'Mitsubishi', value: 'mitsubishi'},
+];
+
 </script>
 
 <template>
@@ -53,10 +74,11 @@ const colors = [
         <InputRangeFilter title="Price" :icon="DollarSign"/>
         <SelectBoxRangeFilter :icon="CalendarDays" :select-box-range-filter2="maxYears" :select-box-range-filter="minYears" title="Year" />
         <InputRangeFilter :icon="Gauge" title="Mileage" input-placeholder="0" input-placeholder2="17000"/>
+        <CheckBoxFilter :icon="Percent" title="Seller Type" :items="sellerType" />
         <CheckBoxFilter :icon="Fuel" title="Fuel Type" :items="fuelTypes"/>
         <CheckBoxFilter :icon="Cog" title="Transmission" :items="transmissionTypes"/>
-        <CheckBoxFilter title="Exterior Color" :icon="Palette" :items="colors" >
-        </CheckBoxFilter>
+        <CheckBoxFilter :icon="Palette" title="Exterior Color"  :items="colors" :show-color-badge="true"/>
+        <CheckBoxFilter title="Car Brands" :icon="Car" :items="carBrands" />
     </div>
 </template>
 

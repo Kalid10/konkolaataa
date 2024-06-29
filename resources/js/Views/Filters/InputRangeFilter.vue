@@ -26,9 +26,9 @@ defineProps({
             <div class="font-medium text-base">{{title}}</div>
         </div>
         <div class="flex w-full space-x-2">
-            <Input :placeholder="inputPlaceholder" value="0" class="text-sm w-32 h-8 border border-gray-900 rounded-sm px-2"/>
+            <Input :placeholder="inputPlaceholder" value="0" class="text-sm md:w-32 h-8 border border-gray-900 rounded-sm px-2"/>
             <span>-</span>
-            <Input :placeholder="inputPlaceholder2" value="2000000" class="border border-gray-900 rounded-sm px-2 text-sm w-32 h-8"/>
+            <Input :placeholder="inputPlaceholder2" value="2000000" class="border border-gray-900 rounded-sm px-2 text-sm md:w-32 h-8"/>
         </div>
     </div>
 </template>
