@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\CarBodyType;
+use App\Models\CarBrand;
 use App\Models\CarModel;
+use App\Models\City;
 use App\Models\Color;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +19,7 @@ return new class extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(CarModel::class)->constrained()->cascadeOnDelete();
-            $table->timestamp('year');
+            $table->integer('year');
             $table->unsignedBigInteger('exterior_color_id');
             $table->foreign('exterior_color_id')->references('id')->on('colors')->cascadeOnDelete();
             $table->unsignedBigInteger('interior_color_id');
@@ -26,14 +29,23 @@ return new class extends Migration
             $table->foreign('previous_paint_color_id')->references('id')->on('colors')->cascadeOnDelete();
             $table->integer('number_of_accidents')->default(0);
             $table->integer('license_plate_type');
-            $table->enum('transmission', ['manual', 'automatic', 'semi-automatic']);
+            $table->string('transmission_type');
             $table->integer('mileage');
-            $table->integer('price');
-            $table->enum('status', ['new', 'used']);
-            $table->enum('fuel', ['diesel', 'petrol', 'electric', 'hybrid']);
-            $table->float('engine_size');
+            $table->string('seller_type');
+            $table->float('percentage')->default(0);
+            $table->float('price');
+            $table->string('price_type');
+            $table->string('car_condition_type');
+            $table->string('fuel_type');
+            $table->string('engine_size');
+            $table->foreignIdFor(CarBodyType::class)->constrained()->cascadeOnDelete();
             $table->longText('description');
-            $table->string('location');
+            $table->foreignIdFor(City::class)->constrained()->cascadeOnDelete();
+            $table->longText('google_map_location')->nullable();
+            $table->string('location')->nullable();
+            $table->string('status');
+            $table->timestamp('posted_at');
+            $table->timestamp('post_expires_at')->nullable();
             $table->timestamps();
         });
     }

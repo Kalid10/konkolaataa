@@ -7,7 +7,7 @@ import {Check} from "lucide-vue-next";
 <template>
     <Tabs default-value="used" class=" !flex flex-col items-center min-w-full h-full ">
         <TabsList class="!rounded-full !p-0 border bg-white text-gray-700 border-black">
-            <TabsTrigger value="used" class="bg-transparent h-full w-full px-5 pl-7 !rounded-l-full space-x-1">
+            <TabsTrigger value="used" class=" h-full w-full px-5 pl-7 !rounded-l-full space-x-1">
                <Check class="text-white" size="16"/>
                 <span>Used Cars</span>
             </TabsTrigger>

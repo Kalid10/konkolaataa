@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CarBrand extends Model
+class CarBodyType extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
+        'image',
     ];
 }

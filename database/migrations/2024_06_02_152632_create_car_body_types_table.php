@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Image;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('car_brands', function (Blueprint $table) {
+        Schema::create('car_body_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignIdFor(Image::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('car_brands');
+        Schema::dropIfExists('car_body_types');
     }
 };
