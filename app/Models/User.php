@@ -16,9 +16,18 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    const TYPE_ADMIN = 'admin';
+
+    const TYPE_BUYER = 'buyer';
+
+    const TYPE_SELLER = 'seller';
+
     protected $fillable = [
         'name',
         'email',
+        'phone_number',
+        'type',
         'password',
     ];
 
