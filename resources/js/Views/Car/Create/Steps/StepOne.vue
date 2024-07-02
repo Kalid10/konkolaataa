@@ -26,9 +26,9 @@ const years = [
 ];
 
 const carPlateTypes = [
-    {identification:1, name: 'Taxi', value: 'taxi'},
-    {identification:2, name: 'Private', value: 'private'},
-    {identification: 3, name: 'Company', value: 'company'},
+    {value:1, name: 'Taxi'},
+    {value:2, name: 'Private'},
+    {value: 3, name: 'Company'},
 ];
 
 const props = defineProps(['modelValue']);
@@ -37,7 +37,6 @@ const emit = defineEmits(['update:modelValue']);
 const form = useForm({
     carBrandId: props.modelValue.carBrandId || null,
     description: props.modelValue.description || null,
-    carCondition: props.modelValue.carCondition || null,
     year: props.modelValue.year || null,
     carModelId: props.modelValue.carModelId || null,
     carPlateType: props.modelValue.carPlateType || null,
@@ -110,9 +109,9 @@ const selectedCarModels = computed(() => {
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
-                        <SelectItem v-for="item in carPlateTypes" :key="item.identification" :value="item.value">
-                            <span :class="[item.identification === 1 ? 'bg-red-600 text-white' : item.identification === 2? 'bg-blue-600 text-white' : item.identification === 3 ? 'bg-emerald-400 text-white' :'']" class="px-2 font-semibold rounded-lg">
-                                {{item.identification}}
+                        <SelectItem v-for="item in carPlateTypes" :key="item.value" :value="item.value">
+                            <span :class="[item.value === 1 ? 'bg-red-600 text-white' : item.value === 2? 'bg-blue-600 text-white' : item.value === 3 ? 'bg-emerald-400 text-white' :'']" class="px-2 font-semibold rounded-lg">
+                                {{item.value}}
                             </span>
                            <span class="pl-2">
                                {{ item.name }}

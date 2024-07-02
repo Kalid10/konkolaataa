@@ -7,12 +7,14 @@ import StepThree from "@/Views/Car/Create/Steps/StepThree.vue";
 import StepFour from "@/Views/Car/Create/Steps/StepFour.vue";
 import StepFive from "@/Views/Car/Create/Steps/StepFive.vue";
 import {useCreateCar} from "@/Composables/useCreateCar.js";
+import StepSix from "@/Views/Car/Create/Steps/StepSix.vue";
 
-const { carFormData, updateCurrentStep } = useCreateCar();
+const { carFormData, updateCurrentStep, postCar } = useCreateCar();
 const currentStep = ref(carFormData.value.currentStep ?? 1);
 const stepLabels = [
     'General Information',
     'Car Details',
+    'Accidents & Paint Details',
     'Pricing & Location',
     'Upload Car Images',
     'Finalize Posting Car'
@@ -23,7 +25,7 @@ const prevStep = () => {
 };
 
 const nextStep = () => {
-    if (currentStep.value < 5) currentStep.value++;
+    if (currentStep.value < 6) currentStep.value++;
 };
 
 watch(() => currentStep.value, (newVal) => {
@@ -40,23 +42,27 @@ watch(() => currentStep.value, (newVal) => {
             </div>
 
             <div class="flex">
-                <span v-for="i in 5" :key="i" :class="['w-1/4 h-1.5 first:rounded-l-xl last:rounded-r-xl', i <= currentStep ? 'bg-brand-primary' : 'bg-indigo-100', i === currentStep ? 'rounded-r-lg' : '']"></span>
+                <span v-for="i in 6" :key="i" :class="['w-1/4 h-1.5 first:rounded-l-xl last:rounded-r-xl', i <= currentStep ? 'bg-brand-primary' : 'bg-indigo-100', i === currentStep ? 'rounded-r-lg' : '']"></span>
             </div>
             <div class="text-sm">
-                Step {{ currentStep }} of 5
+                Step {{ currentStep }} of 6
             </div>
         </div>
 
-        <StepOne v-if="currentStep === 1" v-model="carFormData.generalInformation" />
-        <StepTwo v-if="currentStep === 2" v-model="carFormData.carDetails" />
-        <StepThree v-if="currentStep === 3" v-model="carFormData.pricingLocation" />
-        <StepFour v-if="currentStep === 4" v-model="carFormData.carImages" />
-        <StepFive v-if="currentStep === 5" v-model="carFormData.finalizePosting" />
+        <StepOne v-if="currentStep === 1" v-model="carFormData.stepOne" />
+        <StepTwo v-if="currentStep === 2" v-model="carFormData.stepTwo" />
+        <StepThree v-if="currentStep === 3" v-model="carFormData.stepThree" />
+        <StepFour v-if="currentStep === 4" v-model="carFormData.stepFour" />
+        <StepFive v-if="currentStep === 5" v-model="carFormData.stepFive" />
+        <StepSix v-if="currentStep === 6" v-model="carFormData.stepSix" />
+
 
         <div class="flex justify-between">
             <PrimaryButton :disabled="currentStep === 1" :class="currentStep === 1 ? 'opacity-60' : 'opacity-100'" @click="prevStep">Previous Step</PrimaryButton>
-            <PrimaryButton :disabled="currentStep === 5" :class="currentStep === 5 ? 'opacity-60' : 'opacity-100'" @click="nextStep">Next Step</PrimaryButton>
+            <PrimaryButton :disabled="currentStep === 6" :class="currentStep === 6 ? 'opacity-60' : 'opacity-100'" @click="nextStep">Next Step</PrimaryButton>
         </div>
+
+        <PrimaryButton v-if="currentStep === 6" :disabled="currentStep !== 6" :class="currentStep === 6 ? 'opacity-100' : 'opacity-60'" class="mt-4" @click="postCar">Post Car</PrimaryButton>
     </div>
 </template>
 

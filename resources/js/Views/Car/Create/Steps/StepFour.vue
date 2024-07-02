@@ -1,5 +1,7 @@
 <script setup>
 
+import InputLabel from "@/Components/InputLabel.vue";
+import {Input} from "@/Components/shadcn/ui/input/index.js";
 import {
     Select,
     SelectContent,
@@ -8,80 +10,83 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/Components/shadcn/ui/select/index.js";
-import InputLabel from "@/Components/InputLabel.vue";
-import {useForm} from "@inertiajs/vue3";
-import {BookText} from "lucide-vue-next";
+import {computed, watch} from "vue";
+import {useForm, usePage} from "@inertiajs/vue3";
 
-const sellerTypes = [
-    {name: 'Broker', value: 'broker'},
-    {name: 'Owner', value: 'private'},
+const pricingOptions = [
+    {name: 'Fixed Price', value: 'fixed'},
+    {name: 'Negotiable', value: 'negotiable'},
+    {name: 'Slightly Negotiable', value: 'slightly_negotiable'},
 ];
 
+const props = defineProps(['modelValue']);
+const emit = defineEmits(['update:modelValue']);
+
+const cities = computed(() => usePage().props.cities)
+
 const form = useForm({
-    sellerType: null,
-    percentage: 2,
+    priceType: props.modelValue.priceType || null,
+    price: props.modelValue.price || null,
+    cityId: props.modelValue.cityId || null,
+    location: props.modelValue.location || null,
+    googleMapsLink: props.modelValue.googleMapsLink || null,
 });
+
+watch(form, (newForm) => {
+    emit('update:modelValue', newForm);
+}, {deep: true});
+
 </script>
 
 <template>
-    <div class="flex flex-col space-y-8">
-        <div class="flex flex-col space-y-4 justify-center">
-            <InputLabel>Exterior Car Images</InputLabel>
-            <label
-                class="flex flex-col space-y-4 border w-full items-center justify-center border-dashed border-indigo-300 rounded-lg h-40"
-                for="fileInput">
-                <span class="p-2 rounded-full bg-indigo-50">
-                    <BookText class="text-indigo-600" size="18"/>
-                </span>
-                <span>
+    <div class="flex flex-col space-y-4 py-2">
 
-                    <span class="flex flex-col space-y-1">
-
-                <span class=" font-medium">
-                    Upload Car Exterior Images
-                </span>
-                <span class="text-xs font-light">
-                    You should upload at least 2 images
-                    </span>
-                </span>
-                </span>
-            </label>
-            <input
-                id="fileInput"
-                type="file"
-                class="hidden"
-                accept="image/*"
-            />
+        <div class="flex flex-col space-y-2">
+            <InputLabel>Price Type</InputLabel>
+            <Select v-model="form.priceType">
+                <SelectTrigger>
+                    <SelectValue placeholder="Select Price Type" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        <SelectItem v-for="item in pricingOptions" :value="item.value">
+                            {{ item.name }}
+                        </SelectItem>
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
         </div>
 
+        <div class="flex flex-col space-y-2">
+            <InputLabel>Price</InputLabel>
+            <Input v-model="form.price" placeholder="Eg: 5,000,000"/>
+        </div>
 
-        <div class="flex flex-col justify-center space-y-2">
-            <InputLabel>Interior Car Images</InputLabel>
-            <label
-                class="flex flex-col space-y-4 border w-full items-center justify-center border-dashed border-indigo-300 rounded-lg h-40"
-                for="fileInput">
-                <span class="p-2 rounded-full bg-indigo-50">
-                    <BookText class="text-indigo-600" size="18"/>
-                </span>
-                <span>
+        <div class="flex flex-col space-y-2">
+            <InputLabel>Select Cities</InputLabel>
+            <Select v-model="form.cityId">
+                <SelectTrigger>
+                    <SelectValue placeholder="Select City" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        <SelectItem v-for="item in cities" :value="item.id">
+                            {{ item.name }}
+                        </SelectItem>
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
+        </div>
 
-                    <span class="flex flex-col space-y-1">
+        <div class="flex flex-col space-y-2">
+            <InputLabel>Location</InputLabel>
+            <Input class="capitalize" v-model="form.location" placeholder="Eg: Bole, Lideta, Jemo"/>
+        </div>
 
-                <span class=" font-medium">
-                    Upload Interior Car Images
-                </span>
-                <span class="text-xs font-light">
-                    You should upload at least 2 images
-                    </span>
-                </span>
-                </span>
-            </label>
-            <input
-                id="fileInput"
-                type="file"
-                class="hidden"
-                accept="image/*"
-            />
+        <!--        Todo: Check if the google maps link is valid-->
+        <div class="flex flex-col space-y-2">
+            <InputLabel>Google Maps Link</InputLabel>
+            <Input v-model="form.googleMapsLink" placeholder="Eg: https://maps-link"/>
         </div>
     </div>
 </template>
