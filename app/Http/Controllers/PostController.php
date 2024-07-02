@@ -10,9 +10,6 @@ class PostController extends Controller
 {
     public function index()
     {
-        $carBrands = CarBrand::all();
-        return Inertia::render('Post/Index',[
-            'carBrands' => $carBrands,
-        ]);
+
     }
 }

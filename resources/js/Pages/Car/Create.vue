@@ -1,12 +1,12 @@
 <script setup>
 
 import {computed, ref} from "vue";
-import StepOne from "@/Views/Post/Steps/StepOne.vue";
+import StepOne from "@/Views/Car/Create/Steps/StepOne.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import StepTwo from "@/Views/Post/Steps/StepTwo.vue";
-import StepThree from "@/Views/Post/Steps/StepThree.vue";
-import StepFour from "@/Views/Post/Steps/StepFour.vue";
-import StepFive from "@/Views/Post/Steps/StepFive.vue";
+import StepTwo from "@/Views/Car/Create/Steps/StepTwo.vue";
+import StepThree from "@/Views/Car/Create/Steps/StepThree.vue";
+import StepFour from "@/Views/Car/Create/Steps/StepFour.vue";
+import StepFive from "@/Views/Car/Create/Steps/StepFive.vue";
 
 const currentStep = ref(4);
 const stepLabels = [

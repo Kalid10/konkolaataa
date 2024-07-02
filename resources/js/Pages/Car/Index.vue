@@ -1,10 +1,10 @@
 <script setup>
 
 import Header from "@/Components/Header.vue";
-import Items from "@/Views/Cars/Item.vue";
+import Items from "@/Views/Car/Item.vue";
 import DesktopFilter from "@/Views/Filters/DesktopFilters.vue";
-import UsedCarFilters from "@/Views/Cars/UsedCarFilters.vue";
-import NewCarFilters from "@/Views/Cars/NewCarFilters.vue";
+import UsedCarFilters from "@/Views/Car/UsedCarFilters.vue";
+import NewCarFilters from "@/Views/Car/NewCarFilters.vue";
 import FilterDrawer from "@/Views/Filters/FilterDrawer.vue";
 </script>
 
