@@ -16,7 +16,7 @@ const pricingTiers = ref([
             '40 days post on Konkolata',
             'Post Analytics',
         ],
-        bgColor: 'bg-emerald-300',
+        bgColor: 'bg-white',
         textColor: 'text-black',
         borderColor: 'border-black',
         textColorHover: 'hover:text-gray-700',
@@ -57,7 +57,7 @@ const pricingTiers = ref([
             'Post Analytics',
             '7 Free Reposts',
         ],
-        bgColor: 'bg-indigo-300',
+        bgColor: 'bg-white',
         textColor: 'text-black',
         borderColor: 'border-black',
         textColorHover: 'hover:text-gray-700',
@@ -79,7 +79,7 @@ const subscriptionTiers = ref([
             'Basic Analytics',
             'Broker Profile Page',
         ],
-        bgColor: 'bg-green-300',
+        bgColor: 'bg-white',
         textColor: 'text-black',
         borderColor: 'border-black',
         textColorHover: 'hover:text-gray-700',
@@ -99,8 +99,8 @@ const subscriptionTiers = ref([
             'Featured Broker Status',
             'Priority Support',
         ],
-        bgColor: 'bg-blue-300',
-        textColor: 'text-black',
+        bgColor: 'bg-black',
+        textColor: 'text-white',
         borderColor: 'border-black',
         textColorHover: 'hover:text-gray-700',
         buttonColor: 'bg-gray-700',
@@ -120,7 +120,7 @@ const subscriptionTiers = ref([
             'Custom Promotional Campaigns',
             'Dedicated Support',
         ],
-        bgColor: 'bg-purple-300',
+        bgColor: 'bg-white',
         textColor: 'text-black',
         borderColor: 'border-black',
         textColorHover: 'hover:text-gray-700',
@@ -140,11 +140,11 @@ const subscriptionTiers = ref([
         </div>
         <Tabs default-value="one_time" class="!flex flex-col items-center !w-full min-w-full h-full">
             <TabsList class="!rounded-full !p-0 border bg-white text-gray-700 border-black">
-                <TabsTrigger value="one_time" class="bg-transparent h-full w-full px-5 pl-7 !rounded-l-full space-x-1">
+                <TabsTrigger value="one_time" class="data-[state=active]:bg-black h-full w-full px-5 pl-7 !rounded-l-full space-x-1">
                     <Check class="text-white" size="16"/>
                     <span>OneTime</span>
                 </TabsTrigger>
-                <TabsTrigger value="subscriptions" class="bg-transparent h-full w-full px-5 pr-7 !rounded-r-full space-x-1">
+                <TabsTrigger value="subscriptions" class="data-[state=active]:bg-black h-full w-full px-5 pr-7 !rounded-r-full space-x-1">
                     <Check class="text-white" size="16"/>
                     <span>Subscriptions</span>
                 </TabsTrigger>
