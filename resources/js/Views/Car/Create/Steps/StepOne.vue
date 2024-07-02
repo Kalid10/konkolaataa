@@ -1,5 +1,6 @@
 <script setup>
-
+import {ref, computed, watch} from "vue";
+import {useForm, usePage} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import {Input} from "@/Components/shadcn/ui/input/index.js";
 import {Textarea} from "@/Components/shadcn/ui/textarea/index.js";
@@ -11,77 +12,73 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/Components/shadcn/ui/select/index.js";
-import {computed} from "vue";
-import {useForm, usePage} from "@inertiajs/vue3";
 
-const carBrands = computed(()=> usePage().props.carBrands);
-
+const carBrands = computed(() => usePage().props.carBrands);
+const carModels = computed(() => usePage().props.carModels);
 const years = [
-    '2022',
-    '2021',
-    '2020',
-    '2019',
-    '2018',
-    '2017',
-    '2016',
-    '2015',
-    '2014',
-    '2013',
-    '2012',
-    '2011',
-    '2010',
-    '2009',
-    '2008',
-    '2007',
-    '2006',
-    '2005',
-    '2004',
-    '2003',
-    '2002',
-    '2001',
-    '2000',
-    '1999',
-    '1998',
-    '1997',
-    '1996',
-    '1995',
-    '1994',
-    '1993',
-    '1992',
-    '1991',
-    '1990',
-    '1989',
-    '1988',
-    '1987',
-    '1986',
-    '1985',
-    '1984',
-    '1983',
-    '1982',
-    '1981',
-    '1980',
+    // ... (years array as before)
+    '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015',
+    '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007',
+    '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999',
+    '1998', '1997', '1996', '1995', '1994', '1993', '1992', '1991',
+    '1990', '1989', '1988', '1987', '1986', '1985', '1984', '1983',
+    '1982', '1981', '1980'
 ];
 
+const carPlateTypes = [
+    {identification:1, name: 'Taxi', value: 'taxi'},
+    {identification:2, name: 'Private', value: 'private'},
+    {identification: 3, name: 'Company', value: 'company'},
+];
+
+const props = defineProps(['modelValue']);
+const emit = defineEmits(['update:modelValue']);
+
 const form = useForm({
-    carBrandId: null,
-    title: null,
-    description: null,
-    carCondition: null,
-})
+    carBrandId: props.modelValue.carBrandId || null,
+    description: props.modelValue.description || null,
+    carCondition: props.modelValue.carCondition || null,
+    year: props.modelValue.year || null,
+    carModelId: props.modelValue.carModelId || null,
+    carPlateType: props.modelValue.carPlateType || null,
+});
+
+watch(form, (newForm) => {
+    emit('update:modelValue', newForm);
+}, {deep: true});
+
+const selectedCarModels = computed(() => {
+    return carModels.value.filter(model => model.car_brand_id === form.carBrandId);
+});
 </script>
 
 <template>
     <div class="flex flex-col space-y-4 p-2">
-
         <div class="flex flex-col space-y-2">
             <InputLabel>Car Brand</InputLabel>
             <Select v-model="form.carBrandId">
                 <SelectTrigger>
-                    <SelectValue placeholder="Select Car Brand" />
+                    <SelectValue placeholder="Select Car Brand"/>
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
-                        <SelectItem v-for="item in carBrands" :value="item.id">
+                        <SelectItem v-for="item in carBrands" :key="item.id" :value="item.id">
+                            {{ item.name }}
+                        </SelectItem>
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
+        </div>
+
+        <div class="flex flex-col space-y-2">
+            <InputLabel>Car Model</InputLabel>
+            <Select :disabled="!selectedCarModels.length" v-model="form.carModelId">
+                <SelectTrigger>
+                    <SelectValue placeholder="Select Car Model"/>
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        <SelectItem v-for="item in selectedCarModels" :key="item.id" :value="item.id">
                             {{ item.name }}
                         </SelectItem>
                     </SelectGroup>
@@ -91,13 +88,13 @@ const form = useForm({
 
         <div class="flex flex-col space-y-2">
             <InputLabel>Year</InputLabel>
-            <Select>
+            <Select v-model="form.year">
                 <SelectTrigger>
-                    <SelectValue placeholder="Select Year" />
+                    <SelectValue placeholder="Select Year"/>
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
-                        <SelectItem v-for="item in years" :value="item">
+                        <SelectItem v-for="item in years" :key="item" :value="item">
                             {{ item }}
                         </SelectItem>
                     </SelectGroup>
@@ -106,18 +103,33 @@ const form = useForm({
         </div>
 
         <div class="flex flex-col space-y-2">
-            <InputLabel>Car Model</InputLabel>
-            <Input v-model="form.title" placeholder="Eg: Suzuki Dzire 2022"/>
+            <InputLabel>Car Plate Type</InputLabel>
+            <Select v-model="form.carPlateType">
+                <SelectTrigger>
+                    <SelectValue placeholder="Select Car Plate Type"/>
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        <SelectItem v-for="item in carPlateTypes" :key="item.identification" :value="item.value">
+                            <span :class="[item.identification === 1 ? 'bg-red-600 text-white' : item.identification === 2? 'bg-blue-600 text-white' : item.identification === 3 ? 'bg-emerald-400 text-white' :'']" class="px-2 font-semibold rounded-lg">
+                                {{item.identification}}
+                            </span>
+                           <span class="pl-2">
+                               {{ item.name }}
+                           </span>
+                        </SelectItem>
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
         </div>
 
         <div class="flex flex-col space-y-2">
             <InputLabel>Describe your car</InputLabel>
-            <Textarea rows="4"  placeholder="Eg: Suzuki Dzire 2022"/>
+            <Textarea rows="4" v-model="form.description" placeholder="Eg: Suzuki Dzire 2022"/>
         </div>
-
     </div>
 </template>
 
 <style scoped>
-
+/* Add any additional styles here */
 </style>

@@ -10,6 +10,8 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/Components/shadcn/ui/select/index.js";
+import {computed, watch} from "vue";
+import {useForm, usePage} from "@inertiajs/vue3";
 
 const pricingOptions = [
     {name: 'Fixed Price', value: 'fixed'},
@@ -17,31 +19,22 @@ const pricingOptions = [
     {name: 'Slightly Negotiable', value: 'slightly_negotiable'},
 ];
 
-const cities = [
-    'AddisAbaba',
-    'DireDawa',
-    'Mekelle',
-    'Gondar',
-    'Adama',
-    'Hawassa',
-    'Jimma',
-    'BahirDar',
-    'Dessie',
-    'Jijiga',
-    'Shashamane',
-    'Dilla',
-    'Sodo',
-    'Nekemte',
-    'Asosa',
-    'Harar',
-    'Gambela',
-    'Gurage',
-    'Wolaita',
-    'Wollega',
-    'Sidama',
-    'Kaffa',
-    'Gedeo',
-]
+const props = defineProps(['modelValue']);
+const emit = defineEmits(['update:modelValue']);
+
+const cities = computed(() => usePage().props.cities)
+
+const form = useForm({
+    priceType: props.modelValue.priceType || null,
+    price: props.modelValue.price || null,
+    cityId: props.modelValue.cityId || null,
+    googleMapsLink: props.modelValue.googleMapsLink || null,
+});
+
+watch(form, (newForm) => {
+    emit('update:modelValue', newForm);
+}, {deep: true});
+
 </script>
 
 <template>
@@ -49,7 +42,7 @@ const cities = [
 
         <div class="flex flex-col space-y-2">
             <InputLabel>Price Type</InputLabel>
-            <Select>
+            <Select v-model="form.priceType">
                 <SelectTrigger>
                     <SelectValue placeholder="Select Price Type" />
                 </SelectTrigger>
@@ -65,28 +58,29 @@ const cities = [
 
         <div class="flex flex-col space-y-2">
             <InputLabel>Price</InputLabel>
-            <Input placeholder="Eg: 5,000,000"/>
+            <Input v-model="form.price" placeholder="Eg: 5,000,000"/>
         </div>
 
         <div class="flex flex-col space-y-2">
             <InputLabel>Select Cities</InputLabel>
-            <Select multiple>
+            <Select v-model="form.cityId">
                 <SelectTrigger>
-                    <SelectValue placeholder="Select Cities" />
+                    <SelectValue placeholder="Select City" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
-                        <SelectItem v-for="item in cities" :value="item">
-                            {{ item }}
+                        <SelectItem v-for="item in cities" :value="item.id">
+                            {{ item.name }}
                         </SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>
         </div>
 
+        <!--        Todo: Check if the google maps link is valid-->
         <div class="flex flex-col space-y-2">
             <InputLabel>Google Maps Link</InputLabel>
-            <Input placeholder="Eg: https://maps-link"/>
+            <Input v-model="form.googleMapsLink" placeholder="Eg: https://maps-link"/>
         </div>
     </div>
 </template>

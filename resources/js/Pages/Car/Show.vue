@@ -29,8 +29,8 @@ import ShareItem from "@/Views/Car/Show/ShareItem.vue";
                 <div class="text-3xl md:text-4xl font-semibold">Volkswagen Polo 2002</div>
             </div>
             <div class="flex justify-between md:items-end md:space-x-6 items-center">
-                <div class="text-xl md:text-2xl font-light border border-gray-600 px-2.5 py-0.5 rounded-lg w-fit">940,000 Br</div>
-                <div class="text-sm md:font-medium md:text-base py-1 md:bg-brand-primary md:text-white md:rounded-sm md:px-2 ">Slightly Negotiable</div>
+                <div class="text-xl md:text-2xl font-light border border-gray-600 px-2.5 py-0.5 rounded-lg w-fit md:bg-brand-primary md:text-white md:font-medium">940,000 Br</div>
+                <div class="text-sm md:font-medium md:text-base py-1 ">Slightly Negotiable</div>
             </div>
 
             <SellerInfo class="md:hidden"/>
@@ -80,7 +80,7 @@ import ShareItem from "@/Views/Car/Show/ShareItem.vue";
             </div>
             <ShareItem class="md:hidden"/>
         </div>
-        <div class="hidden md:flex md:flex-col justify-evenly w-5/12">
+        <div class="hidden md:flex md:flex-col items-center justify-evenly w-5/12">
             <SellerInfo/>
             <ShareItem/>
         </div>
