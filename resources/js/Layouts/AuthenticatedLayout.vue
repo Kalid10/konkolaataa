@@ -1,12 +1,21 @@
 <script setup>
-import {ref} from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import {provide, ref} from 'vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import Notification from "@/Components/Notification.vue";
 
 const showingNavigationDropdown = ref(false);
+const notificationData = ref(null);
+
+const showNotification = (data) => {
+    notificationData.value = data;
+};
+
+provide("showNotification", showNotification);
+provide("notificationData", notificationData);
+
 </script>
 
 <template>
@@ -139,6 +148,7 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Content -->
             <main class="px-3 md:px-6 w-11/12 mx-auto md:w-full md:container bg-white py-3 md:py-6">
+                <Notification class="min-w-full" />
                 <slot />
             </main>
         </div>
