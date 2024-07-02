@@ -48,7 +48,7 @@ class AuthenticatedSessionController extends Controller
 
         return match ($userType) {
            User::TYPE_ADMIN => redirect()->intended('/admin'),
-            User::TYPE_BUYER => redirect()->intended('/buyer'),
+            User::TYPE_BUYER => redirect()->intended('/car'),
             User::TYPE_SELLER => redirect()->intended('/seller'),
             default => redirect()->intended('/'),
         };

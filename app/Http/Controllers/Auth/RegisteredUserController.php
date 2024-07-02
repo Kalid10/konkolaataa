@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'nullable|string|lowercase|email|max:255|unique:'.User::class,
             'phone_number' => 'required|regex:/^\+251[79][0-9]{8}$/|max:13|unique:users,phone_number',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'type' => 'required|string|in:admin,buyer,seller',
@@ -50,9 +50,9 @@ class RegisteredUserController extends Controller
         ]);
 
         match ($request->type) {
-            'admin' => $user = Admin::create(['user_id' => $user->id]),
-            'buyer' => $user = Buyer::create(['user_id' => $user->id, 'balance' => env('INITIAL_PLAYER_BONUS_BALANCE', 0)]),
-            'seller' => $user = Seller::create(['user_id' => $user->id]),
+            'admin' => Admin::create(['user_id' => $user->id]),
+            'buyer' => Buyer::create(['user_id' => $user->id, 'balance' => env('INITIAL_PLAYER_BONUS_BALANCE', 0)]),
+            'seller' => Seller::create(['user_id' => $user->id]),
         };
 
         event(new Registered($user));
