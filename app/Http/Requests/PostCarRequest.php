@@ -21,8 +21,6 @@ class PostCarRequest extends FormRequest
             'mileage' => 'required|integer|min:0',
             'cityId' => 'required|exists:cities,id',
             'description' => 'required|string',
-//            'images' => 'required|array',
-//            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'exteriorColorId' => 'required|exists:colors,id',
             'interiorColorId' => 'required|exists:colors,id',
             'transmissionType' => 'required|in:automatic,manual,semi_automatic',
@@ -33,8 +31,10 @@ class PostCarRequest extends FormRequest
             'severityOfAccident' => 'required|in:minor,moderate,severe',
             'googleMapLocation' => 'nullable|string',
             'location' => 'nullable|string',
-
-
+            'exteriorCarImages' => 'required|array|min:1|max:10',
+            'exteriorCarImages.*' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'interiorCarImages' => 'required|array|min:1|max:10',
+            'interiorCarImages.*' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 
