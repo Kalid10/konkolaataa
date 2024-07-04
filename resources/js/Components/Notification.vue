@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="w-fit max-w-fit">
         <transition
             v-if="showNotification"
             name="notification"
@@ -12,18 +12,18 @@
             <div
                 v-if="success || error || info"
                 :key="success || error || info"
-                :class="`fixed ${positionClass} w-full z-50`"
+                :class="`fixed ${positionClass} w-full max-w-sm z-50`"
             >
                 <div
                     :class="{
-                        ' from-emerald-400 to-green-400 text-white':
+                        ' from-emerald-500 to-green-500 text-white':
                             notificationType.type === 'success',
                         'from-red-500 to-red-500':
                             notificationType.type === 'error',
                         'from-blue-600 to-sky-600':
                             notificationType.type === 'info',
                     }"
-                    class="m-10 flex items-center justify-center space-x-3 rounded-lg bg-gradient-to-tr p-4 text-xs font-medium text-white shadow-lg sm:mb-10 sm:px-6 md:h-auto lg:text-sm"
+                    class="m-10 flex items-center justify-center space-x-5 rounded-lg bg-gradient-to-tr p-4 text-xs font-medium text-white shadow-lg sm:mb-10 sm:px-6 md:h-auto lg:text-sm"
                 >
                     <component
                         :is="notificationType.icon"
@@ -39,7 +39,7 @@
 <script setup>
 import { computed, inject, ref, watch } from "vue";
 import { usePage } from "@inertiajs/vue3";
-import { Check, X, Info} from "lucide-vue-next"
+import { CircleCheckBig, X, Info} from "lucide-vue-next"
 
 const flashSuccess = computed(() => usePage().props.flash.success);
 const flashError = computed(() => usePage().props.flash.error);
@@ -64,7 +64,7 @@ const notificationType = computed(() => {
                     : "",
         message: success.value || error.value || info.value,
         icon: success.value
-            ? Check
+            ? CircleCheckBig
             : error.value
                 ? X
                 : info.value
