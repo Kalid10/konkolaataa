@@ -1,6 +1,7 @@
 <script setup>
 import {Gauge} from "lucide-vue-next";
 import moment from "moment";
+import {useUtilities} from "@/Composables/useUtilities.js";
 
 defineProps({
     car:{
@@ -8,6 +9,8 @@ defineProps({
         required:true
     }
 })
+
+const utilities = useUtilities()
 </script>
 
 <template>
@@ -21,7 +24,7 @@ defineProps({
             </div>
 
             <div class="flex justify-between">
-                <div class="font-semibold text-lg border border-gray-600 px-1 rounded-md">{{ car.price }} Br</div>
+                <div class="font-semibold text-lg border border-gray-600 px-1 rounded-md">{{ utilities.formatNumberWithCommas(car.price) }} Br</div>
                 <div class="flex items-center space-x-1 text-xs">
                     <Gauge size="16"/>
                     <div>{{ car.mileage }} (KM)</div>

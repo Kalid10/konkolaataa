@@ -2,6 +2,7 @@
 import { Antenna, Fuel, Cog, Gauge, Car, RectangleHorizontal, MapPin, ShieldBan} from "lucide-vue-next";
 import SellerInfo from "@/Views/Car/Show/SellerInfo.vue";
 import ShareItem from "@/Views/Car/Show/ShareItem.vue";
+import {useUtilities} from "@/Composables/useUtilities.js";
 
 defineProps({
     car: {
@@ -9,6 +10,8 @@ defineProps({
         required: true
     },
 });
+
+const utilities = useUtilities()
 </script>
 
 <template>
@@ -35,7 +38,7 @@ defineProps({
                 <div class="text-3xl md:text-4xl font-semibold">{{car.car_model.car_brand.name}} {{car.car_model.name}} </div>
             </div>
             <div class="flex justify-between md:items-end md:space-x-6 items-center">
-                <div class="text-xl md:text-2xl font-light border border-gray-600 px-2.5 py-0.5 rounded-lg w-fit md:bg-brand-primary md:text-white md:font-medium">{{car.price}} Br</div>
+                <div class="text-xl md:text-2xl font-light border border-gray-600 px-2.5 py-0.5 rounded-lg w-fit md:bg-brand-primary md:text-white md:font-medium">{{utilities.formatNumberWithCommas(car.price)}} Br</div>
                 <div class="text-sm md:font-medium md:text-base py-1 uppercase">{{car.price_type}}</div>
             </div>
 
