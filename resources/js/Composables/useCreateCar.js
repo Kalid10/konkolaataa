@@ -1,9 +1,9 @@
-import { useStorage } from '@vueuse/core';
-import {router, usePage} from "@inertiajs/vue3";
-import {computed} from "vue";
+import { computed } from "vue";
+import { useStorage } from "@vueuse/core";
+import { router, usePage } from "@inertiajs/vue3";
 
 export function useCreateCar() {
-    const carFormData = useStorage('carFormData', {
+    const initialData = () => ({
         stepOne: {
             carBrandId: null,
             description: null,
@@ -23,11 +23,10 @@ export function useCreateCar() {
             exteriorColorId: null,
             interiorColorId: null,
             isOriginalPaint: true,
-            isAccidentFree: 1,
+            isAccidentFree: 0,
             severityOfAccident: null,
         },
         stepFour: {
-
             price: null,
             priceType: null,
             cityId: null,
@@ -35,7 +34,10 @@ export function useCreateCar() {
             googleMapLink: null,
         },
         stepFive: {
-           images: []
+            exteriorImages: [],
+            exteriorImagesPreview: [],
+            interiorImages: [],
+            interiorImagesPreview: [],
         },
         stepSix: {
             sellerType: null,
@@ -47,33 +49,38 @@ export function useCreateCar() {
         user_id: computed(() => usePage().props.auth.user.id),
     });
 
-    const updateGeneralInformation = (data) => {
-        carFormData.value.generalInformation = data;
-    };
-
-    const updateCarDetails = (data) => {
-        carFormData.value.carDetails = data;
-    }
-
-    const updatePricingLocation = (data) => {
-        carFormData.value.pricingLocation = data;
-    }
+    const carFormData = useStorage('carFormData', initialData());
 
     const updateCurrentStep = (step) => {
         carFormData.value.currentStep = step;
     }
 
-    function postCar(){
-        // Merge all the carFormData into one object
-        const carData = Object.assign({}, carFormData.value.stepOne, carFormData.value.stepTwo, carFormData.value.stepThree, carFormData.value.stepFour, carFormData.value.stepFive, carFormData.value.stepSix, carFormData.value.user_id);
-        console.log(carData)
-        router.post('/car/store', carData)
+    const clearData = () => {
+        carFormData.value = initialData();
+    };
+
+    function postCar(exteriorImages, interiorImages) {
+        const carData = Object.assign(
+            {},
+            carFormData.value.stepOne,
+            carFormData.value.stepTwo,
+            carFormData.value.stepThree,
+            carFormData.value.stepFour,
+            carFormData.value.stepSix,
+            { user_id: carFormData.value.user_id },
+            { exteriorCarImages: exteriorImages },
+            { interiorCarImages: interiorImages },
+        );
+        router.post('/car/store', carData,{
+            onSuccess: () => {
+                // clearData()
+            }
+        });
     }
+
     return {
         carFormData,
-        updateGeneralInformation,
         updateCurrentStep,
-        postCar
-
+        postCar,
     };
 }

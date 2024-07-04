@@ -2,7 +2,6 @@
 import {ref, computed, watch} from "vue";
 import {useForm, usePage} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
-import {Input} from "@/Components/shadcn/ui/input/index.js";
 import {Textarea} from "@/Components/shadcn/ui/textarea/index.js";
 import {
     Select,
@@ -35,11 +34,11 @@ const props = defineProps(['modelValue']);
 const emit = defineEmits(['update:modelValue']);
 
 const form = useForm({
-    carBrandId: props.modelValue.carBrandId || null,
-    description: props.modelValue.description || null,
-    year: props.modelValue.year || null,
-    carModelId: props.modelValue.carModelId || null,
-    carPlateType: props.modelValue.carPlateType || null,
+    carBrandId: props.modelValue.carBrandId || carBrands.value[0].id,
+    description: props.modelValue.description || 'des',
+    year: props.modelValue.year || years[0],
+    carModelId: props.modelValue.carModelId || carModels.value[0].id,
+    carPlateType: props.modelValue.carPlateType || carPlateTypes[0].value,
 });
 
 watch(form, (newForm) => {

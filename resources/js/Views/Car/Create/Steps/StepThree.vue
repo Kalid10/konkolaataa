@@ -19,12 +19,17 @@ const emit = defineEmits(['update:modelValue']);
 
 const colors = computed(() => usePage().props.colors);
 
+const severityOfAccidents = [
+    {name: 'Minor', value: 'minor'},
+    {name: 'Moderate', value: 'moderate'},
+    {name: 'Severe', value: 'severe'},
+];
 const form = useForm({
-    exteriorColorId: props.modelValue.exteriorColorId || null,
-    interiorColorId: props.modelValue.interiorColorId || null,
+    exteriorColorId: props.modelValue.exteriorColorId || colors.value[0].id,
+    interiorColorId: props.modelValue.interiorColorId || colors.value[1].id,
     isOriginalPaint: props.modelValue.isOriginalPaint || true,
-    isAccidentFree: props.modelValue.isAccidentFree || 1,
-    severityOfAccident: props.modelValue.severityOfAccident || null,
+    isAccidentFree: props.modelValue.isAccidentFree || 0,
+    severityOfAccident: props.modelValue.severityOfAccident || severityOfAccidents[0].value,
 });
 
 watch(form, (newForm) => {
@@ -38,12 +43,6 @@ watch(() => form.isAccidentFree, (value) => {
 
     form.isAccidentFree = value ? 1:0;
 });
-
-const severityOfAccidents = [
-    {name: 'Minor', value: 'minor'},
-    {name: 'Moderate', value: 'moderate'},
-    {name: 'Severe', value: 'severe'},
-];
 </script>
 
 <template>
@@ -97,7 +96,7 @@ const severityOfAccidents = [
             <Switch @update:checked="form.isAccidentFree = !form.isAccidentFree" :checked="form.isAccidentFree"/>
         </div>
 
-        <div class="flex flex-col space-y-2">
+        <div v-if="!form.isAccidentFree" class="flex flex-col space-y-2">
             <InputLabel>Severity Of Accidents</InputLabel>
             <Select :disabled="form.isAccidentFree" v-model="form.severityOfAccident">
                 <SelectTrigger>

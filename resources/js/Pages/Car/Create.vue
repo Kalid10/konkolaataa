@@ -5,19 +5,19 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import StepTwo from "@/Views/Car/Create/Steps/StepTwo.vue";
 import StepThree from "@/Views/Car/Create/Steps/StepThree.vue";
 import StepFour from "@/Views/Car/Create/Steps/StepFour.vue";
-import StepFive from "@/Views/Car/Create/Steps/StepFive.vue";
 import {useCreateCar} from "@/Composables/useCreateCar.js";
+import StepFive from "@/Views/Car/Create/Steps/StepFive.vue";
 import StepSix from "@/Views/Car/Create/Steps/StepSix.vue";
 
-const { carFormData, updateCurrentStep, postCar } = useCreateCar();
+const { carFormData, updateCurrentStep } = useCreateCar();
 const currentStep = ref(carFormData.value.currentStep ?? 1);
 const stepLabels = [
     'General Information',
     'Car Details',
     'Accidents & Paint Details',
     'Pricing & Location',
+    'Personal Information',
     'Upload Car Images',
-    'Finalize Posting Car'
 ];
 
 const prevStep = () => {
@@ -53,16 +53,14 @@ watch(() => currentStep.value, (newVal) => {
         <StepTwo v-if="currentStep === 2" v-model="carFormData.stepTwo" />
         <StepThree v-if="currentStep === 3" v-model="carFormData.stepThree" />
         <StepFour v-if="currentStep === 4" v-model="carFormData.stepFour" />
-        <StepFive v-if="currentStep === 5" v-model="carFormData.stepFive" />
-        <StepSix v-if="currentStep === 6" v-model="carFormData.stepSix" />
+        <StepFive v-if="currentStep === 5" v-model="carFormData.stepSix" />
+        <StepSix  v-if="currentStep === 6"  />
 
 
-        <div class="flex justify-between">
+        <div class="flex justify-between" >
             <PrimaryButton :disabled="currentStep === 1" :class="currentStep === 1 ? 'opacity-60' : 'opacity-100'" @click="prevStep">Previous Step</PrimaryButton>
             <PrimaryButton :disabled="currentStep === 6" :class="currentStep === 6 ? 'opacity-60' : 'opacity-100'" @click="nextStep">Next Step</PrimaryButton>
         </div>
-
-        <PrimaryButton v-if="currentStep === 6" :disabled="currentStep !== 6" :class="currentStep === 6 ? 'opacity-100' : 'opacity-60'" class="mt-4" @click="postCar">Post Car</PrimaryButton>
     </div>
 </template>
 

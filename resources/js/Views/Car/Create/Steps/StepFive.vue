@@ -1,69 +1,70 @@
 <script setup>
 
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from "@/Components/shadcn/ui/select/index.js";
 import InputLabel from "@/Components/InputLabel.vue";
-import {BookText} from "lucide-vue-next";
+import {useForm} from "@inertiajs/vue3";
+import {Input} from "@/Components/shadcn/ui/input/index.js";
+import {watch} from "vue";
 
+const sellerTypes = [
+    {name: 'Broker', value: 'broker'},
+    {name: 'Owner', value: 'private'},
+];
+
+const props = defineProps(['modelValue']);
+const emit = defineEmits(['update:modelValue']);
+
+const form = useForm({
+    sellerType: props.modelValue.sellerType || null,
+    percentage: props.modelValue.percentage || 2,
+    phoneNumber: props.modelValue.phoneNumber || null,
+});
+
+watch(form, (newForm) => {
+    emit('update:modelValue', newForm);
+}, {deep: true});
+
+// Todo: The percentage should be 0 if the seller is an owner
+watch(() => form.sellerType, (value) => {
+    if (value === 'owner') {
+        form.percentage = 0;
+    }
+});
 </script>
 
 <template>
-    <div class="flex flex-col space-y-8">
-        <div class="flex flex-col space-y-4 justify-center">
-            <InputLabel>Exterior Car Images</InputLabel>
-            <label
-                class="flex flex-col space-y-4 border w-full items-center justify-center border-dashed border-indigo-300 rounded-lg h-40"
-                for="fileInput">
-                <span class="p-2 rounded-full bg-indigo-50">
-                    <BookText class="text-indigo-600" size="18"/>
-                </span>
-                <span>
-
-                    <span class="flex flex-col space-y-1">
-
-                <span class=" font-medium">
-                    Upload Car Exterior Images
-                </span>
-                <span class="text-xs font-light">
-                    You should upload at least 2 images
-                    </span>
-                </span>
-                </span>
-            </label>
-            <input
-                id="fileInput"
-                type="file"
-                class="hidden"
-                accept="image/*"
-            />
+    <div class="flex flex-col space-y-4">
+        <div class="flex flex-col space-y-2">
+            <InputLabel>Who are you?</InputLabel>
+            <Select v-model="form.sellerType">
+                <SelectTrigger>
+                    <SelectValue placeholder="Select Seller Type"/>
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        <SelectItem v-for="item in sellerTypes" :value="item.value">
+                            {{ item.name }}
+                        </SelectItem>
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
         </div>
 
+        <div v-if="form.sellerType === 'broker'" class="flex flex-col space-y-2">
+            <InputLabel>Percentage %</InputLabel>
+            <Input v-model="form.percentage" placeholder="2%"/>
+        </div>
 
-        <div class="flex flex-col justify-center space-y-2">
-            <InputLabel>Interior Car Images</InputLabel>
-            <label
-                class="flex flex-col space-y-4 border w-full items-center justify-center border-dashed border-indigo-300 rounded-lg h-40"
-                for="fileInput">
-                <span class="p-2 rounded-full bg-indigo-50">
-                    <BookText class="text-indigo-600" size="18"/>
-                </span>
-                <span>
-
-                    <span class="flex flex-col space-y-1">
-
-                <span class=" font-medium">
-                    Upload Interior Car Images
-                </span>
-                <span class="text-xs font-light">
-                    You should upload at least 2 images
-                    </span>
-                </span>
-                </span>
-            </label>
-            <input
-                id="fileInput"
-                type="file"
-                class="hidden"
-                accept="image/*"
-            />
+        <div  class="flex flex-col space-y-2">
+            <InputLabel>Post Phone Number</InputLabel>
+            <Input v-model="form.phoneNumber" placeholder="0912342312"/>
         </div>
     </div>
 </template>
