@@ -22,12 +22,18 @@ class CarController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Car/Index');
+        $cars = Car::with('carModel.carBrand', 'exteriorColor', 'interiorColor', 'carBodyType', 'engineType', 'fuelType', 'city', 'carConditionType')->paginate(3);
+        return Inertia::render('Car/Index', [
+            'cars' => $cars,
+        ]);
     }
 
-    public function show()
+    public function show(Car $car)
     {
-        return Inertia::render('Car/Show');
+        $car = $car->load('carModel.carBrand', 'exteriorColor', 'interiorColor', 'carBodyType', 'engineType', 'fuelType', 'city', 'carConditionType', 'user');
+        return Inertia::render('Car/Show', [
+            'car' => $car,
+        ]);
     }
 
     public function create()

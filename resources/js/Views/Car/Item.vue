@@ -1,10 +1,11 @@
 <script setup>
 import {Gauge} from "lucide-vue-next";
+import moment from "moment";
 
 defineProps({
-    sellerType: {
-        type: String,
-        default: "Private Seller"
+    car:{
+        type:Object,
+        required:true
     }
 })
 </script>
@@ -15,32 +16,32 @@ defineProps({
         <img class="object-cover h-40 w-full rounded-t-lg" src="../../../../public/assets/images/pl.jpg">
         <div class="flex flex-col space-y-2.5 px-3 py-3 text-xs">
             <div class="flex w-full justify-between">
-                <div class="">Used VW Polo </div>
-                <div class="text-xs">2002</div>
+                <div class="">{{car.car_model.car_brand.name}} {{car.car_model.name}} </div>
+                <div class="text-xs">{{ car.year }}</div>
             </div>
 
             <div class="flex justify-between">
-                <div class="font-semibold text-lg border border-gray-600 px-1 rounded-md">940,000 Br</div>
+                <div class="font-semibold text-lg border border-gray-600 px-1 rounded-md">{{ car.price }} Br</div>
                 <div class="flex items-center space-x-1 text-xs">
                     <Gauge size="16"/>
-                    <div>20k (KM)</div>
+                    <div>{{ car.mileage }} (KM)</div>
                 </div>
             </div>
 
             <div class="flex w-full justify-between items-center text-xs">
                 <div class="flex space-x-1 items-center">
-                    <div class="h-3 w-3 rounded-full bg-gray-500"></div>
-                    <div class="">Gray</div>
+                    <div class="h-3 w-3 rounded-full" :style="'background-color:'+ car.exterior_color.hex"></div>
+                    <div class="">{{ car.exterior_color.name }}</div>
                 </div>
-                <div class="">Semi-Automatic</div>
+                <div class="uppercase">{{car.transmission_type}}</div>
             </div>
 
             <div class="border-t flex justify-between pt-3 items-center text-xs">
                 <div class="">
-                    3 days ago
+                    {{ moment(car.posted_at).fromNow()}}
                 </div>
 
-                <div :class="sellerType ==='Broker' ? 'bg-red-600':'bg-blue-600'" class="px-2 py-1 text-white rounded-md">{{sellerType}}</div>
+                <div :class="car.seller_type ==='broker' ? 'bg-red-600':'bg-blue-600'" class="px-2 py-1 text-white rounded-md uppercase">{{car.seller_type}}</div>
             </div>
         </div>
     </div>
