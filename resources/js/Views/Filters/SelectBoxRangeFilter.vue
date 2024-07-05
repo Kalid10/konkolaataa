@@ -7,7 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/Components/shadcn/ui/select/index.js'
-import { ref, watch } from 'vue';
+import {onMounted, ref, watch} from 'vue';
 
 const props = defineProps({
     title: {
@@ -33,6 +33,14 @@ const props = defineProps({
     icon: {
         type: Object,
         required: true
+    },
+    initialFrom: {
+        type: [String, Number],
+        default: null
+    },
+    initialTo: {
+        type: [String, Number],
+        default: null
     }
 });
 
@@ -41,6 +49,10 @@ const emit = defineEmits(['update:range']);
 const selectedFrom = ref(null);
 const selectedTo = ref(null);
 
+onMounted(() => {
+    selectedFrom.value = props.initialFrom;
+    selectedTo.value = props.initialTo;
+});
 watch([selectedFrom, selectedTo], () => {
     emit('update:range', {from: selectedFrom.value, to: selectedTo.value});
 });

@@ -98,6 +98,8 @@ function handleRangeUpdate(range) {
         <Input class="rounded-full h-fit py-2 mt-5 mb-3 border-gray-400" placeholder="Quick Search" v-model="searchKey" @keyup="search"/>
         <InputRangeFilter title="Price" :icon="DollarSign"/>
         <SelectBoxRangeFilter
+            :initial-from="selectedFilters.year.from"
+            :initial-to="selectedFilters.year.to"
             @update:range="handleRangeUpdate"
             :icon="CalendarDays" :select-box-range-filter2="maxYears" :select-box-range-filter="minYears" title="Year" />
         <InputRangeFilter :icon="Gauge" title="Mileage" input-placeholder="0" input-placeholder2="17000"/>
