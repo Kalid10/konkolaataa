@@ -32,8 +32,7 @@ function setupSelected(item){
 </script>
 
 <template>
-    <DrawerRoot
-    >
+    <DrawerRoot>
             <DrawerTrigger>
                 <MobileFilters @selected="setupSelected"/>
             </DrawerTrigger>
