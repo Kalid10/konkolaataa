@@ -42,7 +42,7 @@ return new class extends Migration
             $table->foreignIdFor(CarBodyType::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(City::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->longText('google_map_location')->nullable();
             $table->string('location')->nullable();
             $table->string('status');
