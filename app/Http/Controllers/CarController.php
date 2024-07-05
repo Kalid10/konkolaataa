@@ -87,6 +87,7 @@ class CarController extends Controller
             'cities' => $cities,
             'carConditionTypes' => $carConditionTypes,
             'search' => $request->search ?? '',
+            'filters' => $request->filters ?? [],
         ]);
     }
 

@@ -40,7 +40,7 @@ const carConditionTypes = computed(() => usePage().props.carConditionTypes);
 const carBrands = computed(() => usePage().props.carBrands);
 const colors = computed(() => usePage().props.colors);
 
-const selectedFilters = ref({
+const selectedFilters = ref(usePage().props.filters || {
     carConditionType: [],
     sellerType: [],
     fuelType: [],
@@ -79,12 +79,12 @@ const search = debounce(() => {
         <InputRangeFilter title="Price" :icon="DollarSign"/>
         <SelectBoxRangeFilter :icon="CalendarDays" :select-box-range-filter2="maxYears" :select-box-range-filter="minYears" title="Year" />
         <InputRangeFilter :icon="Gauge" title="Mileage" input-placeholder="0" input-placeholder2="17000"/>
-        <CheckBoxFilter @update:checked="updateChecked" :icon="Percent" title="Car Condition Type" :items="carConditionTypes" />
-        <CheckBoxFilter @update:checked="updateChecked" :icon="Percent" title="Seller Type" :items="sellerType" />
-        <CheckBoxFilter @update:checked="updateChecked"  :icon="Fuel" title="Fuel Type" :items="fuelTypes"/>
-        <CheckBoxFilter @update:checked="updateChecked" :icon="Cog" title="Transmission Type" :items="transmissionTypes"/>
-        <CheckBoxFilter @update:checked="updateChecked" :icon="Palette" title="Exterior Color"  :items="colors" :show-color-badge="true"/>
-        <CheckBoxFilter @update:checked="updateChecked" title="Car Brands" :icon="Car" :items="carBrands" />
+        <CheckBoxFilter :initial-checked-items="selectedFilters.carConditionType" @update:checked="updateChecked" :icon="Percent" title="Car Condition Type" :items="carConditionTypes" />
+        <CheckBoxFilter :initial-checked-items="selectedFilters.sellerType" @update:checked="updateChecked" :icon="Percent" title="Seller Type" :items="sellerType" />
+        <CheckBoxFilter :initial-checked-items="selectedFilters.fuelType" @update:checked="updateChecked"  :icon="Fuel" title="Fuel Type" :items="fuelTypes"/>
+        <CheckBoxFilter :initial-checked-items="selectedFilters.transmissionType" @update:checked="updateChecked" :icon="Cog" title="Transmission Type" :items="transmissionTypes"/>
+        <CheckBoxFilter :initial-checked-items="selectedFilters.exteriorColor" @update:checked="updateChecked" :icon="Palette" title="Exterior Color"  :items="colors" :show-color-badge="true"/>
+        <CheckBoxFilter :initial-checked-items="selectedFilters.carBrands" @update:checked="updateChecked" title="Car Brands" :icon="Car" :items="carBrands" />
     </div>
 </template>
 
