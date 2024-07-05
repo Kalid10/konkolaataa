@@ -8,6 +8,7 @@ import {
     SelectValue,
 } from '@/Components/shadcn/ui/select/index.js'
 import {onMounted, ref, watch} from 'vue';
+import {useUtilities} from "@/Composables/useUtilities.js";
 
 const props = defineProps({
     title: {
@@ -54,7 +55,7 @@ onMounted(() => {
     selectedTo.value = props.initialTo;
 });
 watch([selectedFrom, selectedTo], () => {
-    emit('update:range', {from: selectedFrom.value, to: selectedTo.value});
+    emit('update:range', {from: selectedFrom.value, to: selectedTo.value}, useUtilities().toCamelCase(props.title));
 });
 </script>
 

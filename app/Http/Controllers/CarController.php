@@ -58,6 +58,7 @@ class CarController extends Controller
                         break;
 
                     case 'year':
+                    case 'mileage':
                     case 'price':
                         $from = $filterValues['from'];
                         $to = $filterValues['to'];

@@ -106,7 +106,7 @@ function handleRangeUpdate(range,category) {
             :initial-to="selectedFilters.year?.to"
             @update:range="handleRangeUpdate"
             :icon="CalendarDays" :select-box-range-filter2="maxYears" :select-box-range-filter="minYears" title="Year" />
-        <InputRangeFilter :icon="Gauge" title="Mileage" input-placeholder="0" input-placeholder2="17000"/>
+        <InputRangeFilter @update:range="handleRangeUpdate" :icon="Gauge" title="Mileage" input-placeholder="0" input-placeholder2="17000"/>
         <CheckBoxFilter :initial-checked-items="selectedFilters.carConditionType" @update:checked="updateChecked" :icon="Percent" title="Car Condition Type" :items="carConditionTypes" />
         <CheckBoxFilter :initial-checked-items="selectedFilters.sellerType" @update:checked="updateChecked" :icon="Percent" title="Seller Type" :items="sellerType" />
         <CheckBoxFilter :initial-checked-items="selectedFilters.fuelType" @update:checked="updateChecked"  :icon="Fuel" title="Fuel Type" :items="fuelTypes"/>
