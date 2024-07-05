@@ -7,7 +7,7 @@ import {useCreateCar} from "@/Composables/useCreateCar.js";
 import Loading from "@/Components/Loading.vue";
 import {ref} from "vue";
 
-const { carFormData } = useCreateCar();
+const { carFormData, clearData, updateCurrentStep } = useCreateCar();
 const form = useForm({
     exteriorImages:  [],
     exteriorImagesPreview:  [],
@@ -49,6 +49,7 @@ const removeImage = (index, isExteriorImage) => {
 const isLoading = ref(false);
 const errorMessages = ref([]);
 function uploadImages(){
+    isLoading.value = true;
     const carData = Object.assign(
         {},
         carFormData.value.stepOne,
@@ -62,13 +63,13 @@ function uploadImages(){
     );
     router.post('/car/store', carData,{
         onSuccess: () => {
-
-            // clearData()
+            clearData();
+            form.reset();
+            updateCurrentStep(1);
         },
         onError:(e) => {
             errorMessages.value = Object.values(e).flat();
-            console.log(e);
-        },
+            },
         onFinish: () => {
             isLoading.value = false;
         }

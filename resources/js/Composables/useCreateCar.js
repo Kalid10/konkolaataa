@@ -59,13 +59,9 @@ export function useCreateCar() {
         carFormData.value = initialData();
     };
 
-    function postCar(exteriorImages, interiorImages) {
-
-    }
-
     return {
         carFormData,
         updateCurrentStep,
-        postCar,
+        clearData
     };
 }
