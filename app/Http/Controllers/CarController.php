@@ -56,6 +56,18 @@ class CarController extends Controller
                         });
                         break;
 
+                    case 'year':
+                        $from = $filterValues['from'];
+                        $to = $filterValues['to'];
+                        if ($from && $to) {
+                            $query->whereBetween('year', [$from, $to]);
+                        } elseif ($from) {
+                            $query->where('year', '>=', $from);
+                        } elseif ($to) {
+                            $query->where('year', '<=', $to);
+                        }
+                        break;
+
                     default:
                         $query->whereHas($filterCategory, function ($query) use ($filterValues) {
                             $query->whereIn('id', array_column($filterValues, 'id'));

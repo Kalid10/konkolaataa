@@ -15,12 +15,26 @@ const minYears = [
     {name: '2019', value: '2019'},
     {name: '2018', value: '2018'},
     {name: '2017', value: '2017'},
+    {name: '2016', value: '2016'},
+    {name: '2015', value: '2015'},
+    {name: '2014', value: '2014'},
+    {name: '2013', value: '2013'},
+    {name: '2012', value: '2012'},
+    {name: '2011', value: '2011'},
+    {name: '2010', value: '2010'},
 ];
 const maxYears = [
     {name: '2020', value: '2020'},
     {name: '2019', value: '2019'},
     {name: '2018', value: '2018'},
     {name: '2017', value: '2017'},
+    {name: '2016', value: '2016'},
+    {name: '2015', value: '2015'},
+    {name: '2014', value: '2014'},
+    {name: '2013', value: '2013'},
+    {name: '2012', value: '2012'},
+    {name: '2011', value: '2011'},
+    {name: '2010', value: '2010'},
 ];
 
 
@@ -47,6 +61,7 @@ const selectedFilters = ref(usePage().props.filters || {
     transmissionType: [],
     exteriorColor: [],
     carBrands: [],
+    year: [],
 });
 function updateChecked(checked, category) {
     selectedFilters.value[category] = checked;
@@ -70,6 +85,11 @@ const search = debounce(() => {
         }
     );
 }, 900);
+
+function handleRangeUpdate(range) {
+    selectedFilters.value.year = range;
+    search();
+}
 </script>
 
 <template>
@@ -77,7 +97,9 @@ const search = debounce(() => {
     <div class="flex flex-col divide-y space-y-2 divide-gray-200">
         <Input class="rounded-full h-fit py-2 mt-5 mb-3 border-gray-400" placeholder="Quick Search" v-model="searchKey" @keyup="search"/>
         <InputRangeFilter title="Price" :icon="DollarSign"/>
-        <SelectBoxRangeFilter :icon="CalendarDays" :select-box-range-filter2="maxYears" :select-box-range-filter="minYears" title="Year" />
+        <SelectBoxRangeFilter
+            @update:range="handleRangeUpdate"
+            :icon="CalendarDays" :select-box-range-filter2="maxYears" :select-box-range-filter="minYears" title="Year" />
         <InputRangeFilter :icon="Gauge" title="Mileage" input-placeholder="0" input-placeholder2="17000"/>
         <CheckBoxFilter :initial-checked-items="selectedFilters.carConditionType" @update:checked="updateChecked" :icon="Percent" title="Car Condition Type" :items="carConditionTypes" />
         <CheckBoxFilter :initial-checked-items="selectedFilters.sellerType" @update:checked="updateChecked" :icon="Percent" title="Seller Type" :items="sellerType" />
