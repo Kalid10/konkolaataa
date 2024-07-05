@@ -31,6 +31,21 @@ const nextStep = () => {
 watch(() => currentStep.value, (newVal) => {
     updateCurrentStep(newVal);
 });
+
+const showNextButton = ref(false);
+watch(() => carFormData.value, (newVal) => {
+    if (currentStep.value === 1) {
+        showNextButton.value = newVal.stepOne.carBrandId && newVal.stepOne.carModelId && newVal.stepOne.year && newVal.stepOne.carPlateType;
+    } else if (currentStep.value === 2) {
+        showNextButton.value = newVal.stepTwo.carConditionTypeId && newVal.stepTwo.carBodyTypeId && newVal.stepTwo.transmissionType && newVal.stepTwo.fuelTypeId && newVal.stepTwo.engineTypeId;
+    } else if (currentStep.value === 3) {
+        showNextButton.value = newVal.stepThree.exteriorColorId && newVal.stepThree.interiorColorId && newVal.stepThree.isOriginalPaint && newVal.stepThree.isAccidentFree && newVal.stepThree.severityOfAccident;
+    } else if (currentStep.value === 4) {
+        showNextButton.value = newVal.stepFour.priceType && newVal.stepFour.price && newVal.stepFour.cityId;
+    } else if (currentStep.value === 5) {
+        showNextButton.value = newVal.stepSix.sellerType && newVal.stepSix.percentage && newVal.stepSix.phoneNumber;
+    }
+}, {deep: true, immediate: true});
 </script>
 
 <template>
@@ -59,7 +74,7 @@ watch(() => currentStep.value, (newVal) => {
 
         <div class="flex justify-between" >
             <PrimaryButton :disabled="currentStep === 1" :class="currentStep === 1 ? 'opacity-60' : 'opacity-100'" @click="prevStep">Previous Step</PrimaryButton>
-            <PrimaryButton :disabled="currentStep === 6" :class="currentStep === 6 ? 'opacity-60' : 'opacity-100'" @click="nextStep">Next Step</PrimaryButton>
+            <PrimaryButton :disabled="currentStep === 6 || !showNextButton" :class="currentStep === 6 || !showNextButton? 'opacity-60' : 'opacity-100'" @click="nextStep">Next Step</PrimaryButton>
         </div>
     </div>
 </template>
