@@ -28,7 +28,7 @@ class PostCarRequest extends FormRequest
             'sellerType' => 'required|in:private,broker',
             'percentage' => 'required|numeric|min:0|max:10',
             'isOriginalPaint' => 'required|boolean',
-            'severityOfAccident' => 'required|in:minor,moderate,severe',
+            'severityOfAccident' => 'required|in:minor,moderate,severe,none',
             'googleMapLocation' => 'nullable|string',
             'location' => 'nullable|string',
             'exteriorCarImages' => 'required|array|min:1|max:10',

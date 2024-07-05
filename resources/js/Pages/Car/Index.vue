@@ -9,6 +9,8 @@ import FilterDrawer from "@/Views/Filters/FilterDrawer.vue";
 import {computed} from "vue";
 import {router, usePage} from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination.vue";
+import {LoaderCircle} from "lucide-vue-next";
+import Loading from "@/Components/Loading.vue";
 
 const cars = computed(()=>usePage().props.cars);
 

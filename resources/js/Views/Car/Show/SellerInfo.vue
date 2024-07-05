@@ -19,7 +19,7 @@ const brokerFee = computed(() => {
     return 0;
 })
 
-const utilities = useUtilities()
+const utilities = useUtilities();
 </script>
 
 <template>

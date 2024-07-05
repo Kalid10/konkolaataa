@@ -22,7 +22,7 @@ class CarController extends Controller
 {
     public function index()
     {
-        $cars = Car::with('carModel.carBrand', 'exteriorColor', 'interiorColor', 'carBodyType', 'engineType', 'fuelType', 'city', 'carConditionType')->paginate(3);
+        $cars = Car::with('carModel.carBrand', 'exteriorColor', 'interiorColor', 'carBodyType', 'engineType', 'fuelType', 'city', 'carConditionType', 'images')->paginate(3);
         return Inertia::render('Car/Index', [
             'cars' => $cars,
         ]);
@@ -30,7 +30,7 @@ class CarController extends Controller
 
     public function show(Car $car)
     {
-        $car = $car->load('carModel.carBrand', 'exteriorColor', 'interiorColor', 'carBodyType', 'engineType', 'fuelType', 'city', 'carConditionType', 'user');
+        $car = $car->load('carModel.carBrand', 'exteriorColor', 'interiorColor', 'carBodyType', 'engineType', 'fuelType', 'city', 'carConditionType', 'user', 'images');
         return Inertia::render('Car/Show', [
             'car' => $car,
         ]);
@@ -93,8 +93,6 @@ class CarController extends Controller
                 'user_id' => $user->id,
             ]);
 
-            Log::info('Car created successfully' , $car->toArray());
-
             // Merge the two arrays
             $carImages = array_merge($request->exteriorCarImages, $request->interiorCarImages);
             $this->uploadCarImages($carImages, $car);
@@ -114,7 +112,7 @@ class CarController extends Controller
         foreach ($images as $image) {
             $filename = $user->id . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             try {
-                $uploaded_url = UploadService::uploadImage( UploadService::resize($image->getRealPath(), 500, 500), $filename, 'cars/');
+                $uploaded_url = UploadService::uploadImage( UploadService::resize($image->getRealPath(), 1000, 1000), $filename, 'cars/');
                 Image::create([
                     'imageable_id' => $car->id,
                     'imageable_type' => Car::class,
