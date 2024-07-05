@@ -1,5 +1,9 @@
 <script setup>
-defineProps({
+import {onMounted, ref, watch} from "vue";
+import {useUtilities} from "@/Composables/useUtilities.js";
+import {Input} from "@/Components/shadcn/ui/input/index.js";
+
+const props = defineProps({
     title: {
         type: String,
         required: true
@@ -15,8 +19,32 @@ defineProps({
     icon: {
         type: Object,
         required: true
+    },
+    initialFrom: {
+        type: String,
+        default: null
+    },
+    initialTo: {
+        type: String,
+        default: null
     }
 })
+
+const emit = defineEmits(['update:range']);
+
+const selectedFrom = ref(null);
+const selectedTo = ref(null);
+
+onMounted(() => {
+    selectedFrom.value = props.initialFrom;
+    selectedTo.value = props.initialTo;
+});
+
+watch([selectedFrom, selectedTo], ([newFrom, newTo]) => {
+    console.log("selectedFrom: ", newFrom);
+    console.log("selectedTo: ", newTo);
+    emit('update:range', {from: newFrom, to: newTo}, useUtilities().toCamelCase(props.title));
+});
 </script>
 
 <template>
@@ -26,9 +54,9 @@ defineProps({
             <div class="font-medium text-base">{{title}}</div>
         </div>
         <div class="flex w-full space-x-2">
-            <Input :placeholder="inputPlaceholder" value="0" class="text-sm md:w-32 h-8 border border-gray-900 rounded-sm px-2"/>
+            <Input v-model="selectedFrom" :placeholder="inputPlaceholder" class="text-sm md:w-32 h-8 border border-gray-900 rounded-sm px-2"/>
             <span>-</span>
-            <Input :placeholder="inputPlaceholder2" value="2000000" class="border border-gray-900 rounded-sm px-2 text-sm md:w-32 h-8"/>
+            <Input v-model="selectedTo" :placeholder="inputPlaceholder2" class="border border-gray-900 rounded-sm px-2 text-sm md:w-32 h-8"/>
         </div>
     </div>
 </template>

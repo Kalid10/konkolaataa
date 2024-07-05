@@ -62,6 +62,7 @@ const selectedFilters = ref(usePage().props.filters || {
     exteriorColor: [],
     carBrands: [],
     year: [],
+    price:[]
 });
 function updateChecked(checked, category) {
     selectedFilters.value[category] = checked;
@@ -86,8 +87,8 @@ const search = debounce(() => {
     );
 }, 900);
 
-function handleRangeUpdate(range) {
-    selectedFilters.value.year = range;
+function handleRangeUpdate(range,category) {
+    selectedFilters.value[category] = range;
     search();
 }
 </script>
@@ -96,10 +97,13 @@ function handleRangeUpdate(range) {
     <Loading v-if="isLoading" is-full-screen />
     <div class="flex flex-col divide-y space-y-2 divide-gray-200">
         <Input class="rounded-full h-fit py-2 mt-5 mb-3 border-gray-400" placeholder="Quick Search" v-model="searchKey" @keyup="search"/>
-        <InputRangeFilter title="Price" :icon="DollarSign"/>
+        <InputRangeFilter
+            :initial-from="selectedFilters.price?.from"
+            :initial-to="selectedFilters.price?.to"
+            @update:range="handleRangeUpdate" title="Price" :icon="DollarSign"/>
         <SelectBoxRangeFilter
-            :initial-from="selectedFilters.year.from"
-            :initial-to="selectedFilters.year.to"
+            :initial-from="selectedFilters.year?.from"
+            :initial-to="selectedFilters.year?.to"
             @update:range="handleRangeUpdate"
             :icon="CalendarDays" :select-box-range-filter2="maxYears" :select-box-range-filter="minYears" title="Year" />
         <InputRangeFilter :icon="Gauge" title="Mileage" input-placeholder="0" input-placeholder2="17000"/>

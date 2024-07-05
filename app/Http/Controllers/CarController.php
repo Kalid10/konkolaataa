@@ -39,6 +39,7 @@ class CarController extends Controller
                 ->orWhereRelation('carModel', 'name', 'LIKE', $search);
         });
 
+        Log::info($filters);
         if ($filters) {
             foreach ($filters as $filterCategory => $filterValues) {
                 switch ($filterCategory) {
@@ -57,17 +58,17 @@ class CarController extends Controller
                         break;
 
                     case 'year':
+                    case 'price':
                         $from = $filterValues['from'];
                         $to = $filterValues['to'];
                         if ($from && $to) {
-                            $query->whereBetween('year', [$from, $to]);
+                            $query->whereBetween($filterCategory, [$from, $to]);
                         } elseif ($from) {
-                            $query->where('year', '>=', $from);
+                            $query->where($filterCategory, '>=', $from);
                         } elseif ($to) {
-                            $query->where('year', '<=', $to);
+                            $query->where($filterCategory, '<=', $to);
                         }
                         break;
-
                     default:
                         $query->whereHas($filterCategory, function ($query) use ($filterValues) {
                             $query->whereIn('id', array_column($filterValues, 'id'));
