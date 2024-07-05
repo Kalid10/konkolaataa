@@ -44,10 +44,11 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->longText('description')->nullable();
             $table->longText('google_map_location')->nullable();
-            $table->string('location')->nullable();
+            $table->string('location');
             $table->string('status');
             $table->timestamp('posted_at');
             $table->timestamp('post_expires_at')->nullable();
+            $table->string('phone_number');
             $table->timestamps();
         });
     }
