@@ -62,7 +62,8 @@ const selectedFilters = ref(usePage().props.filters || {
     exteriorColor: [],
     carBrands: [],
     year: [],
-    price:[]
+    price:[],
+    mileage: []
 });
 function updateChecked(checked, category) {
     selectedFilters.value[category] = checked;
