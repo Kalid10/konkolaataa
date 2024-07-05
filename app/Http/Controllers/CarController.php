@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FilterCarRequest;
 use App\Http\Requests\PostCarRequest;
 use App\Models\Car;
 use App\Models\CarBodyType;
@@ -20,11 +21,72 @@ use Inertia\Inertia;
 
 class CarController extends Controller
 {
-    public function index()
+    public function index(FilterCarRequest $request)
     {
-        $cars = Car::with('carModel.carBrand', 'exteriorColor', 'interiorColor', 'carBodyType', 'engineType', 'fuelType', 'city', 'carConditionType', 'images')->paginate(3);
+        $carBrands = CarBrand::all();
+        $carModels = CarModel::all();
+        $carBodyTypes = CarBodyType::all();
+        $colors = Color::all();
+        $engineTypes = EngineType::all();
+        $fuelTypes = FuelType::all();
+        $cities = City::all();
+        $carConditionTypes = CarConditionType::all();
+
+        $filters = $request->filters;
+        $search = '%' . $request->search . '%';
+        $query = Car::where(function ($query) use ($search) {
+            $query->whereRelation('carModel.carBrand', 'name', 'LIKE', $search)
+                ->orWhereRelation('carModel', 'name', 'LIKE', $search);
+        });
+
+        if ($filters) {
+            foreach ($filters as $filterCategory => $filterValues) {
+                switch ($filterCategory) {
+                    case 'sellerType':
+                        $query->whereIn('seller_type', array_column($filterValues, 'name'));
+                        break;
+
+                    case 'transmissionType':
+                        $query->whereIn('transmission_type', array_column($filterValues, 'name'));
+                        break;
+
+                    case 'carBrands':
+                        $query->whereHas('carModel.carBrand', function ($query) use ($filterValues) {
+                            $query->whereIn('id', array_column($filterValues, 'id'));
+                        });
+                        break;
+
+                    default:
+                        $query->whereHas($filterCategory, function ($query) use ($filterValues) {
+                            $query->whereIn('id', array_column($filterValues, 'id'));
+                        });   break;
+                }
+            }
+        }
+
+        $cars = $query->with([
+            'carModel.carBrand',
+            'exteriorColor',
+            'interiorColor',
+            'carBodyType',
+            'engineType',
+            'fuelType',
+            'city',
+            'carConditionType',
+            'images'
+        ])->paginate(10);
+
         return Inertia::render('Car/Index', [
             'cars' => $cars,
+            'carBrands' => $carBrands,
+            'carModels' => $carModels,
+            'carBodyTypes' => $carBodyTypes,
+            'colors' => $colors,
+            'engineTypes' => $engineTypes,
+            'fuelTypes' => $fuelTypes,
+            'cities' => $cities,
+            'carConditionTypes' => $carConditionTypes,
+            'search' => $request->search ?? '',
         ]);
     }
 
