@@ -34,11 +34,11 @@ const props = defineProps(['modelValue']);
 const emit = defineEmits(['update:modelValue']);
 
 const form = useForm({
-    carBrandId: props.modelValue.carBrandId || carBrands.value[0].id,
-    description: props.modelValue.description || 'des',
-    year: props.modelValue.year || years[0],
-    carModelId: props.modelValue.carModelId || carModels.value[0].id,
-    carPlateType: props.modelValue.carPlateType || carPlateTypes[0].value,
+    carBrandId: props.modelValue.carBrandId || null,
+    description: props.modelValue.description || null,
+    year: props.modelValue.year || null,
+    carModelId: props.modelValue.carModelId || null,
+    carPlateType: props.modelValue.carPlateType || null,
 });
 
 watch(form, (newForm) => {
@@ -48,6 +48,8 @@ watch(form, (newForm) => {
 const selectedCarModels = computed(() => {
     return carModels.value.filter(model => model.car_brand_id === form.carBrandId);
 });
+
+
 </script>
 
 <template>

@@ -24,7 +24,7 @@ export function useCreateCar() {
             interiorColorId: null,
             isOriginalPaint: true,
             isAccidentFree: 0,
-            severityOfAccident: null,
+            severityOfAccident: 'none',
         },
         stepFour: {
             price: null,
@@ -60,22 +60,7 @@ export function useCreateCar() {
     };
 
     function postCar(exteriorImages, interiorImages) {
-        const carData = Object.assign(
-            {},
-            carFormData.value.stepOne,
-            carFormData.value.stepTwo,
-            carFormData.value.stepThree,
-            carFormData.value.stepFour,
-            carFormData.value.stepSix,
-            { user_id: carFormData.value.user_id },
-            { exteriorCarImages: exteriorImages },
-            { interiorCarImages: interiorImages },
-        );
-        router.post('/car/store', carData,{
-            onSuccess: () => {
-                // clearData()
-            }
-        });
+
     }
 
     return {

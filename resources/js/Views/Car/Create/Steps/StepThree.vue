@@ -25,11 +25,11 @@ const severityOfAccidents = [
     {name: 'Severe', value: 'severe'},
 ];
 const form = useForm({
-    exteriorColorId: props.modelValue.exteriorColorId || colors.value[0].id,
-    interiorColorId: props.modelValue.interiorColorId || colors.value[1].id,
+    exteriorColorId: props.modelValue.exteriorColorId || null,
+    interiorColorId: props.modelValue.interiorColorId || null,
     isOriginalPaint: props.modelValue.isOriginalPaint || true,
-    isAccidentFree: props.modelValue.isAccidentFree || 0,
-    severityOfAccident: props.modelValue.severityOfAccident || severityOfAccidents[0].value,
+    isAccidentFree: props.modelValue.isAccidentFree || 1,
+    severityOfAccident: props.modelValue.severityOfAccident || 'none',
 });
 
 watch(form, (newForm) => {

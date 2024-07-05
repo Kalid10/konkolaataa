@@ -25,11 +25,11 @@ const emit = defineEmits(['update:modelValue']);
 const cities = computed(() => usePage().props.cities)
 
 const form = useForm({
-    priceType: props.modelValue.priceType || pricingOptions[0].value,
-    price: props.modelValue.price || '1000000',
-    cityId: props.modelValue.cityId || cities.value[0].id,
-    location: props.modelValue.location || "Bole",
-    googleMapsLink: props.modelValue.googleMapsLink || "Https://maps-link"
+    priceType: props.modelValue.priceType || null,
+    price: props.modelValue.price || null,
+    cityId: props.modelValue.cityId || null,
+    location: props.modelValue.location || null,
+    googleMapsLink: props.modelValue.googleMapsLink || null
 });
 
 watch(form, (newForm) => {

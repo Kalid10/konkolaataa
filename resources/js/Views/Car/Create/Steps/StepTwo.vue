@@ -30,12 +30,12 @@ const carConditionTypes = computed(() => usePage().props.carConditionTypes);
 const carBodyTypes = computed(() => usePage().props.carBodyTypes);
 
 const form = useForm({
-    carConditionTypeId: props.modelValue.carConditionTypeId || carConditionTypes.value[0].id,
-    carBodyTypeId: props.modelValue.carBodyTypeId || carBodyTypes.value[0].id,
-    transmissionType: props.modelValue.transmissionType || transmissionTypes[0].value,
-    fuelTypeId: props.modelValue.fuelTypeId || fuelTypes.value[0].id,
-    engineTypeId: props.modelValue.engineTypeId || engineTypes.value[0].id,
-    mileage: props.modelValue.mileage || 10,
+    carConditionTypeId: props.modelValue.carConditionTypeId || null,
+    carBodyTypeId: props.modelValue.carBodyTypeId || null,
+    transmissionType: props.modelValue.transmissionType || null,
+    fuelTypeId: props.modelValue.fuelTypeId || null,
+    engineTypeId: props.modelValue.engineTypeId || null,
+    mileage: props.modelValue.mileage || 0,
 
 });
 
