@@ -101,7 +101,17 @@ class CarController extends Controller
             'cities' => $cities,
             'carConditionTypes' => $carConditionTypes,
             'search' => $request->search ?? '',
-            'filters' => $request->filters ?? [],
+            'filters' => $request->filters ?? [
+                    'sellerType' => [],
+                    'carConditionType' => [],
+                    'transmissionType' => [],
+                    'carBrands' => [],
+                    'year' => ['from' => null, 'to' => null],
+                    'mileage' => ['from' => null, 'to' => null],
+                    'price' => ['from' => null, 'to' => null],
+                    'fuelType' => [],
+                    'exteriorColor' => [],
+                ],
         ]);
     }
 
