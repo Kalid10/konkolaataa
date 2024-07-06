@@ -9,7 +9,7 @@ import {
     SelectValue
 } from "@/Components/shadcn/ui/select/index.js";
 import InputLabel from "@/Components/InputLabel.vue";
-import {useForm} from "@inertiajs/vue3";
+import {useForm, usePage} from "@inertiajs/vue3";
 import {Input} from "@/Components/shadcn/ui/input/index.js";
 import {watch} from "vue";
 
@@ -24,7 +24,7 @@ const emit = defineEmits(['update:modelValue']);
 const form = useForm({
     sellerType: props.modelValue.sellerType || null,
     percentage: props.modelValue.percentage || 2,
-    phoneNumber: props.modelValue.phoneNumber || null,
+    phoneNumber: props.modelValue.phoneNumber || usePage().props.auth.user.phone_number,
 });
 
 watch(form, (newForm) => {
