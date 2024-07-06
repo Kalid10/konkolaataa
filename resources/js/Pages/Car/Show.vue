@@ -3,6 +3,8 @@ import { Antenna, Fuel, Cog, Gauge, Car, RectangleHorizontal, MapPin, ShieldBan}
 import SellerInfo from "@/Views/Car/Show/SellerInfo.vue";
 import ShareItem from "@/Views/Car/Show/ShareItem.vue";
 import {useUtilities} from "@/Composables/useUtilities.js";
+import {Input} from "@/Components/shadcn/ui/input/index.js";
+import InputLabel from "@/Components/InputLabel.vue";
 
 defineProps({
     car: {
@@ -15,7 +17,7 @@ const utilities = useUtilities()
 </script>
 
 <template>
-    <div class="flex flex-col space-y-4 md:space-y-10">
+    <div class="flex flex-col space-y-4 md:space-y-10 max-w-7xl mx-auto">
         <div class="flex justify-between space-x-10 ">
             <div class="w-full md:w-6/12 flex flex-col space-y-4 justify-evenly">
                 <img src="../../../../public/assets/images/pl.jpg" class="rounded-lg h-56 md:h-[22rem] w-full object-cover">
@@ -104,7 +106,14 @@ const utilities = useUtilities()
             </div>
             <ShareItem class="md:hidden"/>
         </div>
-        <div class="hidden md:flex md:flex-col items-center justify-evenly w-5/12">
+        <div class="hidden md:flex md:flex-col items-center justify-evenly space-y-6 w-5/12">
+
+            <div class="w-full p-3 flex flex-col space-y-2 bg-gray-50 rounded-lg shadow-sm">
+                <div class="font-medium text-lg">Description</div>
+               <span class="text-sm text-gray-700 min-h-32">
+                   * {{car.description}}
+               </span>
+            </div>
             <SellerInfo :car="car"/>
             <ShareItem/>
         </div>
