@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'nullable|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'nullable|string|lowercase|email|max:255|unique:' . User::class,
             'phone_number' => 'required|regex:/^\+251[79][0-9]{8}$/|max:13|unique:users,phone_number',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'type' => 'required|string|in:admin,buyer,seller',
@@ -59,6 +59,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('cars.index')->with('success', 'User registered successfully.');
+        return redirect()->route('verify.phone')->with('success', 'User registered successfully.');
     }
 }

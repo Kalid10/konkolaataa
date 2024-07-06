@@ -25,7 +25,13 @@ const form = useForm({
 const submit = () => {
     form.phone_number = `+251${form.phone_number}`;
     form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
+        onSuccess: (page) => {
+            if (page.props.auth.user) {
+                window.location.href = route('verify.phone');
+            } else {
+                form.reset('password', 'password_confirmation');
+            }
+        },
     });
 };
 </script>
@@ -39,7 +45,6 @@ const submit = () => {
             <form @submit.prevent="submit">
                 <div>
                     <InputLabel for="name" value="Full Name" />
-
                     <TextInput
                         id="name"
                         type="text"
@@ -50,16 +55,13 @@ const submit = () => {
                         autocomplete="name"
                         placeholder="Abebe Kebede"
                     />
-
                     <InputError class="mt-2" :message="form.errors.name" />
                 </div>
 
                 <div class="mt-4">
                     <InputLabel for="phone_number" value="Phone Number" />
-
                     <div class="flex items-center font-semibold min-h-full">
                         <div class="bg-brand-primary text-white px-3 py-3.5 h-full rounded-l-lg min-h-full">+251</div>
-
                         <TextInput
                             id="phone_number"
                             type="number"
@@ -70,7 +72,6 @@ const submit = () => {
                             placeholder="(9/7)11223344"
                         />
                     </div>
-
                     <InputError class="mt-2" :message="form.errors.phone_number" />
                 </div>
 
@@ -91,10 +92,8 @@ const submit = () => {
                     <InputError class="mt-2" :message="form.errors.type" />
                 </div>
 
-
                 <div class="mt-4">
                     <InputLabel for="password" value="Password" />
-
                     <TextInput
                         id="password"
                         type="password"
@@ -104,13 +103,11 @@ const submit = () => {
                         autocomplete="new-password"
                         placeholder="New Password "
                     />
-
                     <InputError class="mt-2" :message="form.errors.password" />
                 </div>
 
                 <div class="mt-4">
                     <InputLabel for="password_confirmation" value="Confirm Password" />
-
                     <TextInput
                         id="password_confirmation"
                         type="password"
@@ -120,7 +117,6 @@ const submit = () => {
                         autocomplete="new-password"
                         placeholder="Confirm Password"
                     />
-
                     <InputError class="mt-2" :message="form.errors.password_confirmation" />
                 </div>
 
@@ -146,6 +142,5 @@ const submit = () => {
                 Your One-Stop Marketplace to Buy and Sell Cars
             </div>
         </div>
-
     </div>
 </template>
