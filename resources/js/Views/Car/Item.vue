@@ -1,8 +1,8 @@
 <script setup>
-import {Gauge ,Edit} from "lucide-vue-next";
+import {Gauge ,Edit, Eye} from "lucide-vue-next";
 import moment from "moment";
 import {useUtilities} from "@/Composables/useUtilities.js";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import QuickView from "@/Views/QuickView.vue";
 
 defineProps({
     car:{
@@ -19,7 +19,7 @@ const utilities = useUtilities()
 </script>
 
 <template>
-    <div class="pb-4 flex justify-center w-full md:w-fit">
+    <div class="pb-4 flex justify-center w-full md:w-fit cursor-pointer">
         <div class=" w-full min-w-72 max-w-xs rounded-lg flex flex-col shadow-md bg-gray-50 h-fit">
             <img class="object-cover h-40 w-full rounded-t-lg" src="../../../../public/assets/images/pl.jpg">
             <div class="flex flex-col space-y-2.5 px-3 py-3 text-xs">
@@ -56,13 +56,14 @@ const utilities = useUtilities()
                         <span>Edit</span>
                     </div>
 
-                    <div v-else class="px-2 py-1 rounded-md uppercase flex items-center space-x-1">
-                    <span>
-                        {{car.seller_type}}
-                    </span>
-                        <span v-if="car.seller_type === 'broker'">
-                        ({{car.percentage}}%)
-                    </span>
+                    <div v-else class="flex items-center space-x-1">
+
+                    <div class="py-1 px-2 rounded-md uppercase flex items-center space-x-1 bg-emerald-400">
+                        <span>{{car.seller_type}}</span>
+                        <span v-if="car.seller_type === 'broker'">({{car.percentage}}%)</span>
+                    </div>
+                        <QuickView :car="car" @click.prevent/>
+
                     </div>
                 </div>
             </div>

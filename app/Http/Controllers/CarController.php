@@ -87,7 +87,8 @@ class CarController extends Controller
             'fuelType',
             'city',
             'carConditionType',
-            'images'
+            'images',
+            'user'
         ])->paginate(10);
 
         return Inertia::render('Car/Index', [
