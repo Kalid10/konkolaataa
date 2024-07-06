@@ -8,4 +8,5 @@ Route::prefix('car')->middleware(['auth'])->group(function () {
     Route::get('/show/{car}', [CarController::class, 'show'])->name('cars.show');
     Route::get('/post', [CarController::class, 'create'])->name('cars.create');
     Route::post('/store', [CarController::class, 'store'])->name('cars.store');
+    Route::get('/user', [CarController::class, 'userCars'])->name('cars.user');
 });

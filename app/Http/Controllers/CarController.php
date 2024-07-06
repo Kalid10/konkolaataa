@@ -143,6 +143,7 @@ class CarController extends Controller
             'fuelTypes' => $fuelTypes,
             'cities' => $cities,
             'carConditionTypes' => $carConditionTypes,
+
         ]);
     }
 
@@ -178,6 +179,7 @@ class CarController extends Controller
                 'posted_at' => now(),
                 'post_expires_at' => now()->addDays(30),
                 'user_id' => $user->id,
+                'phone_number' => $request->phoneNumber,
             ]);
 
             // Merge the two arrays
@@ -210,5 +212,25 @@ class CarController extends Controller
                 Log::error('Upload failed: ' . $exception->getMessage());
             }
         }
+    }
+
+    public function userCars()
+    {
+        $userId = auth()->id();
+        $cars = Car::where('user_id', $userId)->with([
+            'carModel.carBrand',
+            'exteriorColor',
+            'interiorColor',
+            'carBodyType',
+            'engineType',
+            'fuelType',
+            'city',
+            'carConditionType',
+            'images'
+        ])->paginate(10);
+
+        return Inertia::render('Car/UserCars', [
+            'cars' => $cars,
+        ]);
     }
 }
