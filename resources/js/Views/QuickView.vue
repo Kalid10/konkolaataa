@@ -49,11 +49,11 @@ const routeToItem = (id) => {
 
                         <div class="flex flex-col w-full justify-between text-black">
 
-                            <div class="flex flex-col space-y-4 w-full bg-gray-50 px-5 py-2 rounded-lg">
-                                <div class="text-3xl  font-semibold">{{car.car_model.car_brand.name}} {{car.car_model.name}} </div>
+                            <div class="flex flex-col space-y-4 w-full bg-gray-50 text-start px-2 md:px-5 py-2 rounded-lg">
+                                <div class="text-xl md:text-3xl font-semibold">{{car.car_model.car_brand.name}} {{car.car_model.name}} </div>
                                 <div class="flex flex-col w-full space-y-1">
                                     <div class="text-xl md:text-2xl border border-gray-600  font-medium rounded-lg w-fit p-2">{{utilities.formatNumberWithCommas(car.price)}} Br</div>
-                                    <div class="text-sm md:font-medium p-1 uppercase">{{car.price_type}}</div>
+                                    <div class="text-sm md:font-medium p-1  uppercase">{{car.price_type}}</div>
                                 </div>
 
                                 <div class="pt-1 font-semibold text-xl md:text-3xl">Overview</div>
@@ -87,7 +87,7 @@ const routeToItem = (id) => {
                                         </div>
                                     </div>
                                     <div class="hidden md:flex min-h-full w-0.5 bg-gray-300"></div>
-                                    <div class="flex flex-col space-y-6 pt-6">
+                                    <div class="flex flex-col space-y-6 md:pt-6">
                                         <div class="flex space-x-3 items-center font-medium">
                                             <div class="w-3 h-3 rounded-full border border-gray-400" :style="'background-color:' + car.exterior_color.hex"></div>
                                             <div>Exterior Color: {{ car.exterior_color.name }}</div>
@@ -111,11 +111,11 @@ const routeToItem = (id) => {
                                         <div class="py-2 px-4 rounded-lg flex flex-col space-y-2 border border-black text-sm capitalize">
                                             <div class="flex items-center justify-between">
                                                 <span class="font-medium">{{car.user.name}}</span>
-                                                <span>{{car.seller_type}}</span>
-                                            </div>
-                                            <div class="flex items-center justify-between">
                                                 <span>{{car.phone_number}}</span>
-                                                <span>{{ car.city.name }}, {{ car.location }}</span>
+                                            </div>
+                                            <div class="flex flex-col space-y-1 md:space-y-0 md:flex-row md:items-center justify-between">
+                                                <div v-if="car.seller_type === 'broker'" class="text-sm md:text-base font-medium capitalize">{{ car.seller_type }} X {{car.percentage}}% = {{utilities.formatNumberWithCommas(brokerFee)}} Br</div>
+                                                <div v-else class="text-sm md:text-base font-medium"> {{car.seller_type}} Seller (0%)</div>
                                             </div>
                                         </div>
 
