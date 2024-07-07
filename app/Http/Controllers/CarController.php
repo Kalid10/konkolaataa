@@ -39,7 +39,6 @@ class CarController extends Controller
                 ->orWhereRelation('carModel', 'name', 'LIKE', $search);
         });
 
-        Log::info($filters);
         if ($filters) {
             foreach ($filters as $filterCategory => $filterValues) {
                 switch ($filterCategory) {
