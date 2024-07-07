@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -15,9 +16,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,6 +26,11 @@ Route::middleware('auth')->group(function () {
 Route::prefix('/pricing')->group(function () {
     Route::get('', [PricingController::class, 'index'])->name('pricing');
 });
+
+Route::get('/auth/google', function () {
+    return Inertia::location(Socialite::driver('google')->redirect());
+});
+Route::get('auth/google/callback', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'handleGoogleCallback']);
 
 $directory = new RecursiveDirectoryIterator(__DIR__.'/web');
 $iterator = new RecursiveIteratorIterator($directory);

@@ -4,7 +4,8 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Link, useForm } from '@inertiajs/vue3';
+import {Link, router, useForm} from '@inertiajs/vue3';
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 defineProps({
     canResetPassword: {
@@ -25,6 +26,10 @@ const submit = () => {
     form.login = `+251${form.login}`;
     form.post(route('login'));
 };
+
+function loginWithGoogle() {
+   router.visit('/auth/google');
+}
 </script>
 
 <template>
@@ -106,7 +111,12 @@ const submit = () => {
                     </Link>
                 </div>
             </form>
-
+            <SecondaryButton href="/auth/google" class="w-full space-x-2">
+                    <img src="../../../../public/assets/images/google_logo.png" class="w-4">
+                <span>
+                  Login with Google
+              </span>
+            </SecondaryButton>
         </div>
         <div class="hidden lg:flex flex-col space-y-2 w-4/12 text-center rounded-lg justify-center items-center">
 
