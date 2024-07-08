@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'sms' => [
+        'secret_key' => env('SMS_SECRET_KEY'),
+    ],
 ];

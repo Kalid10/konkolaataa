@@ -6,7 +6,6 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class SMS
 {
@@ -30,8 +29,12 @@ class SMS
 
     private static function secretKey(): string
     {
-        // TODO: Move this to the .env file
-        return 'eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiVjJUTEtDTnh3M3liTlJYcFhIQ1RwWE1EWnI1OUdWelIiLCJleHAiOjE4Nzc5Mzg5MDksImlhdCI6MTcyMDE3MjUwOSwianRpIjoiZWU1ZTg0ZmQtNGZkZS00ZGFmLTg0YjUtNWE3YjdhZDI4MjJkIn0.zgzproic1x2LLXWfA2wnlbDuhAXiudYBrUiv09mxyPk';
+        $key = config('services.sms.secret_key');
+
+        if (is_null($key)) {
+            throw new \RuntimeException('SMS_SECRET_KEY environment variable is not set.');
+        }
+        return (string) $key;
     }
 }
 
