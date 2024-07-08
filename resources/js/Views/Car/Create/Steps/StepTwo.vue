@@ -12,25 +12,11 @@ import InputLabel from "@/Components/InputLabel.vue";
 import {Input} from "@/Components/shadcn/ui/input/index.js";
 import {computed, watch} from "vue";
 import {useForm, usePage} from "@inertiajs/vue3";
+import {Switch} from "@/Components/shadcn/ui/switch/index.js";
 
 const props = defineProps(['modelValue']);
 const emit = defineEmits(['update:modelValue']);
 
-const form = useForm({
-    carConditionTypeId: props.modelValue.carConditionTypeId || null,
-    carBodyTypeId: props.modelValue.carBodyTypeId || null,
-    transmissionType: props.modelValue.transmissionType || null,
-    fuelTypeId: props.modelValue.fuelTypeId || null,
-    exteriorColorId: props.modelValue.exteriorColorId || null,
-    interiorColorId: props.modelValue.interiorColorId || null,
-    engineTypeId: props.modelValue.engineTypeId || null,
-    mileage: props.modelValue.mileage || null,
-
-});
-
-watch(form, (newForm) => {
-    emit('update:modelValue', newForm);
-}, {deep: true});
 
 const transmissionTypes = [
     {name: 'Manual', value: 'manual'},
@@ -40,9 +26,28 @@ const transmissionTypes = [
 
 const fuelTypes = computed(() => usePage().props.fuelTypes);
 const engineTypes = computed(() => usePage().props.engineTypes);
-const colors = computed(() => usePage().props.colors);
 const carConditionTypes = computed(() => usePage().props.carConditionTypes);
 const carBodyTypes = computed(() => usePage().props.carBodyTypes);
+
+const form = useForm({
+    carConditionTypeId: props.modelValue.carConditionTypeId || null,
+    carBodyTypeId: props.modelValue.carBodyTypeId || null,
+    transmissionType: props.modelValue.transmissionType || null,
+    fuelTypeId: props.modelValue.fuelTypeId || null,
+    engineTypeId: props.modelValue.engineTypeId || null,
+    mileage: props.modelValue.mileage || 0,
+
+});
+
+watch(form, (newForm) => {
+    emit('update:modelValue', newForm);
+}, {deep: true});
+
+watch(() => form.carConditionTypeId, (value) => {
+    if (value === 1) {
+        form.mileage = 0;
+    }
+});
 
 </script>
 
@@ -68,7 +73,7 @@ const carBodyTypes = computed(() => usePage().props.carBodyTypes);
 
         <div class="flex flex-col space-y-2">
             <InputLabel>Mileage</InputLabel>
-            <Input v-model="form.mileage" placeholder="Eg: 10,500"/>
+            <Input :disabled="form.carConditionTypeId === 1 || form.carConditionTypeId === null" v-model="form.mileage" placeholder="Eg: 10,500"/>
         </div>
 
 
@@ -81,9 +86,7 @@ const carBodyTypes = computed(() => usePage().props.carBodyTypes);
                 <SelectContent>
                     <SelectGroup>
                         <SelectItem v-for="item in carBodyTypes" :value="item.id">
-
-                                {{ item.name }}
-
+                            {{ item.name }}
                         </SelectItem>
                     </SelectGroup>
                 </SelectContent>
@@ -97,7 +100,7 @@ const carBodyTypes = computed(() => usePage().props.carBodyTypes);
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
-                        <SelectItem v-for="item in transmissionTypes" :value="item.id">
+                        <SelectItem v-for="item in transmissionTypes" :value="item.value">
                             {{ item.name }}
                         </SelectItem>
                     </SelectGroup>
@@ -123,45 +126,7 @@ const carBodyTypes = computed(() => usePage().props.carBodyTypes);
             </Select>
         </div>
 
-        <div class="flex flex-col space-y-2">
-            <InputLabel>Exterior Color</InputLabel>
-            <Select v-model="form.exteriorColorId">
-                <SelectTrigger>
-                    <SelectValue placeholder="Select Color" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        <SelectItem  v-for="item in colors" :value="item.id">
-                            <div class="!flex space-x-2 items-center">
 
-                                <div class="w-3 h-3 rounded-full border border-gray-200" :style="'background-color:'+ item.name"></div>
-                                <div>  {{ item.name }} </div>
-                            </div>
-                        </SelectItem>
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
-        </div>
-
-        <div class="flex flex-col space-y-2">
-            <InputLabel>Interior Color</InputLabel>
-            <Select v-model="form.interiorColorId">
-                <SelectTrigger>
-                    <SelectValue placeholder="Select Color" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        <SelectItem  v-for="item in colors" :value="item.id">
-                            <div class="!flex space-x-2 items-center">
-
-                                <div class="w-3 h-3 rounded-full border border-gray-200" :style="'background-color:'+ item.name"></div>
-                                <div>  {{ item.name }} </div>
-                            </div>
-                        </SelectItem>
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
-        </div>
 
         <div class="flex flex-col space-y-2">
             <InputLabel>Engine Size</InputLabel>

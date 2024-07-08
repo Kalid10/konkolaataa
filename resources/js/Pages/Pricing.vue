@@ -132,7 +132,7 @@ const subscriptionTiers = ref([
 </script>
 
 <template>
-    <div class="flex flex-col space-y-10 w-full md:w-10/12 mx-auto min-h-screen py-5 md:pt-14">
+    <div class="flex flex-col space-y-10 w-full md:w-full mx-auto min-h-screen py-5">
 
         <div class="text-center flex flex-col space-y-2">
             <div class="font-semibold text-6xl">Let's Get Started</div>

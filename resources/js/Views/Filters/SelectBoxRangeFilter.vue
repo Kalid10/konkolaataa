@@ -4,15 +4,16 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from '@/Components/shadcn/ui/select/index.js'
+import {onMounted, ref, watch} from 'vue';
+import {useUtilities} from "@/Composables/useUtilities.js";
 
-defineProps({
+const props = defineProps({
     title: {
         type: String,
-        default: "Price"
+        required: true
     },
     placeholder: {
         type: String,
@@ -23,46 +24,67 @@ defineProps({
         default: "To"
     },
     selectBoxRangeFilter: {
-        type: Object,
+        type: Array,
         required: true
     },
     selectBoxRangeFilter2: {
-        type: Object,
+        type: Array,
         required: true
     },
     icon: {
         type: Object,
         required: true
+    },
+    initialFrom: {
+        type: [String, Number],
+        default: null
+    },
+    initialTo: {
+        type: [String, Number],
+        default: null
     }
-})
+});
+
+const emit = defineEmits(['update:range']);
+
+const selectedFrom = ref(null);
+const selectedTo = ref(null);
+
+onMounted(() => {
+    selectedFrom.value = props.initialFrom;
+    selectedTo.value = props.initialTo;
+});
+watch([selectedFrom, selectedTo], () => {
+    emit('update:range', {from: selectedFrom.value, to: selectedTo.value}, useUtilities().toCamelCase(props.title));
+});
 </script>
 
 <template>
     <div class="flex flex-col space-y-2 py-4 w-full">
         <div class="flex w-full items-center space-x-1">
             <component :is="icon" size="17"/>
-            <div class="font-medium text-base">{{title}}</div>
+            <div class="font-medium text-base">{{ title }}</div>
         </div>
         <div class="flex w-full space-x-4">
-            <Select>
+            <Select v-model="selectedFrom">
                 <SelectTrigger>
-                    <SelectValue :placeholder="placeholder" />
+                    <SelectValue :placeholder="placeholder"/>
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
-                        <SelectItem v-for="item in selectBoxRangeFilter" :value="item.value">
+                        <SelectItem v-for="item in selectBoxRangeFilter" :key="item.value" :value="item.value">
                             {{ item.name }}
                         </SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>
-            <Select>
+            <Select v-model="selectedTo">
                 <SelectTrigger>
-                    <SelectValue :placeholder="placeholder2" />
+                    <SelectValue :placeholder="placeholder2"/>
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
-                        <SelectItem v-for="item in selectBoxRangeFilter2" :value="item.value">
+                        <SelectItem v-for="item in selectBoxRangeFilter2" :key="item.value" :value="item.value">
                             {{ item.name }}
                         </SelectItem>
                     </SelectGroup>
@@ -73,5 +95,4 @@ defineProps({
 </template>
 
 <style scoped>
-
 </style>

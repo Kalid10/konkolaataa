@@ -7,6 +7,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import {createPinia} from "pinia";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -15,7 +16,7 @@ function getLayout(name) {
         case name.startsWith("Auth/") || name === "Welcome":
             return GuestLayout;
         case name.startsWith("Pricing"):
-            return GuestLayout;
+            return AuthenticatedLayout;
         default:
             return AuthenticatedLayout;
     }
@@ -30,6 +31,7 @@ createInertiaApp({
     }, setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(createPinia())
             .use(ZiggyVue)
             .mount(el);
     },

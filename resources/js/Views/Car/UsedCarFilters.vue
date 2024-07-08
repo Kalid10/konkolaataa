@@ -5,26 +5,38 @@ import {Input} from "@/Components/shadcn/ui/input/index.js";
 import InputRangeFilter from "@/Views/Filters/InputRangeFilter.vue";
 import CheckBoxFilter from "@/Views/Filters/CheckBoxFilter.vue";
 import {Cog, Fuel, CalendarDays, Gauge, DollarSign, Palette, Percent, Car} from "lucide-vue-next";
+import {computed, ref} from "vue";
+import {router, usePage} from "@inertiajs/vue3";
+import { debounce } from "lodash";
+import Loading from "@/Components/Loading.vue";
 
 const minYears = [
     {name: '2020', value: '2020'},
     {name: '2019', value: '2019'},
     {name: '2018', value: '2018'},
     {name: '2017', value: '2017'},
+    {name: '2016', value: '2016'},
+    {name: '2015', value: '2015'},
+    {name: '2014', value: '2014'},
+    {name: '2013', value: '2013'},
+    {name: '2012', value: '2012'},
+    {name: '2011', value: '2011'},
+    {name: '2010', value: '2010'},
 ];
 const maxYears = [
     {name: '2020', value: '2020'},
     {name: '2019', value: '2019'},
     {name: '2018', value: '2018'},
     {name: '2017', value: '2017'},
+    {name: '2016', value: '2016'},
+    {name: '2015', value: '2015'},
+    {name: '2014', value: '2014'},
+    {name: '2013', value: '2013'},
+    {name: '2012', value: '2012'},
+    {name: '2011', value: '2011'},
+    {name: '2010', value: '2010'},
 ];
 
-const fuelTypes = [
-    {name: 'Petrol', value: 'petrol'},
-    {name: 'Diesel', value: 'diesel'},
-    {name: 'Electric', value: 'electric'},
-    {name: 'Hybrid', value: 'hybrid'},
-];
 
 const transmissionTypes = [
     {name: 'Automatic', value: 'automatic'},
@@ -32,53 +44,76 @@ const transmissionTypes = [
     {name: 'Semi-Automatic', value: 'semi-automatic'},
 ];
 
-const colors = [
-    {name: 'Green', value: '#008000'},
-    {name: 'Yellow', value: '#FFFF00'},
-    {name: 'Black', value: '#000000'},
-    {name: 'White', value: '#FFFFFF'},
-    {name: 'Silver', value: '#C0C0C0'},
-    {name: 'Grey', value: '#808080'},
-    {name: 'Brown', value: '#A52A2A'},
-    {name: 'Orange', value: '#FFA500'},
-    {name: 'Purple', value: '#800080'},
-]
-
 const sellerType = [
     {name: 'Private', value: 'private'},
     {name: 'Broker', value: 'broker'},
 ];
 
-const carBrands = [
-    {name: 'Toyota', value: 'toyota'},
-    {name: 'Volkswagen', value: 'volkswagen'},
-    {name: 'Mercedes', value: 'mercedes'},
-    {name: 'BMW', value: 'bmw'},
-    {name: 'Audi', value: 'audi'},
-    {name: 'Nissan', value: 'nissan'},
-    {name: 'Honda', value: 'honda'},
-    {name: 'Hyundai', value: 'hyundai'},
-    {name: 'Kia', value: 'kia'},
-    {name: 'Mazda', value: 'mazda'},
-    {name: 'Land Rover', value: 'land-rover'},
-    {name: 'Peugeot', value: 'peugeot'},
-    {name: 'Suzuki', value: 'suzuki'},
-    {name: 'Mitsubishi', value: 'mitsubishi'},
-];
+const fuelTypes = computed(() => usePage().props.fuelTypes);
+const carConditionTypes = computed(() => usePage().props.carConditionTypes);
+const carBrands = computed(() => usePage().props.carBrands);
+const colors = computed(() => usePage().props.colors);
 
+const selectedFilters = ref(usePage().props.filters || {
+    carConditionType: [],
+    sellerType: [],
+    fuelType: [],
+    transmissionType: [],
+    exteriorColor: [],
+    carBrands: [],
+    year: [],
+    price:[],
+    mileage: []
+});
+function updateChecked(checked, category) {
+    selectedFilters.value[category] = checked;
+    search();
+}
+
+const isLoading = ref(false);
+const searchKey = ref(usePage().props.search);
+const search = debounce(() => {
+    isLoading.value = true;
+    router.get(
+        "/car",
+        {
+            search: searchKey.value,
+            filters: selectedFilters.value
+        },
+        {
+            preserveState: true,
+            replace: true,
+            onFinish: () => isLoading.value = false
+        }
+    );
+}, 900);
+
+function handleRangeUpdate(range,category) {
+    selectedFilters.value[category] = range;
+    search();
+}
 </script>
 
 <template>
+    <Loading v-if="isLoading" is-full-screen />
     <div class="flex flex-col divide-y space-y-2 divide-gray-200">
-        <Input class="rounded-full h-fit py-2 mt-5 mb-3 border-gray-400" placeholder="Quick Search"/>
-        <InputRangeFilter title="Price" :icon="DollarSign"/>
-        <SelectBoxRangeFilter :icon="CalendarDays" :select-box-range-filter2="maxYears" :select-box-range-filter="minYears" title="Year" />
-        <InputRangeFilter :icon="Gauge" title="Mileage" input-placeholder="0" input-placeholder2="17000"/>
-        <CheckBoxFilter :icon="Percent" title="Seller Type" :items="sellerType" />
-        <CheckBoxFilter :icon="Fuel" title="Fuel Type" :items="fuelTypes"/>
-        <CheckBoxFilter :icon="Cog" title="Transmission" :items="transmissionTypes"/>
-        <CheckBoxFilter :icon="Palette" title="Exterior Color"  :items="colors" :show-color-badge="true"/>
-        <CheckBoxFilter title="Car Brands" :icon="Car" :items="carBrands" />
+        <Input class="rounded-full h-fit py-2 mt-5 mb-3 border-gray-400" placeholder="Quick Search" v-model="searchKey" @keyup="search"/>
+        <InputRangeFilter
+            :initial-from="selectedFilters.price?.from"
+            :initial-to="selectedFilters.price?.to"
+            @update:range="handleRangeUpdate" title="Price" :icon="DollarSign"/>
+        <SelectBoxRangeFilter
+            :initial-from="selectedFilters.year?.from"
+            :initial-to="selectedFilters.year?.to"
+            @update:range="handleRangeUpdate"
+            :icon="CalendarDays" :select-box-range-filter2="maxYears" :select-box-range-filter="minYears" title="Year" />
+        <InputRangeFilter @update:range="handleRangeUpdate" :icon="Gauge" title="Mileage" input-placeholder="0" input-placeholder2="17000"/>
+        <CheckBoxFilter :initial-checked-items="selectedFilters.carConditionType" @update:checked="updateChecked" :icon="Percent" title="Car Condition Type" :items="carConditionTypes" />
+        <CheckBoxFilter :initial-checked-items="selectedFilters.sellerType" @update:checked="updateChecked" :icon="Percent" title="Seller Type" :items="sellerType" />
+        <CheckBoxFilter :initial-checked-items="selectedFilters.fuelType" @update:checked="updateChecked"  :icon="Fuel" title="Fuel Type" :items="fuelTypes"/>
+        <CheckBoxFilter :initial-checked-items="selectedFilters.transmissionType" @update:checked="updateChecked" :icon="Cog" title="Transmission Type" :items="transmissionTypes"/>
+        <CheckBoxFilter :initial-checked-items="selectedFilters.exteriorColor" @update:checked="updateChecked" :icon="Palette" title="Exterior Color"  :items="colors" :show-color-badge="true"/>
+        <CheckBoxFilter :initial-checked-items="selectedFilters.carBrands" @update:checked="updateChecked" title="Car Brands" :icon="Car" :items="carBrands" />
     </div>
 </template>
 

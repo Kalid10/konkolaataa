@@ -1,31 +1,47 @@
-import { useStorage } from '@vueuse/core';
-import {usePage} from "@inertiajs/vue3";
-import {computed} from "vue";
+import { computed } from "vue";
+import { useStorage } from "@vueuse/core";
+import { router, usePage } from "@inertiajs/vue3";
 
 export function useCreateCar() {
-    const carFormData = useStorage('carFormData', {
-        generalInformation: {
+    const initialData = () => ({
+        stepOne: {
             carBrandId: null,
             description: null,
-            carCondition: null,
             year: null,
             carModelId: null,
             carPlateType: null,
         },
-        carDetails: {
+        stepTwo: {
             carConditionTypeId: null,
             carBodyTypeId: null,
             transmissionType: null,
             fuelTypeId: null,
+            engineTypeId: null,
+            mileage: 0,
+        },
+        stepThree: {
             exteriorColorId: null,
             interiorColorId: null,
-            mileage: null,
+            isOriginalPaint: true,
+            isAccidentFree: 0,
+            severityOfAccident: 'none',
         },
-        pricingLocation: {
+        stepFour: {
             price: null,
             priceType: null,
             cityId: null,
+            location: null,
             googleMapLink: null,
+        },
+        stepFive: {
+            exteriorImages: [],
+            exteriorImagesPreview: [],
+            interiorImages: [],
+            interiorImagesPreview: [],
+        },
+        stepSix: {
+            sellerType: null,
+            percentage: 2,
         },
         carImages: [],
         finalizePosting: {},
@@ -33,25 +49,19 @@ export function useCreateCar() {
         user_id: computed(() => usePage().props.auth.user.id),
     });
 
-    const updateGeneralInformation = (data) => {
-        carFormData.value.generalInformation = data;
-    };
-
-    const updateCarDetails = (data) => {
-        carFormData.value.carDetails = data;
-    }
-
-    const updatePricingLocation = (data) => {
-        carFormData.value.pricingLocation = data;
-    }
+    const carFormData = useStorage('carFormData', initialData());
 
     const updateCurrentStep = (step) => {
         carFormData.value.currentStep = step;
     }
+
+    const clearData = () => {
+        carFormData.value = initialData();
+    };
+
     return {
         carFormData,
-        updateGeneralInformation,
         updateCurrentStep,
-
+        clearData
     };
 }
