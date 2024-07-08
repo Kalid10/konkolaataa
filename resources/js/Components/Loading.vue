@@ -2,7 +2,7 @@
     <div
         :class="
             isFullScreen
-                ? 'fixed inset-0 flex items-center  space-x-2 justify-center bg-black bg-opacity-50 z-50'
+                ? 'absolute min-h-screen inset-0 flex items-center  space-x-2 justify-center bg-black bg-opacity-50 rounded-lg z-50'
                 : ''
         "
     >
@@ -23,6 +23,11 @@
                 'border-neutral-200': color === 'neutral',
             }"
         ></div>
+
+        <div class="flex animate-pulse justify-center items-center space-x-2" v-if="type === 'brand'">
+            <div class="animate-spin border-brand-primary rounded-full border-[5px] sm:border-8 border-solid border-t-transparent w-6 h-6 md:w-10 md:h-10"/>
+            <div  class="font-bold  text-brand-primary text-2xl md:text-5xl uppercase">Konkolaataa</div>
+        </div>
 
         <slot name="description"></slot>
         <!-- New bounce loader -->
@@ -53,7 +58,7 @@
 
 <script setup>
 import { ref } from "vue";
-
+import {LoaderCircle} from "lucide-vue-next";
 const props = defineProps({
     isFullScreen: {
         type: Boolean,
@@ -69,7 +74,7 @@ const props = defineProps({
     },
     type: {
         type: String,
-        default: "spinner",
+        default: "brand",
     },
 });
 
