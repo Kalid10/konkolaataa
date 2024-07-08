@@ -73,14 +73,22 @@ class AuthenticatedSessionController extends Controller
     /**
      * Obtain the user information from Google.
      *
-     * @return RedirectResponse
+     * @return RedirectResponse | Response
      */
     public function handleGoogleCallback()
     {
-        $user = Socialite::driver('google')->stateless()->user();
+        $googleUser = Socialite::driver('google')->stateless()->user();
 
-        Log::info(json_encode($user));
-        $this->findOrCreateUser($user, 'google');
+
+        $user = User::where('email', $googleUser->getEmail())->first();
+
+        if (!$user) {
+
+            return Inertia::render('Auth/Socialite', [
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+            ]);
+        }
 
         // Log the user in
         Auth::login($user);
@@ -93,19 +101,16 @@ class AuthenticatedSessionController extends Controller
      * else, create a new user object.
      * @param  $user Socialite user object
      * @param $provider Social auth provider
-     * @return  User
+     * @return
      */
     public function findOrCreateUser($googleUser)
     {
         $user = User::where('email', $googleUser->getEmail())->first();
 
         if (!$user) {
-            $user = User::create([
-                'name' => $googleUser->getName(),
-                'email' => $googleUser->getEmail(),
-                'provider_id' => $googleUser->getId(),
-                'avatar' => $googleUser->getAvatar(),
-                'type' => User::TYPE_BUYER,
+
+            return Inertia::render('Auth/Socialite', [
+                'user' => $googleUser,
             ]);
         }
 

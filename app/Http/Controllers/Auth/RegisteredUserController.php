@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegistrationRequest;
 use App\Models\Admin;
 use App\Models\Buyer;
 use App\Models\Seller;
@@ -12,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -26,23 +28,23 @@ class RegisteredUserController extends Controller
         return Inertia::render('Auth/Register');
     }
 
+    public function socialite(): Response
+    {
+        return Inertia::render('Auth/Socialite');
+    }
     /**
      * Handle an incoming registration request.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(RegistrationRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|string|lowercase|email|max:255|unique:'.User::class,
-            'phone_number' => 'required|regex:/^\+251[79][0-9]{8}$/|max:13|unique:users,phone_number',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'type' => 'required|string|in:admin,buyer,seller',
-        ]);
 
-        $user = User::create([
-            'name' => $request->name,
+
+        $user = User::updateOrCreate([
+            'phone_number' => $request->phone_number,
+        ],[
+            'name' => strtoupper($request->name),
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'type' => $request->type,
@@ -51,11 +53,9 @@ class RegisteredUserController extends Controller
 
         match ($request->type) {
             'admin' => Admin::create(['user_id' => $user->id]),
-            'buyer' => Buyer::create(['user_id' => $user->id, 'balance' => env('INITIAL_PLAYER_BONUS_BALANCE', 0)]),
+            'buyer' => Buyer::create(['user_id' => $user->id]),
             'seller' => Seller::create(['user_id' => $user->id]),
         };
-
-        event(new Registered($user));
 
         Auth::login($user);
 
