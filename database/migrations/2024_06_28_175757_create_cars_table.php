@@ -36,6 +36,7 @@ return new class extends Migration
             $table->float('percentage')->default(0);
             $table->float('price');
             $table->string('price_type');
+            $table->string('electric_car_range')->nullable();
             $table->foreignIdFor( CarConditionType::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(FuelType::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(EngineType::class)->constrained()->cascadeOnDelete();
