@@ -5,10 +5,18 @@ import {Input} from "@/Components/shadcn/ui/input/index.js";
 import InputRangeFilter from "@/Views/Filters/InputRangeFilter.vue";
 import CheckBoxFilter from "@/Views/Filters/CheckBoxFilter.vue";
 import {Cog, Fuel, CalendarDays, Gauge, DollarSign, Palette, Percent, Car} from "lucide-vue-next";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {router, usePage} from "@inertiajs/vue3";
 import { debounce } from "lodash";
 import Loading from "@/Components/Loading.vue";
+
+const emit = defineEmits(['loading']);
+const props = defineProps({
+    clearFilters: {
+        type: Boolean,
+        default: false
+    }
+})
 
 const minYears = [
     {name: '2020', value: '2020'},
@@ -70,10 +78,9 @@ function updateChecked(checked, category) {
     search();
 }
 
-const isLoading = ref(false);
 const searchKey = ref(usePage().props.search);
 const search = debounce(() => {
-    isLoading.value = true;
+   emit('loading', true);
     router.get(
         "/car",
         {
@@ -83,7 +90,9 @@ const search = debounce(() => {
         {
             preserveState: true,
             replace: true,
-            onFinish: () => isLoading.value = false
+            onFinish: () => {
+                emit('loading', false);
+            }
         }
     );
 }, 900);
@@ -92,12 +101,13 @@ function handleRangeUpdate(range,category) {
     selectedFilters.value[category] = range;
     search();
 }
+
 </script>
 
 <template>
-    <Loading v-if="isLoading" is-full-screen />
-    <div class="flex flex-col divide-y space-y-2 divide-gray-200">
+    <div class="flex flex-col divide-y w-10/12 space-y-2 divide-gray-200">
         <Input class="rounded-full h-fit py-2 mt-5 mb-3 border-gray-400" placeholder="Quick Search" v-model="searchKey" @keyup="search"/>
+        <CheckBoxFilter :initial-checked-items="selectedFilters.carConditionType" @update:checked="updateChecked" :icon="Percent" title="Car Condition Type" :items="carConditionTypes" />
         <InputRangeFilter
             :initial-from="selectedFilters.price?.from"
             :initial-to="selectedFilters.price?.to"
@@ -108,7 +118,6 @@ function handleRangeUpdate(range,category) {
             @update:range="handleRangeUpdate"
             :icon="CalendarDays" :select-box-range-filter2="maxYears" :select-box-range-filter="minYears" title="Year" />
         <InputRangeFilter @update:range="handleRangeUpdate" :icon="Gauge" title="Mileage" input-placeholder="0" input-placeholder2="17000"/>
-        <CheckBoxFilter :initial-checked-items="selectedFilters.carConditionType" @update:checked="updateChecked" :icon="Percent" title="Car Condition Type" :items="carConditionTypes" />
         <CheckBoxFilter :initial-checked-items="selectedFilters.sellerType" @update:checked="updateChecked" :icon="Percent" title="Seller Type" :items="sellerType" />
         <CheckBoxFilter :initial-checked-items="selectedFilters.fuelType" @update:checked="updateChecked"  :icon="Fuel" title="Fuel Type" :items="fuelTypes"/>
         <CheckBoxFilter :initial-checked-items="selectedFilters.transmissionType" @update:checked="updateChecked" :icon="Cog" title="Transmission Type" :items="transmissionTypes"/>
