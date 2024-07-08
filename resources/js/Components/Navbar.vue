@@ -7,7 +7,7 @@ import Dropdown from "@/Components/Dropdown.vue";
 import {computed, ref} from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
-import {usePage} from "@inertiajs/vue3";
+import {router, usePage} from "@inertiajs/vue3";
 
 
 const showingNavigationDropdown = ref(false);
@@ -60,26 +60,28 @@ const isLoggedIn = computed(() => {
 
                     <!-- Navigation Links -->
                     <div class="hidden space-x-12 items-center sm:-my-px sm:ms-10 sm:flex w-9/12 justify-center">
-                        <NavLink :href="route('cars.index')" :active="route().current('dashboard')">
+                        <NavLink :href="route('cars.index')" :active="route().current('cars.index')">
                             Used Cars
                         </NavLink>
-                        <NavLink :href="route('cars.index')" :active="route().current('dashboard')">
+                        <NavLink :href="route('cars.index')" :active="route().current('cars.index')">
                             New Cars
                         </NavLink>
-                        <NavLink :href="route('pricing')" :active="route().current('dashboard')">
+                        <NavLink :href="route('pricing')" :active="route().current('pricing')">
                             Pricing
                         </NavLink>
-                        <PrimaryButton class="h-fit">Sell Your Car</PrimaryButton>
-                    </div>
+                        <NavLink :href="route('cars.create')" :active="route().current('cars.create')">
+                            Sell your Car
+                        </NavLink>
+                        </div>
                 </div>
                 <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-6">
-                    <SecondaryButton v-if="!isLoggedIn">Login</SecondaryButton>
-                    <PrimaryButton v-if="!isLoggedIn">Register</PrimaryButton>
+                    <SecondaryButton @click="router.visit('login')" v-if="!isLoggedIn">Login</SecondaryButton>
+                    <PrimaryButton @click="router.visit('register')" v-if="!isLoggedIn">Register</PrimaryButton>
                     <!-- Settings Dropdown -->
                     <div class="ms-3 relative">
                         <Dropdown align="right" width="48">
                             <template #trigger>
-                                        <span class="inline-flex rounded-md">
+                                        <span v-if="isLoggedIn" class="inline-flex rounded-md">
                                             <button
                                                 type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
@@ -119,14 +121,11 @@ const isLoggedIn = computed(() => {
             class="sm:hidden"
         >
             <div class="pt-2 pb-3 space-y-1">
-                <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                    Dashboard
-                </ResponsiveNavLink>
             </div>
 
             <!-- Responsive Settings Options -->
             <div class="pt-4 pb-1 border-t border-gray-200">
-                <div class="px-4">
+                <div class="px-4" v-if="isLoggedIn">
                     <div class="font-medium text-base">
                         {{ $page.props.auth.user.name }}
                     </div>
