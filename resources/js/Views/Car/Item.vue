@@ -58,12 +58,11 @@ const utilities = useUtilities()
 
                     <div v-else class="flex items-center space-x-1">
 
-                    <div class="py-1 px-2 rounded-md uppercase flex items-center space-x-1 bg-emerald-400">
+                    <div class="py-1 px-2 rounded-md uppercase flex items-center space-x-1">
                         <span>{{car.seller_type}}</span>
                         <span v-if="car.seller_type === 'broker'">({{car.percentage}}%)</span>
                     </div>
                         <QuickView :car="car" @click.prevent/>
-
                     </div>
                 </div>
             </div>

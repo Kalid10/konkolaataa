@@ -12,7 +12,6 @@ import InputLabel from "@/Components/InputLabel.vue";
 import {Input} from "@/Components/shadcn/ui/input/index.js";
 import {computed, watch} from "vue";
 import {useForm, usePage} from "@inertiajs/vue3";
-import {Switch} from "@/Components/shadcn/ui/switch/index.js";
 
 const props = defineProps(['modelValue']);
 const emit = defineEmits(['update:modelValue']);

@@ -35,10 +35,10 @@ function checkLoading(value){
                 </div>
                 <DesktopFilters @loading="checkLoading"/>
             </div>
-            <div class="relative w-full h-fit items-center md:items-start md:w-9/12">
-                <Loading is-full-screen v-if="isLoading"  />
+            <div class="relative w-full  justify-center items-center md:items-start md:w-9/12">
+                <Loading v-if="isLoading" class="mt-40 md:mt-72"  />
 
-                <div v-if="cars.data.length" class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:flex-wrap md:justify-between">
+                <div v-else-if="cars.data.length && !isLoading" class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:flex-wrap md:justify-between">
                     <Items @click="routeToItem(car.id)" v-for="car in cars.data" :car="car" :seller-type="i % 2 === 0 ? 'Private Seller':'Broker'" />
                     <Pagination :links="cars.links"/>
                 </div>
