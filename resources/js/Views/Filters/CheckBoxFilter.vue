@@ -1,8 +1,9 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import { Checkbox } from "@/Components/shadcn/ui/checkbox/index.js";
 import { Switch } from "@/Components/shadcn/ui/switch/index.js";
 import { useUtilities } from "@/Composables/useUtilities.js";
+import {XCircle} from "lucide-vue-next";
 
 const props = defineProps({
     items: {
@@ -61,20 +62,32 @@ const emitCheckedItems = () => {
     const selectedItems = checkedItems.value.filter(item => item.checked).map(item => ({id: item.id, name: item.name}));
     emit('update:checked', selectedItems, utilities.toCamelCase(props.title));
 };
+
+const clear = () => {
+    checkedItems.value.forEach(item => item.checked = false);
+    allChecked.value = false;
+    emitCheckedItems();
+};
+
+const hasCheckedItems = computed(() => checkedItems.value.some(item => item.checked));
 </script>
 
 <template>
-    <div class="flex flex-col space-y-2 text-sm">
-        <div class="flex w-full items-center space-x-1 pt-3">
-            <component :is="icon" size="17"/>
-            <div class="font-medium text-base">{{ title }}</div>
+    <div class="flex flex-col space-y-2 pt-4 text-sm">
+        <div class="flex w-full items-center p-2 rounded-lg bg-slate-100">
+            <XCircle v-if="hasCheckedItems" @click="clear" size="20" class="hover:text-black hover:scale-110 cursor-pointer text-gray-50 fill-red-600"/>
+
+            <div class="w-11/12 flex space-x-2 justify-center items-center">
+                <component :is="icon" size="17"/>
+                <div class="font-medium text-base">{{ title }}</div>
+            </div>
         </div>
         <div class="flex flex-col space-y-3">
-            <div class="flex items-center justify-between p-2 rounded-lg bg-slate-100">
+            <div class="flex items-center justify-between p-2">
                 <div>All {{ title }}'s</div>
                 <Switch v-model:checked="allChecked" @update:checked="toggleAll"/>
             </div>
-            <div v-for="item in checkedItems" :key="item.id" class="flex items-center space-x-2 w-full pl-1">
+            <div v-for="item in checkedItems" :key="item.id" class="flex items-center justify-between w-full px-1">
                 <div class="flex space-x-2 items-center w-9/12">
                     <Checkbox class="w-3.5 h-3.5" :checked="item.checked" @update:checked="() => toggleItem(item)"/>
                     <div class="flex items-center space-x-1">

@@ -7,8 +7,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/Components/shadcn/ui/select/index.js'
-import {onMounted, ref, watch} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import {useUtilities} from "@/Composables/useUtilities.js";
+import {XCircle} from "lucide-vue-next";
 
 const props = defineProps({
     title: {
@@ -57,13 +58,26 @@ onMounted(() => {
 watch([selectedFrom, selectedTo], () => {
     emit('update:range', {from: selectedFrom.value, to: selectedTo.value}, useUtilities().toCamelCase(props.title));
 });
+
+function clear() {
+    selectedFrom.value = null;
+    selectedTo.value = null;
+}
+
+const showClearButton = computed(() => {
+    return selectedFrom.value || selectedTo.value;
+});
 </script>
 
 <template>
-    <div class="flex flex-col space-y-2 py-4 w-full">
-        <div class="flex w-full items-center space-x-1">
-            <component :is="icon" size="17"/>
-            <div class="font-medium text-base">{{ title }}</div>
+    <div class="flex flex-col space-y-4 py-4 w-full">
+        <div class="flex w-full items-center p-2 rounded-lg bg-slate-100">
+            <XCircle v-if="showClearButton" @click="clear" size="20" class="hover:text-black hover:scale-110 cursor-pointer text-gray-50 fill-red-600"/>
+
+            <div class="w-11/12 flex space-x-2 justify-center items-center">
+                <component :is="icon" size="17"/>
+                <div class="font-medium text-base">{{ title }}</div>
+            </div>
         </div>
         <div class="flex w-full space-x-4">
             <Select v-model="selectedFrom">
