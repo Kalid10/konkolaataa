@@ -28,7 +28,7 @@ const routeToItem = (id) => {
 </script>
 
 <template>
-    <Sheet class="!w-full">
+    <Sheet>
         <SheetTrigger @click="stopPropagation">
             <div class="pl-3 hover:scale-110 cursor-pointer">
                 <Eye class="w-4" />
@@ -37,10 +37,10 @@ const routeToItem = (id) => {
         <SheetContent class="!overflow-y-auto">
             <SheetHeader >
                 <SheetDescription >
-                    <div class="flex flex-col space-y-4 md:space-y-10">
+                    <div class="flex flex-col space-y-4 md:space-y-10 sm:py-8">
                         <div class="flex justify-between space-x-10 ">
                             <div class="w-full flex flex-col space-y-4 justify-evenly">
-                                <img src="../../../public/assets/images/pl.jpg" class="rounded-lg h-40 md:h-52 w-full object-cover">
+                                <img src="../../../public/assets/images/pl.jpg" class="rounded-lg h-40 md:h-72 w-full object-cover">
                                 <div class="flex items-center space-x-5 min-w-full overflow-x-auto hide-scrollbar">
                                     <img v-for="i in 5" src="../../../public/assets/images/pl.jpg" :class="i === 1 ? '':'opacity-50'" class=" cursor-pointer rounded-lg h-20 min-w-28 object-cover">
                                 </div>
@@ -108,7 +108,7 @@ const routeToItem = (id) => {
                                         </div>
 
 
-                                        <div class="py-2 px-4 rounded-lg flex flex-col space-y-2 border border-black text-sm capitalize">
+                                        <div class="py-2 px-4 rounded-lg flex flex-col space-y-2 md:space-y-4 border border-black text-sm capitalize sm:max-w-sm">
                                             <div class="flex items-center justify-between">
                                                 <span class="font-medium">{{car.user.name}}</span>
                                                 <span>{{car.phone_number}}</span>
