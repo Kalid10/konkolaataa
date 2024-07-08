@@ -4,11 +4,10 @@ import SelectBoxRangeFilter from "@/Views/Filters/SelectBoxRangeFilter.vue";
 import {Input} from "@/Components/shadcn/ui/input/index.js";
 import InputRangeFilter from "@/Views/Filters/InputRangeFilter.vue";
 import CheckBoxFilter from "@/Views/Filters/CheckBoxFilter.vue";
-import {Cog, Fuel, CalendarDays, Gauge, DollarSign, Palette, Percent, Car} from "lucide-vue-next";
+import {Cog, Fuel, CalendarDays, Gauge, DollarSign, Palette, Percent, Car, RectangleHorizontal} from "lucide-vue-next";
 import {computed, ref, watch} from "vue";
 import {router, usePage} from "@inertiajs/vue3";
 import { debounce } from "lodash";
-import Loading from "@/Components/Loading.vue";
 
 const emit = defineEmits(['loading']);
 const props = defineProps({
@@ -52,6 +51,12 @@ const transmissionTypes = [
     {name: 'Semi-Automatic', value: 'semi-automatic'},
 ];
 
+const plateTypes = [
+    {value:1, name: 'Taxi'},
+    {value:2, name: 'Private'},
+    {value: 3, name: 'Company'},
+];
+
 const sellerType = [
     {name: 'Private', value: 'private'},
     {name: 'Broker', value: 'broker'},
@@ -71,7 +76,9 @@ const selectedFilters = ref(usePage().props.filters || {
     carBrands: [],
     year: [],
     price:[],
-    mileage: []
+    mileage: [],
+    plateTypes: [],
+
 });
 function updateChecked(checked, category) {
     selectedFilters.value[category] = checked;
@@ -121,7 +128,8 @@ function handleRangeUpdate(range,category) {
         <CheckBoxFilter :initial-checked-items="selectedFilters.sellerType" @update:checked="updateChecked" :icon="Percent" title="Seller Type" :items="sellerType" />
         <CheckBoxFilter :initial-checked-items="selectedFilters.fuelType" @update:checked="updateChecked"  :icon="Fuel" title="Fuel Type" :items="fuelTypes"/>
         <CheckBoxFilter :initial-checked-items="selectedFilters.transmissionType" @update:checked="updateChecked" :icon="Cog" title="Transmission Type" :items="transmissionTypes"/>
-        <CheckBoxFilter :initial-checked-items="selectedFilters.exteriorColor" @update:checked="updateChecked" :icon="Palette" title="Exterior Color"  :items="colors" :show-color-badge="true"/>
+        <CheckBoxFilter :initial-checked-items="selectedFilters.plateTypes" @update:checked="updateChecked" :icon="RectangleHorizontal" title="Plate Type" :items="plateTypes" show-plate-info/>
+        <CheckBoxFilter :initial-checked-items="selectedFilters.exteriorColor" @update:checked="updateChecked" :icon="Palette" title="Exterior Color"  :items="colors" show-color-badge/>
         <CheckBoxFilter :initial-checked-items="selectedFilters.carBrands" @update:checked="updateChecked" title="Car Brands" :icon="Car" :items="carBrands" />
     </div>
 </template>

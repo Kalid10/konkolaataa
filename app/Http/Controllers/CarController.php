@@ -39,16 +39,23 @@ class CarController extends Controller
                 ->orWhereRelation('carModel', 'name', 'LIKE', $search);
         });
 
+        $filterMapping = [
+            'sellerType' => 'seller_type',
+            'transmissionType' => 'transmission_type',
+        ];
+
         if ($filters) {
             foreach ($filters as $filterCategory => $filterValues) {
                 switch ($filterCategory) {
                     case 'sellerType':
-                        $query->whereIn('seller_type', array_column($filterValues, 'name'));
+                    case 'transmissionType':
+                        $column = $filterMapping[$filterCategory];
+                        $query->whereIn($column, array_column($filterValues, 'name'));
                         break;
 
-                    case 'transmissionType':
-                        $query->whereIn('transmission_type', array_column($filterValues, 'name'));
-                        break;
+                        case 'plateType':
+                            $query->whereIn('plate_type', array_column($filterValues, 'value'));
+                            break;
 
                     case 'carBrands':
                         $query->whereHas('carModel.carBrand', function ($query) use ($filterValues) {

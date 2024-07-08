@@ -25,7 +25,11 @@ const props = defineProps({
     initialCheckedItems: {
         type: Array,
         default: () => []
-    }
+    },
+    showPlateInfo: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const emit = defineEmits(['update:checked']);
@@ -59,7 +63,7 @@ const toggleItem = (item) => {
 };
 
 const emitCheckedItems = () => {
-    const selectedItems = checkedItems.value.filter(item => item.checked).map(item => ({id: item.id, name: item.name}));
+    const selectedItems = checkedItems.value.filter(item => item.checked).map(item => ({id: item.id, name: item.name, value: item.value}));
     emit('update:checked', selectedItems, utilities.toCamelCase(props.title));
 };
 
@@ -93,6 +97,11 @@ const hasCheckedItems = computed(() => checkedItems.value.some(item => item.chec
                     <div class="flex items-center space-x-1">
                         <div v-if="showColorBadge" class="min-w-4 h-4 rounded-full border border-gray-300"
                              :style="{ backgroundColor: item.hex }"></div>
+
+   <span v-if="showPlateInfo" :class="[item.value === 1 ? 'bg-red-600 text-white' : item.value === 2? 'bg-blue-600 text-white' : item.value === 3 ? 'bg-emerald-400 text-white' :'']" class="px-2 font-semibold rounded-lg">
+                                {{item.value}}
+                            </span>
+
                         <span class="capitalize">{{ utilities.removeUnderscores(item.name) }}</span>
                     </div>
                 </div>
