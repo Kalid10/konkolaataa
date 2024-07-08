@@ -11,6 +11,7 @@ class FilterCarRequest extends FormRequest
         return [
             'search' => 'nullable|string',
             'filters' => 'nullable|array',
+            'carConditionType' => 'nullable|exists:car_condition_types,id',
         ];
     }
 

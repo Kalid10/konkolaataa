@@ -34,7 +34,8 @@ class CarController extends Controller
 
         $filters = $request->filters;
         $search = '%' . $request->search . '%';
-        $query = Car::where(function ($query) use ($search) {
+        $conditionTypes = $request->carConditionType ? [$request->carConditionType] : CarConditionType::all()->pluck('id')->toArray();
+        $query = Car::whereIn('car_condition_type_id', $conditionTypes)->where(function ($query) use ($search) {
             $query->whereRelation('carModel.carBrand', 'name', 'LIKE', $search)
                 ->orWhereRelation('carModel', 'name', 'LIKE', $search);
         });
@@ -160,7 +161,9 @@ class CarController extends Controller
         try {
             $user = auth()->user();
 
-            $car = Car::create([
+            $car = Car::updateOrCreate([
+                'id' => $request->carId,
+            ],[
                 'car_model_id' => $request->carModelId,
                 'year' => $request->year,
                 'exterior_color_id' => $request->exteriorColorId,
@@ -187,6 +190,7 @@ class CarController extends Controller
                 'post_expires_at' => now()->addDays(30),
                 'user_id' => $user->id,
                 'phone_number' => $request->phoneNumber,
+                'electric_car_range' => $request->electricCarRange,
             ]);
 
             // Merge the two arrays
@@ -194,7 +198,7 @@ class CarController extends Controller
             $this->uploadCarImages($carImages, $car);
 
             DB::commit();
-            return redirect()->back()->with('success', 'Car posted successfully.');
+            return redirect()->back()->with('success', $request->carId ? 'Car updated successfully' : 'Car posted successfully.');
         }catch (\Exception $exception){
             DB::rollBack();
             Log::error('Error posting car: ' . $exception->getMessage());
