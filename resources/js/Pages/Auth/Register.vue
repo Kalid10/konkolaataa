@@ -3,7 +3,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Link, useForm } from '@inertiajs/vue3';
+import {Link, router, useForm} from '@inertiajs/vue3';
 import {
     Select,
     SelectContent,
@@ -13,6 +13,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/Components/shadcn/ui/select/index.js";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 const form = useForm({
     name: '',
@@ -26,6 +27,7 @@ const submit = () => {
     form.phone_number = `+251${form.phone_number}`;
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
+        preserveState: true,
     });
 };
 </script>
@@ -137,6 +139,13 @@ const submit = () => {
                     </PrimaryButton>
                 </div>
             </form>
+
+            <SecondaryButton @click="router.visit('/auth/google')" class="w-full space-x-2 mt-4">
+                <img src="../../../../public/assets/images/google_logo.png" class="w-4">
+                <span>
+                  Login with Google
+              </span>
+            </SecondaryButton>
         </div>
         <div class="hidden lg:flex flex-col space-y-2 w-4/12 text-center rounded-lg justify-center items-center">
             <div class="text-4xl font-bold text-brand-100">

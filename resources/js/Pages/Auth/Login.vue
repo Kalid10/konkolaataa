@@ -6,6 +6,8 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import {Link, router, useForm} from '@inertiajs/vue3';
 import SecondaryButton from "@/Components/SecondaryButton.vue";
+import Loading from "@/Components/Loading.vue";
+import {ref} from "vue";
 
 defineProps({
     canResetPassword: {
@@ -22,17 +24,25 @@ const form = useForm({
     remember: false,
 });
 
+const isLoading = ref(false);
 const submit = () => {
+    isLoading.value = true;
     form.login = `+251${form.login}`;
-    form.post(route('login'));
+    form.post(route('login'),{
+        onFinish:() => isLoading.value = false
+    });
 };
 
-function loginWithGoogle() {
-   router.visit('/auth/google');
+function loginViaGoogle(){
+    isLoading.value = true;
+    router.visit('/auth/google',{
+        onFinish:() => isLoading.value = false
+    })
 }
 </script>
 
 <template>
+    <Loading is-full-screen v-if="isLoading" />
     <div class="px-3 w-full flex justify-evenly mx-auto min-h-screen md:min-h-fit py-16 md:pt-0 ">
         <div class="w-full lg:w-7/12 max-w-sm md:max-w-md">
             <div class="flex justify-between items-center pb-10">
@@ -111,7 +121,7 @@ function loginWithGoogle() {
                     </Link>
                 </div>
             </form>
-            <SecondaryButton href="/auth/google" class="w-full space-x-2">
+            <SecondaryButton @click="loginViaGoogle" class="w-full space-x-2">
                     <img src="../../../../public/assets/images/google_logo.png" class="w-4">
                 <span>
                   Login with Google
