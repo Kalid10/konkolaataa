@@ -30,13 +30,13 @@ const props = defineProps({
 const form = useForm({
     email: props.email,
     name: props.name,
-    phone_number: '943104396',
+    phone_number: null,
     type: null,
 });
 const isLoading = ref(false);
 const submit = () => {
     isLoading.value = true;
-    form.phone_number = `+251${form.phone_number}`;
+    form.phone_number = form.phone_number ? `+251${form.phone_number}` : null;
     form.post('/register', {
         onFinish: () => {
             isLoading.value = false;
@@ -53,7 +53,7 @@ const submit = () => {
     <div class="w-full lg:w-7/12 max-w-sm md:max-w-md">
         <div class="font-semibold text-3xl text-center py-5 capitalize">Welcome to Konkolaataa</div>
 
-        <form @submit.prevent="submit">
+        <div>
             <div class="mt-4 flex flex-col space-y-1 opacity-50">
                 <InputLabel for="email" value="Email" />
 
@@ -132,11 +132,11 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-between mt-6">
-                <PrimaryButton class=" px-6 w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton @click.prevent="submit" class=" px-6 w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Complete Registration
                 </PrimaryButton>
             </div>
-        </form>
+        </div>
     </div>
         <div class="hidden lg:flex flex-col space-y-2 w-4/12 text-center rounded-lg justify-center items-center">
             <div class="text-4xl font-bold text-brand-100">

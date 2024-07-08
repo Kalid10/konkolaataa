@@ -26,7 +26,7 @@ class RegistrationRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required_without:phone_number|string|lowercase|email|max:255',
-            'phone_number' => 'required_without:email|regex:/^\+251[79][0-9]{8}$/|max:13',
+            'phone_number' => 'required_without:email|nullable|regex:/^\+251[79][0-9]{8}$/|max:13',
             'password' => ['required_without:email', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
             'type' => 'required|string|in:admin,buyer,seller',
         ];

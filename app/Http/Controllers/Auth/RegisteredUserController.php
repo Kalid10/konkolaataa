@@ -44,7 +44,7 @@ class RegisteredUserController extends Controller
         $user = User::updateOrCreate([
             'phone_number' => $request->phone_number,
         ],[
-            'name' => strtoupper($request->name),
+            'name' => ucfirst($request->name),
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'type' => $request->type,
