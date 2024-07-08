@@ -3,8 +3,10 @@ import {Gauge ,Edit, Eye} from "lucide-vue-next";
 import moment from "moment";
 import {useUtilities} from "@/Composables/useUtilities.js";
 import QuickView from "@/Views/QuickView.vue";
+import {useCreateCar} from "@/Composables/useCreateCar.js";
+import {router} from "@inertiajs/vue3";
 
-defineProps({
+const props  = defineProps({
     car:{
         type:Object,
         required:true
@@ -16,6 +18,15 @@ defineProps({
 })
 
 const utilities = useUtilities()
+
+const { initialData, carFormData } = useCreateCar();
+function editCar(car) {
+    carFormData.value = initialData(car); // Update the storage with the existing car data
+    router.visit('/car/post', {
+        preserveState: true,
+        preserveScroll: true
+    });
+}
 </script>
 
 <template>
@@ -51,17 +62,17 @@ const utilities = useUtilities()
                         {{ moment(car.posted_at).fromNow()}}
                     </div>
 
-                    <div v-if="isEditable" class="flex space-x-1.5 items-center bg-brand-primary text-white px-3 rounded-md shadow-sm font-medium">
+                    <div @click="() => editCar(car)" v-if="isEditable" class="flex space-x-1.5 items-center bg-brand-primary text-white px-3 rounded-md shadow-sm font-medium">
                         <Edit class="w-3"/>
                         <span>Edit</span>
                     </div>
 
                     <div v-else class="flex items-center space-x-1">
 
-                    <div class="py-1 px-2 rounded-md uppercase flex items-center space-x-1">
-                        <span>{{car.seller_type}}</span>
-                        <span v-if="car.seller_type === 'broker'">({{car.percentage}}%)</span>
-                    </div>
+                        <div class="py-1 px-2 rounded-md uppercase flex items-center space-x-1">
+                            <span>{{car.seller_type}}</span>
+                            <span v-if="car.seller_type === 'broker'">({{car.percentage}}%)</span>
+                        </div>
                         <QuickView :car="car" @click.prevent/>
                     </div>
                 </div>

@@ -3,35 +3,36 @@ import { useStorage } from "@vueuse/core";
 import { router, usePage } from "@inertiajs/vue3";
 
 export function useCreateCar() {
-    const initialData = () => ({
+    const initialData = (car) => ({
         stepOne: {
-            carBrandId: null,
-            description: null,
-            year: null,
-            carModelId: null,
-            carPlateType: null,
+            carBrandId: car ? car.car_model.car_brand_id : null,
+            description: car ? car.description : null,
+            year: car ? String(car.year) : null,
+            carModelId: car ? car.car_model_id : null,
+            carPlateType: car ? car.plate_type : null,
         },
         stepTwo: {
-            carConditionTypeId: null,
-            carBodyTypeId: null,
-            transmissionType: null,
-            fuelTypeId: null,
-            engineTypeId: null,
+            carConditionTypeId: car ? car.car_condition_type_id : null,
+            carBodyTypeId: car ? car.car_body_type_id : null,
+            transmissionType: car ? car.transmission_type : null,
+            fuelTypeId: car ? car.fuel_type_id : null,
+            engineTypeId: car ? car.engine_type_id : null,
             mileage: 0,
+            electricCarRange: null,
         },
         stepThree: {
-            exteriorColorId: null,
-            interiorColorId: null,
-            isOriginalPaint: true,
-            isAccidentFree: 0,
-            severityOfAccident: 'none',
+            exteriorColorId: car ? car.exterior_color_id : null,
+            interiorColorId: car ? car.interior_color_id : null,
+            isOriginalPaint: car ? car.is_original_paint : 1,
+            isAccidentFree: car ? car.accident_severity === 'none' ? 1 : 0 : 1,
+            severityOfAccident: car ? car.accident_severity : 'none',
         },
         stepFour: {
-            price: null,
-            priceType: null,
-            cityId: null,
-            location: null,
-            googleMapLink: null,
+            price: car ? car.price : null,
+            priceType: car ? car.price_type : null,
+            cityId: car ? car.city_id : null,
+            location: car ? car.location : null,
+            googleMapLink: car ? car.google_map_link : null,
         },
         stepFive: {
             exteriorImages: [],
@@ -40,12 +41,13 @@ export function useCreateCar() {
             interiorImagesPreview: [],
         },
         stepSix: {
-            sellerType: null,
-            percentage: 2,
+            sellerType: car ? car.seller_type : null,
+            percentage: car ? car.percentage : null,
+            phoneNumber: car ? car.phone_number : null,
         },
-        carImages: [],
         finalizePosting: {},
-        currentStep: null,
+        currentStep: 1,
+        carId: car ? car.id : null,
         user_id: computed(() => usePage().props.auth.user.id),
     });
 
@@ -62,6 +64,7 @@ export function useCreateCar() {
     return {
         carFormData,
         updateCurrentStep,
-        clearData
+        clearData,
+        initialData
     };
 }

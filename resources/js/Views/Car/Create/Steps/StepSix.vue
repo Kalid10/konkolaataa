@@ -60,6 +60,7 @@ function uploadImages(){
         { user_id: carFormData.value.user_id },
         { exteriorCarImages: form.exteriorImages },
         { interiorCarImages: form.interiorImages },
+        {carId: carFormData.value.carId}
     );
     router.post('/car/store', carData,{
         onSuccess: () => {

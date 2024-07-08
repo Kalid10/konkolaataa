@@ -39,7 +39,7 @@ watch(() => carFormData.value, (newVal) => {
     } else if (currentStep.value === 2) {
         showNextButton.value = newVal.stepTwo.carConditionTypeId && newVal.stepTwo.carBodyTypeId && newVal.stepTwo.transmissionType && newVal.stepTwo.fuelTypeId && newVal.stepTwo.engineTypeId;
     } else if (currentStep.value === 3) {
-        showNextButton.value = newVal.stepThree.exteriorColorId && newVal.stepThree.interiorColorId && newVal.stepThree.isOriginalPaint && newVal.stepThree.isAccidentFree && newVal.stepThree.severityOfAccident;
+        showNextButton.value = newVal.stepThree.exteriorColorId && newVal.stepThree.interiorColorId && newVal.stepThree.isOriginalPaint && newVal.stepThree.isAccidentFree;
     } else if (currentStep.value === 4) {
         showNextButton.value = newVal.stepFour.priceType && newVal.stepFour.price && newVal.stepFour.cityId;
     } else if (currentStep.value === 5) {

@@ -35,7 +35,9 @@ class PostCarRequest extends FormRequest
             'exteriorCarImages.*' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'interiorCarImages' => 'required|array|min:1|max:10',
             'interiorCarImages.*' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'phone_number' => 'required|regex:/^\+251[79][0-9]{8}$/|max:13|unique:users,phone_number',
+            'phoneNumber' => 'required|regex:/[0-9]{8}$/|max:13',
+            'electricCarRange' => 'nullable|string',
+            'carId' => 'nullable|exists:cars,id',
         ];
     }
 
