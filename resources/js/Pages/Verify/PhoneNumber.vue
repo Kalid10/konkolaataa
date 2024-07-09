@@ -49,11 +49,6 @@ const handleComplete = (e) => {
                 </div>
                 <InputError :message="form.errors.otp" class="mt-2 flex justify-center"/>
             </div>
-            <div class="mt-6 flex justify-center">
-                <PrimaryButton class="" :disabled="form.processing">
-                    Verify
-                </PrimaryButton>
-            </div>
         </form>
     </div>
 </template>
