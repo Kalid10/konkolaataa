@@ -52,19 +52,25 @@ const isLoggedIn = computed(() => {
                         </svg>
                     </button>
                 </div>
-                <div class="flex justify-between w-9/12">
+                <div class="flex justify-between w-10/12">
                     <!-- Logo -->
                     <div class="shrink-0 flex items-center text-xl font-medium space-x-2 w-3/12">
                         <span class="italic text-brand-primary">Konkolaataa.</span>
                     </div>
 
                     <!-- Navigation Links -->
-                    <div class="hidden space-x-12 items-center sm:-my-px sm:ms-10 sm:flex w-9/12 justify-center">
+                    <div class="hidden space-x-12 items-center sm:-my-px sm:ms-10 sm:flex w-full  justify-center">
                         <NavLink :href="route('cars.index')" :active="route().current('cars.index')">
+                            All Cars
+                        </NavLink>
+                        <NavLink :href="route('cars.used', {carConditionType: 2})" :active="route().current('cars.used')">
                             Used Cars
                         </NavLink>
-                        <NavLink :href="route('cars.index')" :active="route().current('cars.index')">
+                        <NavLink :href="route('cars.brand_new', {carConditionType: 1})" :active="route().current('cars.brand_new')">
                             New Cars
+                        </NavLink>
+                        <NavLink :href="route('cars.user', {carConditionType: 1})" :active="route().current('cars.user')">
+                            My Posts
                         </NavLink>
                         <NavLink :href="route('pricing')" :active="route().current('pricing')">
                             Pricing
