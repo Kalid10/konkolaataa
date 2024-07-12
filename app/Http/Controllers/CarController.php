@@ -1,10 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FilterCarRequest;
 use App\Http\Requests\PostCarRequest;
-use App\Models\Car;
 use App\Models\CarBodyType;
 use App\Models\CarBrand;
 use App\Models\CarConditionType;
@@ -13,235 +11,77 @@ use App\Models\City;
 use App\Models\Color;
 use App\Models\EngineType;
 use App\Models\FuelType;
-use App\Models\Image;
-use App\Services\UploadService;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Services\CarService;
 use Inertia\Inertia;
 
 class CarController extends Controller
 {
+    protected CarService $carService;
+
+    public function __construct(CarService $carService)
+    {
+        $this->carService = $carService;
+    }
+
     public function index(FilterCarRequest $request)
     {
-        $carBrands = CarBrand::all();
-        $carModels = CarModel::all();
-        $carBodyTypes = CarBodyType::all();
-        $colors = Color::all();
-        $engineTypes = EngineType::all();
-        $fuelTypes = FuelType::all();
-        $cities = City::all();
-        $carConditionTypes = CarConditionType::all();
-
         $filters = $request->filters;
         $search = '%' . $request->search . '%';
         $conditionTypes = $request->carConditionType ? [$request->carConditionType] : CarConditionType::all()->pluck('id')->toArray();
-        $query = Car::whereIn('car_condition_type_id', $conditionTypes)->where(function ($query) use ($search) {
-            $query->whereRelation('carModel.carBrand', 'name', 'LIKE', $search)
-                ->orWhereRelation('carModel', 'name', 'LIKE', $search);
-        });
 
-        $filterMapping = [
-            'sellerType' => 'seller_type',
-            'transmissionType' => 'transmission_type',
-        ];
-
-        if ($filters) {
-            foreach ($filters as $filterCategory => $filterValues) {
-                switch ($filterCategory) {
-                    case 'sellerType':
-                    case 'transmissionType':
-                        $column = $filterMapping[$filterCategory];
-                        $query->whereIn($column, array_column($filterValues, 'name'));
-                        break;
-
-                        case 'plateType':
-                            $query->whereIn('plate_type', array_column($filterValues, 'value'));
-                            break;
-
-                    case 'carBrands':
-                        $query->whereHas('carModel.carBrand', function ($query) use ($filterValues) {
-                            $query->whereIn('id', array_column($filterValues, 'id'));
-                        });
-                        break;
-
-                    case 'year':
-                    case 'mileage':
-                    case 'price':
-                        $from = $filterValues['from'];
-                        $to = $filterValues['to'];
-                        if ($from && $to) {
-                            $query->whereBetween($filterCategory, [$from, $to]);
-                        } elseif ($from) {
-                            $query->where($filterCategory, '>=', $from);
-                        } elseif ($to) {
-                            $query->where($filterCategory, '<=', $to);
-                        }
-                        break;
-                    default:
-                        $query->whereHas($filterCategory, function ($query) use ($filterValues) {
-                            $query->whereIn('id', array_column($filterValues, 'id'));
-                        });   break;
-                }
-            }
-        }
-
-        $cars = $query->with([
-            'carModel.carBrand',
-            'exteriorColor',
-            'interiorColor',
-            'carBodyType',
-            'engineType',
-            'fuelType',
-            'city',
-            'carConditionType',
-            'images',
-            'user'
-        ])->paginate(10);
+        $cars = $this->carService->getAllCarsWithFilters($filters, $search, $conditionTypes);
 
         return Inertia::render('Car/Index', [
             'cars' => $cars,
-            'carBrands' => $carBrands,
-            'carModels' => $carModels,
-            'carBodyTypes' => $carBodyTypes,
-            'colors' => $colors,
-            'engineTypes' => $engineTypes,
-            'fuelTypes' => $fuelTypes,
-            'cities' => $cities,
-            'carConditionTypes' => $carConditionTypes,
+            'carBrands' => CarBrand::all(),
+            'carModels' => CarModel::all(),
+            'carBodyTypes' => CarBodyType::all(),
+            'colors' => Color::all(),
+            'engineTypes' => EngineType::all(),
+            'fuelTypes' => FuelType::all(),
+            'cities' => City::all(),
+            'carConditionTypes' => CarConditionType::all(),
             'search' => $request->search ?? '',
             'filters' => $request->filters ?? [
-                    'sellerType' => [],
-                    'carConditionType' => [],
-                    'transmissionType' => [],
-                    'carBrands' => [],
-                    'year' => ['from' => null, 'to' => null],
-                    'mileage' => ['from' => null, 'to' => null],
-                    'price' => ['from' => null, 'to' => null],
-                    'fuelType' => [],
-                    'exteriorColor' => [],
+                    'sellerType' => [], 'carConditionType' => [], 'transmissionType' => [],
+                    'carBrands' => [], 'year' => ['from' => null, 'to' => null], 'mileage' => ['from' => null, 'to' => null],
+                    'price' => ['from' => null, 'to' => null], 'fuelType' => [], 'exteriorColor' => [],
                 ],
         ]);
     }
 
-    public function show(Car $car)
+    public function show($carId)
     {
-        $car = $car->load('carModel.carBrand', 'exteriorColor', 'interiorColor', 'carBodyType', 'engineType', 'fuelType', 'city', 'carConditionType', 'user', 'images');
-        return Inertia::render('Car/Show', [
-            'car' => $car,
-        ]);
+        $car = $this->carService->getCarDetails($carId);
+        return Inertia::render('Car/Show', ['car' => $car]);
     }
 
     public function create()
     {
-        $carBrands = CarBrand::all();
-        $carModels = CarModel::all();
-        $carBodyTypes = CarBodyType::all();
-        $colors = Color::all();
-        $engineTypes = EngineType::all();
-        $fuelTypes = FuelType::all();
-        $cities = City::all();
-        $carConditionTypes = CarConditionType::all();
-
-        return Inertia::render('Car/Create',[
-            'carBrands' => $carBrands,
-            'carModels' => $carModels,
-            'carBodyTypes' => $carBodyTypes,
-            'colors' => $colors,
-            'engineTypes' => $engineTypes,
-            'fuelTypes' => $fuelTypes,
-            'cities' => $cities,
-            'carConditionTypes' => $carConditionTypes,
-
+        return Inertia::render('Car/Create', [
+            'carBrands' => CarBrand::all(),
+            'carModels' => CarModel::all(),
+            'carBodyTypes' => CarBodyType::all(),
+            'colors' => Color::all(),
+            'engineTypes' => EngineType::all(),
+            'fuelTypes' => FuelType::all(),
+            'cities' => City::all(),
+            'carConditionTypes' => CarConditionType::all(),
         ]);
     }
 
     public function store(PostCarRequest $request)
     {
-        DB::beginTransaction();
-        try {
-            $user = auth()->user();
+        $data = $request->validated();
+        $carImages = array_merge($request->exteriorCarImages, $request->interiorCarImages);
+        $result = $this->carService->createOrUpdateCar($data, $carImages);
 
-            $car = Car::updateOrCreate([
-                'id' => $request->carId,
-            ],[
-                'car_model_id' => $request->carModelId,
-                'year' => $request->year,
-                'exterior_color_id' => $request->exteriorColorId,
-                'interior_color_id' => $request->interiorColorId,
-                'is_original_paint' => $request->isOriginalPaint,
-                'accident_severity' => $request->severityOfAccident,
-                'plate_type' => $request->carPlateType,
-                'transmission_type' => $request->transmissionType,
-                'mileage' => $request->mileage,
-                'seller_type' => $request->sellerType,
-                'percentage' => $request->percentage,
-                'price' => $request->price,
-                'price_type' => $request->priceType,
-                'car_condition_type_id' => $request->carConditionTypeId,
-                'fuel_type_id' => $request->fuelTypeId,
-                'engine_type_id' => $request->engineTypeId,
-                'car_body_type_id' => $request->carBodyTypeId,
-                'city_id' => $request->cityId,
-                'description' => $request->description,
-                'google_map_location' => $request->googleMapLocation,
-                'location' => $request->location,
-                'status' => 'pending',
-                'posted_at' => now(),
-                'post_expires_at' => now()->addDays(30),
-                'user_id' => $user->id,
-                'phone_number' => $request->phoneNumber,
-                'electric_car_range' => $request->electricCarRange,
-            ]);
-
-            // Merge the two arrays
-            $carImages = array_merge($request->exteriorCarImages, $request->interiorCarImages);
-            $this->uploadCarImages($carImages, $car);
-
-            DB::commit();
-            return redirect()->back()->with('success', $request->carId ? 'Car updated successfully' : 'Car posted successfully.');
-        }catch (\Exception $exception){
-            DB::rollBack();
-            Log::error('Error posting car: ' . $exception->getMessage());
-            return redirect()->back()->with('error', 'Error posting car.');
-        }
-    }
-
-    public function uploadCarImages($images ,$car) {
-        $user = auth()->user();
-
-        foreach ($images as $image) {
-            $filename = $user->id . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            try {
-                $uploaded_url = UploadService::uploadImage( UploadService::resize($image->getRealPath(), 1000, 1000), $filename, 'cars/');
-                Image::create([
-                    'imageable_id' => $car->id,
-                    'imageable_type' => Car::class,
-                    'url' => $uploaded_url,
-                    'name' => $filename,
-                ]);
-            } catch (\Exception $exception) {
-                Log::error('Upload failed: ' . $exception->getMessage());
-            }
-        }
+        return redirect()->back()->with($result['success'] ? 'success' : 'error', $result['message']);
     }
 
     public function userCars()
     {
-        $userId = auth()->id();
-        $cars = Car::where('user_id', $userId)->with([
-            'carModel.carBrand',
-            'exteriorColor',
-            'interiorColor',
-            'carBodyType',
-            'engineType',
-            'fuelType',
-            'city',
-            'carConditionType',
-            'images'
-        ])->paginate(10);
-
-        return Inertia::render('Car/UserCars', [
-            'cars' => $cars,
-        ]);
+        $cars = $this->carService->getUserCars(auth()->id());
+        return Inertia::render('Car/UserCars', ['cars' => $cars]);
     }
 }
