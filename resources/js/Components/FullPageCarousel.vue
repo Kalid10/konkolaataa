@@ -90,6 +90,20 @@ onBeforeUnmount(() => {
     emblaApi.value?.off("init", setCurrentState);
     emblaApi.value?.off("select", updateCurrentState);
 });
+
+window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+        closeCarousel();
+    }
+});
+
+window.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowRight") {
+        scrollRight(event);
+    } else if (event.key === "ArrowLeft") {
+        scrollLeft(event);
+    }
+});
 </script>
 
 <template>
