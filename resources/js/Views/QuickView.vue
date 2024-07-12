@@ -10,8 +10,9 @@ import {Antenna, Car, Cog, Eye, Fuel, Gauge, RectangleHorizontal, ShieldBan} fro
 import {useUtilities} from "@/Composables/useUtilities.js";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {router} from "@inertiajs/vue3";
+import {computed} from "vue";
 
-defineProps({
+const props = defineProps({
     car: {
         type: Object,
         required: true
@@ -25,14 +26,23 @@ const utilities = useUtilities()
 const routeToItem = (id) => {
     router.visit(`/car/show/${id}`);
 }
+const brokerFee = computed(() => {
+    if (props.car.seller_type === 'broker') {
+        return props.car.price * props.car.percentage / 100;
+    }
+    return 0;
+})
 </script>
 
 <template>
     <Sheet>
         <SheetTrigger @click="stopPropagation">
-            <div class="pl-3 hover:scale-110 cursor-pointer">
+            <PrimaryButton class="!h-7 !px-2 !bg-gray-800 !text-xs !w-fit">
+                <span>Quick View</span>
+                <div class="pl-2 hover:scale-110 cursor-pointer">
                 <Eye class="w-4" />
             </div>
+            </PrimaryButton>
         </SheetTrigger>
         <SheetContent class="!overflow-y-auto">
             <SheetHeader >
@@ -119,7 +129,7 @@ const routeToItem = (id) => {
                                             </div>
                                         </div>
 
-                                        <PrimaryButton @click="routeToItem(car.id)">View Full Details</PrimaryButton>
+                                        <PrimaryButton @click="routeToItem(car.id)" class="!max-w-sm">View Full Details</PrimaryButton>
                                     </div>
 
                                 </div>
