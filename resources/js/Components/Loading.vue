@@ -2,7 +2,7 @@
     <div
         :class="
             isFullScreen
-                ? 'absolute min-h-screen inset-0 flex items-center  space-x-2 justify-center bg-black bg-opacity-50 rounded-lg z-50'
+                ? 'fixed min-h-screen inset-0 top-0 left-0 flex items-center space-x-2 justify-center bg-black bg-opacity-70 z-50'
                 : ''
         "
     >
@@ -25,8 +25,8 @@
         ></div>
 
         <div class="flex animate-pulse justify-center items-center space-x-2" v-if="type === 'brand'">
-            <div class="animate-spin border-brand-primary rounded-full border-[5px] sm:border-8 border-solid border-t-transparent w-6 h-6 md:w-10 md:h-10"/>
-            <div  class="font-bold  text-brand-primary text-2xl md:text-5xl uppercase">Konkolaataa</div>
+            <div :class="isFullScreen ? 'border-white':'border-brand-primary'" class="animate-spin rounded-full border-[5px] sm:border-8 border-solid border-t-transparent w-6 h-6 md:w-10 md:h-10"/>
+            <div :class="isFullScreen ? 'text-white': 'text-brand-primary'"  class="font-bold text-2xl md:text-5xl uppercase">Konkolaataa</div>
         </div>
 
         <slot name="description"></slot>
