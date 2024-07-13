@@ -8,6 +8,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {createPinia} from "pinia";
+import AdminLayout from "@/Layouts/AdminLayout.vue";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -17,6 +18,8 @@ function getLayout(name) {
             return GuestLayout;
         case name.startsWith("Pricing"):
             return AuthenticatedLayout;
+        case name.startsWith("Admin"):
+            return AdminLayout;
         default:
             return AuthenticatedLayout;
     }
