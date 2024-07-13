@@ -1,6 +1,5 @@
 <script setup>
 
-import SelectBoxRangeFilter from "@/Views/Filters/SelectBoxRangeFilter.vue";
 import {Input} from "@/Components/shadcn/ui/input/index.js";
 import InputRangeFilter from "@/Views/Filters/InputRangeFilter.vue";
 import CheckBoxFilter from "@/Views/Filters/CheckBoxFilter.vue";
@@ -16,34 +15,6 @@ const props = defineProps({
         default: false
     }
 })
-
-const minYears = [
-    {name: '2020', value: '2020'},
-    {name: '2019', value: '2019'},
-    {name: '2018', value: '2018'},
-    {name: '2017', value: '2017'},
-    {name: '2016', value: '2016'},
-    {name: '2015', value: '2015'},
-    {name: '2014', value: '2014'},
-    {name: '2013', value: '2013'},
-    {name: '2012', value: '2012'},
-    {name: '2011', value: '2011'},
-    {name: '2010', value: '2010'},
-];
-const maxYears = [
-    {name: '2020', value: '2020'},
-    {name: '2019', value: '2019'},
-    {name: '2018', value: '2018'},
-    {name: '2017', value: '2017'},
-    {name: '2016', value: '2016'},
-    {name: '2015', value: '2015'},
-    {name: '2014', value: '2014'},
-    {name: '2013', value: '2013'},
-    {name: '2012', value: '2012'},
-    {name: '2011', value: '2011'},
-    {name: '2010', value: '2010'},
-];
-
 
 const transmissionTypes = [
     {name: 'Automatic', value: 'automatic'},
@@ -112,18 +83,19 @@ function handleRangeUpdate(range,category) {
 </script>
 
 <template>
-    <div class="flex flex-col divide-y w-10/12 space-y-2 divide-gray-200">
+    <div class="flex flex-col divide-y w-10/12 space-y-2 pb-4 divide-gray-200">
         <Input class="rounded-full h-fit py-2 mt-5 mb-3 border-gray-400" placeholder="Quick Search" v-model="searchKey" @keyup="search"/>
         <CheckBoxFilter :initial-checked-items="selectedFilters.carConditionType" @update:checked="updateChecked" :icon="Percent" title="Car Condition Type" :items="carConditionTypes" />
         <InputRangeFilter
             :initial-from="selectedFilters.price?.from"
             :initial-to="selectedFilters.price?.to"
             @update:range="handleRangeUpdate" title="Price" :icon="DollarSign"/>
-        <SelectBoxRangeFilter
+        <InputRangeFilter
             :initial-from="selectedFilters.year?.from"
             :initial-to="selectedFilters.year?.to"
             @update:range="handleRangeUpdate"
-            :icon="CalendarDays" :select-box-range-filter2="maxYears" :select-box-range-filter="minYears" title="Year" />
+            :icon="CalendarDays"
+            title="Year" />
         <InputRangeFilter @update:range="handleRangeUpdate" :icon="Gauge" title="Mileage" input-placeholder="0" input-placeholder2="17000"/>
         <CheckBoxFilter :initial-checked-items="selectedFilters.sellerType" @update:checked="updateChecked" :icon="Percent" title="Seller Type" :items="sellerType" />
         <CheckBoxFilter :initial-checked-items="selectedFilters.fuelType" @update:checked="updateChecked"  :icon="Fuel" title="Fuel Type" :items="fuelTypes"/>
