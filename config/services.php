@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'sms' => [
+        'secret_key' => env('SMS_SECRET_KEY'),
+    ],
+
+    'chapa' => [
+        'public_key' => env('CHAPA_PUBLIC_KEY'),
+        'secret_key' => env('CHAPA_SECRET_KEY'),
+        ],
 ];
