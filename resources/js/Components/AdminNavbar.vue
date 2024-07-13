@@ -52,7 +52,7 @@ const isLoggedIn = computed(() => {
             <div class="flex justify-between w-9/12">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center text-xl font-medium space-x-2 w-3/12">
-                    <span class="italic text-brand-primary">Admin Dashboard</span>
+                    <span class="italic text-brand-primary">Admin</span>
                 </div>
 
                 <!-- Navigation Links -->
