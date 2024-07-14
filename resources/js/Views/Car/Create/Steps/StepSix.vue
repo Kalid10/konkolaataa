@@ -50,6 +50,7 @@ const isLoading = ref(false);
 const errorMessages = ref([]);
 function uploadImages(){
     isLoading.value = true;
+    errorMessages.value = [];
     const carData = Object.assign(
         {},
         carFormData.value.stepOne,
@@ -80,6 +81,7 @@ function uploadImages(){
 </script>
 
 <template>
+    <Loading v-if="isLoading" is-full-screen />
     <div class="flex flex-col space-y-8">
         <div class="bg-red-600 text-white text-xs text-center  flex flex-col space-y-1 p-2 rounded-md" v-if="errorMessages.length">
            <div class="flex space-x-1 justify-center items-center py-1">
@@ -88,7 +90,6 @@ function uploadImages(){
            </div>
                 <span v-for="(message, index) in errorMessages" :key="index">* {{ message }}</span>
         </div>
-        <Loading v-if="isLoading" is-full-screen />
         <div class="flex flex-col space-y-2 justify-center">
             <div class="flex flex-col space-y-1">
                 <InputLabel>Exterior Car Images</InputLabel><div class="text-xs font-light">You should at least add 2 photos.</div>
@@ -125,7 +126,6 @@ function uploadImages(){
                 @change="(e) => handleFileChange(e, true)"
             />
         </div>
-
 
         <div class="flex flex-col space-y-2 justify-center">
             <div class="flex flex-col space-y-1">

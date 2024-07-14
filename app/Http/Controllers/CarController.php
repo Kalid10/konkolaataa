@@ -72,11 +72,41 @@ class CarController extends Controller
 
     public function store(PostCarRequest $request)
     {
-        $data = $request->validated();
-        $carImages = array_merge($request->exteriorCarImages, $request->interiorCarImages);
+        $data = [
+            'car_model_id' => $request->carModelId,
+            'year' => $request->year,
+            'exterior_color_id' => $request->exteriorColorId,
+            'interior_color_id' => $request->interiorColorId,
+            'is_original_paint' => $request->isOriginalPaint,
+            'accident_severity' => $request->severityOfAccident,
+            'plate_type' => $request->carPlateType,
+            'transmission_type' => $request->transmissionType,
+            'mileage' => $request->mileage,
+            'seller_type' => $request->sellerType,
+            'percentage' => $request->percentage,
+            'price' => $request->price,
+            'price_type' => $request->priceType,
+            'car_condition_type_id' => $request->carConditionTypeId,
+            'fuel_type_id' => $request->fuelTypeId,
+            'engine_type_id' => $request->engineTypeId,
+            'car_body_type_id' => $request->carBodyTypeId,
+            'city_id' => $request->cityId,
+            'description' => $request->description,
+            'google_map_location' => $request->googleMapLocation,
+            'location' => $request->location,
+            'status' => 'pending',
+            'posted_at' => now(),
+            'post_expires_at' => now()->addDays(30),
+            'user_id' => auth()->user()->id,
+            'phone_number' => $request->phoneNumber,
+            'electric_car_range' => $request->electricCarRange,
+            'car_id' => $request->carId ?? null,
+        ];
+
+        $carImages = array_merge($request->exteriorCarImages,  $request->interiorCarImages);
         $result = $this->carService->createOrUpdateCar($data, $carImages);
 
-        return redirect()->back()->with($result['success'] ? 'success' : 'error', $result['message']);
+        return redirect()->back()->with(isset($result['error']) ? 'error' : 'success', $result['message']);
     }
 
     public function userCars()

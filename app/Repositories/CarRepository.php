@@ -63,7 +63,7 @@ class CarRepository
         return $query->with([
             'carModel.carBrand', 'exteriorColor', 'interiorColor', 'carBodyType',
             'engineType', 'fuelType', 'city', 'carConditionType', 'images', 'user'
-        ])->paginate(10);
+        ])->latest()->paginate(10);
     }
 
     public function getCarWithRelations(int $carId): Model|\Illuminate\Database\Eloquent\Collection|array|\Illuminate\Database\Eloquent\Builder|Car|\LaravelIdea\Helper\App\Models\_IH_Car_QB|\LaravelIdea\Helper\App\Models\_IH_Car_C|null
@@ -76,7 +76,7 @@ class CarRepository
 
     public function storeOrUpdateCar(array $data): Car
     {
-        return Car::updateOrCreate(['id' => $data['carId']], $data);
+        return Car::updateOrCreate(['id' => $data['car_id']], $data);
     }
 
     public function getCarsByUserId(int $userId): LengthAwarePaginator|array|\Illuminate\Pagination\LengthAwarePaginator|\LaravelIdea\Helper\App\Models\_IH_Car_C
