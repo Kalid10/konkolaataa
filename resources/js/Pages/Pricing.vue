@@ -36,13 +36,13 @@ const pricingTiers = ref([
             'Post Analytics',
             '2 Free Reposts',
         ],
-        bgColor: 'bg-black',
+        bgColor: 'bg-brand-primary',
         textColor: 'text-white',
-        borderColor: 'border-gray-500',
+        borderColor: 'border-gray-900',
         textColorHover: 'hover:text-gray-400',
-        buttonColor: 'bg-gray-700',
+        buttonColor: 'bg-brand-tertiary !text-black !hover:bg-brand-secondary !hover:text-white',
         tagColor: 'bg-slate-700',
-        iconColor: 'fill-black stroke-gray-200 text-gray-400'
+        iconColor: ' stroke-gray-200 text-gray-100'
     },
     {
         name: 'Scale',
@@ -99,13 +99,13 @@ const subscriptionTiers = ref([
             'Featured Broker Status',
             'Priority Support',
         ],
-        bgColor: 'bg-black',
+        bgColor: 'bg-brand-primary',
         textColor: 'text-white',
         borderColor: 'border-black',
         textColorHover: 'hover:text-gray-700',
-        buttonColor: 'bg-gray-700',
+        buttonColor: 'bg-gray-100 !text-black',
         tagColor: 'bg-gray-700 text-white',
-        iconColor: 'text-black'
+        iconColor: 'text-white'
     },
     {
         name: 'Enterprise',
@@ -132,7 +132,7 @@ const subscriptionTiers = ref([
 </script>
 
 <template>
-    <div class="flex flex-col space-y-10 w-full md:w-full mx-auto min-h-screen py-5">
+    <div class="flex flex-col space-y-10 w-full md:w-full mx-auto min-h-screen max-w-screen-2xl py-5">
 
         <div class="text-center flex flex-col space-y-2">
             <div class="font-semibold text-6xl">Let's Get Started</div>
@@ -140,11 +140,11 @@ const subscriptionTiers = ref([
         </div>
         <Tabs default-value="one_time" class="!flex flex-col items-center !w-full min-w-full h-full">
             <TabsList class="!rounded-full !p-0 border bg-white text-gray-700 border-black">
-                <TabsTrigger value="one_time" class="data-[state=active]:bg-black h-full w-full px-5 pl-7 !rounded-l-full space-x-1">
+                <TabsTrigger value="one_time" class=" h-full w-full px-5 pl-7 !rounded-l-full space-x-1">
                     <Check class="text-white" size="16"/>
                     <span>OneTime</span>
                 </TabsTrigger>
-                <TabsTrigger value="subscriptions" class="data-[state=active]:bg-black h-full w-full px-5 pr-7 !rounded-r-full space-x-1">
+                <TabsTrigger value="subscriptions" class="h-full w-full px-5 pr-7 !rounded-r-full space-x-1">
                     <Check class="text-white" size="16"/>
                     <span>Subscriptions</span>
                 </TabsTrigger>
