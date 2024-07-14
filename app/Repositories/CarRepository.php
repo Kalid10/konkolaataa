@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Car;
+use AWS\CRT\Log;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,6 +20,7 @@ class CarRepository
         $filterMapping = [
             'sellerType' => 'seller_type',
             'transmissionType' => 'transmission_type',
+            'location' => 'city'
         ];
         if ($filters) {
             foreach ($filters as $filterCategory => $filterValues) {
@@ -53,6 +55,9 @@ class CarRepository
                         }
                         break;
                     default:
+                        if ($filterCategory === 'location') {
+                            $filterCategory = 'city';
+                        }
                         $query->whereHas($filterCategory, function ($query) use ($filterValues) {
                             $query->whereIn('id', array_column($filterValues, 'id'));
                         });
