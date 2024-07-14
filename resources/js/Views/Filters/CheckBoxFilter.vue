@@ -30,6 +30,14 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    showHeader: {
+        type: Boolean,
+        default: true
+    },
+    itemsToShow: {
+        type: Number,
+        default: 4
+    }
 });
 
 const emit = defineEmits(['update:checked']);
@@ -37,7 +45,7 @@ const utilities = useUtilities();
 const allChecked = ref(false);
 const checkedItems = ref([]);
 const showMore = ref(false);
-const itemsToShow = ref(4);
+const itemsToShow = ref(props.itemsToShow);
 
 // Initialize checkedItems with persisted data
 onMounted(() => {
@@ -87,13 +95,13 @@ const toggleShowMore = () => {
 </script>
 
 <template>
-    <div class="flex flex-col space-y-2 pt-4 text-sm">
-        <div class="flex w-full items-center p-2 rounded-lg bg-slate-100">
+    <div class="flex flex-col space-y-2 md:pt-4 text-sm">
+        <div class="flex w-full items-center p-2 rounded-lg bg-slate-100" v-if="showHeader">
             <XCircle v-if="hasCheckedItems" @click="clear" size="20" class="hover:text-black hover:scale-110 cursor-pointer text-gray-50 fill-red-600"/>
 
             <div class="w-11/12 flex space-x-2 justify-center items-center">
                 <component :is="icon" size="17"/>
-                <div class="font-medium text-base">{{ title }}</div>
+                <div class="font-medium text-base capitalize">{{ title }}</div>
             </div>
         </div>
         <div class="flex flex-col space-y-3">
