@@ -15,7 +15,9 @@ class InitialDataPopulatorHelper
     public static function createColors(): void
     {
         $colors = [
+            'Gray' => '#808080',
             'Black' => '#000000',
+            'Silver' => '#C0C0C0',
             'White' => '#FFFFFF',
             'Red' => '#FF0000',
             'Green' => '#00FF00',
@@ -23,8 +25,6 @@ class InitialDataPopulatorHelper
             'Yellow' => '#FFFF00',
             'Cyan' => '#00FFFF',
             'Magenta' => '#FF00FF',
-            'Silver' => '#C0C0C0',
-            'Gray' => '#808080',
             'Maroon' => '#800000',
             'Olive' => '#808000',
             'Lime' => '#00FF00',
@@ -67,19 +67,19 @@ class InitialDataPopulatorHelper
     public static function generateCarBrandsAndModels(): void
     {
         $carBrands = [
+            'Toyota' => ['Corolla', 'Camry', 'RAV4', 'Highlander'],
+            'Suzuki' => ['Dzire', 'Swift', 'Baleno', 'Vitara'],
+            'Hyundai' => ['Elantra', 'Sonata', 'Tucson', 'Santa Fe'],
+            'Volkswagen' => ['Golf', 'Passat', 'Tiguan', 'Atlas'],
             'Audi' => ['A3', 'A4', 'Q5', 'Q7'],
             'BMW' => ['X1', 'X3', 'X5', '3 Series'],
             'Chevrolet' => ['Spark', 'Malibu', 'Tahoe', 'Silverado'],
             'Ford' => ['Fiesta', 'Focus', 'Mustang', 'Explorer'],
             'Honda' => ['Civic', 'Accord', 'CR-V', 'Pilot'],
-            'Hyundai' => ['Elantra', 'Sonata', 'Tucson', 'Santa Fe'],
             'Kia' => ['Rio', 'Forte', 'Sorento', 'Sportage'],
             'Mazda' => ['Mazda3', 'Mazda6', 'CX-5', 'CX-9'],
             'Mercedes-Benz' => ['A-Class', 'C-Class', 'E-Class', 'GLC'],
             'Nissan' => ['Sentra', 'Altima', 'Rogue', 'Pathfinder'],
-            'Toyota' => ['Corolla', 'Camry', 'RAV4', 'Highlander'],
-            'Volkswagen' => ['Golf', 'Passat', 'Tiguan', 'Atlas'],
-            'Suzuki' => ['Dzire', 'Swift', 'Baleno', 'Vitara'],
         ];
 
         foreach ($carBrands as $brandName => $models) {

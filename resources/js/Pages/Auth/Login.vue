@@ -29,7 +29,10 @@ const submit = () => {
     isLoading.value = true;
     form.login = `+251${form.login}`;
     form.post(route('login'),{
-        onFinish:() => isLoading.value = false
+        onFinish:() => {
+            isLoading.value = false,
+                form.reset('password')
+        }
     });
 };
 
