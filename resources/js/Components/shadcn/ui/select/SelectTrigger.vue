@@ -30,7 +30,9 @@ const forwardedProps = useForwardProps(delegatedProps);
       )
     "
   >
-    <slot />
+      <div class="flex grow items-center justify-between w-full">
+          <slot />
+      </div>
     <SelectIcon as-child>
       <ChevronDown class="w-4 h-4 opacity-50" />
     </SelectIcon>

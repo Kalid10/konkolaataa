@@ -12,10 +12,25 @@ import InputLabel from "@/Components/InputLabel.vue";
 import {Input} from "@/Components/shadcn/ui/input/index.js";
 import {computed, watch} from "vue";
 import {useForm, usePage} from "@inertiajs/vue3";
+import SUV from "@/Icons/SUV.vue";
+import Pickup from "@/Icons/Pickup.vue";
+import Van from "@/Icons/Van.vue";
+import Sedan from "@/Icons/Sedan.vue";
+import Electric from "@/Icons/Electric.vue";
+import Wagon from "@/Icons/Wagon.vue";
+import {upperCase} from "lodash";
 
 const props = defineProps(['modelValue']);
 const emit = defineEmits(['update:modelValue']);
 
+const icons = [
+    {icon: Sedan, name: 'Sedan'},
+    {icon: Electric, name: 'Electric'},
+    {icon: SUV, name: 'SUV'},
+    {icon: Pickup, name: 'Pickup'},
+    {icon: Van, name: 'Van'},
+    {icon: Wagon, name: 'Wagon'},
+]
 
 const transmissionTypes = [
     {name: 'Manual', value: 'manual'},
@@ -35,7 +50,7 @@ const form = useForm({
     fuelTypeId: props.modelValue.fuelTypeId || null,
     engineTypeId: props.modelValue.engineTypeId || null,
     mileage: props.modelValue.mileage || 0,
-
+    electricCarRange: props.modelValue.range || null,
 });
 
 watch(form, (newForm) => {
@@ -72,7 +87,7 @@ watch(() => form.carConditionTypeId, (value) => {
 
         <div class="flex flex-col space-y-2">
             <InputLabel>Mileage</InputLabel>
-            <Input :disabled="form.carConditionTypeId === 1 || form.carConditionTypeId === null" v-model="form.mileage" placeholder="Eg: 10,500"/>
+            <Input type="number" :disabled="form.carConditionTypeId === 1 || form.carConditionTypeId === null" v-model="form.mileage" placeholder="Eg: 10,500"/>
         </div>
 
 
@@ -82,12 +97,15 @@ watch(() => form.carConditionTypeId, (value) => {
                 <SelectTrigger>
                     <SelectValue placeholder="Select Body Type" />
                 </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        <SelectItem v-for="item in carBodyTypes" :value="item.id">
-                            {{ item.name }}
-                        </SelectItem>
-                    </SelectGroup>
+                <SelectContent class="w-full">
+                    <SelectItem v-for="item in carBodyTypes" :value="item.id">
+                        <div class="flex items-center justify-between">
+                            <h3>{{ item.name }}</h3>
+                            <div class="w-16 p-1">
+                                <Component :is="icons.find(icon => upperCase(icon.name) === upperCase(item.name))?.icon" size="5" />
+                            </div>
+                        </div>
+                    </SelectItem>
                 </SelectContent>
             </Select>
         </div>
@@ -125,7 +143,10 @@ watch(() => form.carConditionTypeId, (value) => {
             </Select>
         </div>
 
-
+        <div v-if="form.fuelTypeId === 3" class="flex flex-col space-y-2">
+            <InputLabel>Electric Car Range</InputLabel>
+            <Input v-model="form.electricCarRange" placeholder="Eg: 525 Km"/>
+        </div>
 
         <div class="flex flex-col space-y-2">
             <InputLabel>Engine Size</InputLabel>

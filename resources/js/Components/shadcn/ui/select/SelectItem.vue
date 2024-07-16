@@ -42,7 +42,7 @@ cn(
       </SelectItemIndicator>
     </span>
 
-    <SelectItemText>
+    <SelectItemText class="grow">
       <slot />
     </SelectItemText>
   </SelectItem>
