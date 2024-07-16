@@ -47,14 +47,11 @@ class InitialDataPopulatorHelper
     {
         $carBodyTypes = [
             'Sedan',
-            'Hatchback',
             'SUV',
-            'Crossover',
-            'Coupe',
-            'Convertible',
             'Wagon',
             'Van',
-            'Truck',
+            'Pickup',
+            'Electric'
         ];
 
         foreach ($carBodyTypes as $carBodyType) {

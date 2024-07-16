@@ -204,7 +204,7 @@ function handleRangeUpdate(range, category) {
                                       :title="selected"
                                       :icon="Gauge"
                                       @update:range="handleRangeUpdate"/>
-                    <PrimaryButton @click="setDrawerOpen(false)" class="!my-2" >Apply</PrimaryButton>
+                    <PrimaryButton @click="setDrawerOpen(false)" class="!my-4" >Apply</PrimaryButton>
                 </div>
 
             </DrawerContent>

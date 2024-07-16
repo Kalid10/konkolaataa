@@ -35,10 +35,10 @@ const paginationPosition = computed(() => {
 <template>
     <div
         v-if="links.length > 3"
-        class="flex w-full"
+        class="flex justify-center w-full"
         :class="paginationPosition"
     >
-        <div class="flex flex-wrap w-full max-w-lg space-x-5 items-center py-5 mx-auto">
+        <div class="flex flex-wrap w-fit max-w-lg space-x-5 items-center py-5 mx-auto">
             <template v-for="(link, p) in links" :key="p">
                 <Link
                     v-if="link.url !== null"

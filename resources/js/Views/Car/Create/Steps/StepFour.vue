@@ -10,7 +10,7 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/Components/shadcn/ui/select/index.js";
-import {computed, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import {useForm, usePage} from "@inertiajs/vue3";
 
 const pricingOptions = [
@@ -35,7 +35,16 @@ const form = useForm({
 watch(form, (newForm) => {
     emit('update:modelValue', newForm);
 }, {deep: true});
+const isValidGoogleMapsLink = ref(true);
 
+const validateGoogleMapsLink = (link) => {
+    const pattern = /^(https?:\/\/)?((www\.)?google\.com\/maps\/(?:\?q=|search\/|\?saddr=|\?daddr=|\?center=|\?ll=|@)|maps\.app\.goo\.gl\/\S+)/;
+    return pattern.test(link);
+};
+
+watch(() => form.googleMapsLink, (newLink) => {
+    isValidGoogleMapsLink.value = validateGoogleMapsLink(newLink);
+});
 </script>
 
 <template>
@@ -86,7 +95,14 @@ watch(form, (newForm) => {
         <!--        Todo: Check if the google maps link is valid-->
         <div class="flex flex-col space-y-2">
             <InputLabel>Google Maps Link</InputLabel>
-            <Input v-model="form.googleMapsLink" placeholder="Eg: https://maps-link"/>
+            <Input
+                v-model="form.googleMapsLink"
+                placeholder="Eg: https://maps-link"
+                :class="{'border-red-500': !isValidGoogleMapsLink}"
+            />
+            <span v-if="!isValidGoogleMapsLink" class="text-red-500 text-sm">
+      Please enter a valid Google Maps link.
+    </span>
         </div>
     </div>
 </template>

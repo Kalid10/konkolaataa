@@ -31,7 +31,7 @@ provide("notificationData", notificationData);
             </header>
 
             <!-- Page Content -->
-            <main class="px-3 md:px-6 w-11/12 mx-auto md:w-full md:container bg-white py-3 md:py-6">
+            <main class="px-3 md:px-6 w-11/12 mx-auto md:w-11/12 bg-white py-3 md:py-6">
                 <Notification />
                 <slot />
             </main>

@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight, X } from "lucide-vue-next";
 const props = defineProps<{
     images: Array<string>;
     currentSlide: {
-        type: Number;
+        type: String;
         required: false;
         default: 1;
     };

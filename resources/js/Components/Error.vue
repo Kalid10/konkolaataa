@@ -1,7 +1,7 @@
 <template>
     <div
         v-if="error"
-        class="flex flex-col h-fit w-full items-center justify-center space-y-2 rounded-md  p-2 py-3 text-center text-xs md:text-xl font-medium "
+        class="flex flex-col h-fit w-full items-center justify-center space-y-2 rounded-md  p-2 py-3 text-center text-sm md:text-xl font-medium "
     >
         <component v-if="icon" :is="icon" class="w-4 md:w-20" />
         <CircleX v-else class="w-4 md:w-20" />

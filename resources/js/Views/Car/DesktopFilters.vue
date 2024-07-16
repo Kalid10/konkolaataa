@@ -67,6 +67,7 @@ const search = debounce(() => {
         },
         {
             preserveState: true,
+            preserveScroll: true,
             replace: true,
             onFinish: () => {
                 emit('loading', false);

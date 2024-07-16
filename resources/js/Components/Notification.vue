@@ -12,7 +12,7 @@
             <div
                 v-if="success || error || info"
                 :key="success || error || info"
-                :class="`fixed ${positionClass} w-full max-w-sm z-50`"
+                :class="`fixed ${positionClass} w-full max-w-lg z-50`"
             >
                 <div
                     :class="{
@@ -83,7 +83,7 @@ watch(flash, () => {
     setTimeout(() => {
         showNotification.value = false;
         usePage().props.flash = { success: null, error: null, info: null };
-    }, 5500);
+    }, 20000);
 });
 
 const notificationData = inject("notificationData");
