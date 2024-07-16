@@ -107,11 +107,14 @@ const selectedFilters = ref(usePage().props.filters || {
 
 function updateChecked(checked, category) {
     selectedFilters.value[category] = checked;
-    search();
 }
 
 function handleRangeUpdate(range, category) {
     selectedFilters.value[category] = range;
+}
+
+function applySearch(){
+    setDrawerOpen(false);
     search();
 }
 
@@ -204,7 +207,7 @@ function handleRangeUpdate(range, category) {
                                       :title="selected"
                                       :icon="Gauge"
                                       @update:range="handleRangeUpdate"/>
-                    <PrimaryButton @click="setDrawerOpen(false)" class="!my-4" >Apply</PrimaryButton>
+                    <PrimaryButton @click="applySearch" class="!my-4" >Apply</PrimaryButton>
                 </div>
 
             </DrawerContent>
