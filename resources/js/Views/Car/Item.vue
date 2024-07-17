@@ -35,7 +35,7 @@ function editCar(car) {
     <div class="pb-4 mr-8 flex justify-center w-full md:w-fit cursor-pointer">
         <div
             class=" min-w-[20rem] w-fit max-w-[22rem] rounded-lg flex flex-col shadow-sm hover:shadow-2xl bg-gray-50 h-fit">
-            <img class="object-cover h-40 w-full rounded-t-lg" src="../../../../public/assets/images/pl.jpg">
+            <img class="object-cover h-40 w-full rounded-t-lg" :src="car.images[0].url">
             <div class="flex flex-col space-y-2.5 px-3 py-3 text-xs">
                 <div class="flex text-base w-full items-center justify-between">
                     <div class="font-medium text-sm">{{ car.car_model.car_brand.name }} {{ car.car_model.name }}</div>
@@ -61,7 +61,7 @@ function editCar(car) {
 
                     <Tags :tag="car.year" />
                     <Tags :tag="utilities.formatNumberWithCommas(car.mileage) +' Km'" />
-                    <Tags :tag="car.transmission_type" />
+                    <Tags :tag="car.fuel_type.name" />
                     <Tags class="flex space-x-2 items-center text-xs" :tag="car.seller_type" />
                 </div>
 

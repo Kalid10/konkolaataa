@@ -39,7 +39,7 @@ function openImageCarousel(value) {
                     <img  v-for="i in 5" src="../../../../public/assets/images/pl.jpg" :class="i === 1 ? '':'opacity-50'" class=" cursor-pointer rounded-lg h-20 min-w-28 object-cover" alt="">
                 </div>
             </div>
-            <div class="flex w-6/12 min-h-full space-x-6 justify-between">
+            <div class="hidden md:flex w-6/12 min-h-full space-x-6 justify-between">
                 <div class="flex flex-col w-5/12 justify-between">
                     <img src="../../../../public/assets/images/pl.jpg" class="rounded-lg h-52 w-full object-cover">
                     <img src="../../../../public/assets/images/pl.jpg" class="rounded-lg h-52 w-full object-cover">
