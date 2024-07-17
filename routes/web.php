@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
 
-Route::get('/', [CarController::class, 'index'])->name('cars.index');
+Route::get('/', [CarController::class, 'index'])->name('home');
 
 
 Route::middleware('auth')->group(function () {
