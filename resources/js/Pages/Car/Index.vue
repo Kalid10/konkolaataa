@@ -17,6 +17,7 @@ import Van from "@/Icons/Van.vue";
 import Sedan from "@/Icons/Sedan.vue";
 import Electric from "@/Icons/Electric.vue";
 import Wagon from "@/Icons/Wagon.vue";
+import {Search} from "lucide-vue-next";
 
 const cars = computed(() => usePage().props.cars);
 const icons = [
@@ -63,8 +64,14 @@ watch(selectedBodyTypeId, () => {
 
 <template>
     <div class="flex flex-col space-y-6 md:space-y-3">
-        <Input class="sm:hidden rounded-full h-fit py-2 border-2 border-gray-800" placeholder="Quick Search" v-model="searchKey"
+        <div class="flex w-full h-full items-center rounded-full">
+            <div class="bg-black border-2 border-gray-800 h-10 py-2 w-2/12 rounded-l-full flex items-center justify-center">
+            <Search class="text-white"/>
+            </div>
+        <Input class="sm:hidden h-10 focus-visible:ring-0  rounded-none py-2 rounded-r-full border-2 border-l-0 border-gray-800" placeholder="Quick Search" v-model="searchKey"
                @keyup="search"/>
+
+        </div>
 
             <div class="flex md:pl-10 space-x-8 md:space-x-0 md:pr-14 py-3 justify-evenly items-center overflow-x-auto hide-scrollbar w-full">
                 <div @click="selectedBodyTypeId = icon.id" v-for="(icon, index) in icons" :key="index" class="flex flex-col space-y-2 text-center text-sm group hover:scale-105 cursor-pointer">
