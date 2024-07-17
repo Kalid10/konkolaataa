@@ -124,7 +124,7 @@ function loginViaGoogle(){
                     </Link>
                 </div>
             </form>
-            <SecondaryButton @click="loginViaGoogle" class="w-full space-x-2">
+            <SecondaryButton @click="loginViaGoogle" class="w-full space-x-2 mt-4 md:mt-0">
                     <img src="../../../../public/assets/images/google_logo.png" class="w-4">
                 <span>
                   Login with Google
