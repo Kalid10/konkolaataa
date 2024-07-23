@@ -28,9 +28,6 @@ const classes = computed(() =>
 </script>
 <template>
     <Link :href="to" class="flex flex-col space-y-1 items-center justify-center" :class="classes">
-        <div v-if="active" class="w-1 h-1 rounded-full bg-brand-primary">
-
-        </div>
         <component :is="icon" class="w-5"/>
         <div class="text-xs">{{ label }}</div>
     </Link>

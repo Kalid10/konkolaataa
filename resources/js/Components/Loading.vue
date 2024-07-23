@@ -25,8 +25,8 @@
         ></div>
 
         <div class="flex animate-pulse justify-center items-center space-x-2" v-if="type === 'brand'">
-            <div :class="isFullScreen ? 'border-white':'border-brand-primary'" class="animate-spin rounded-full border-[5px] sm:border-8 border-solid border-t-transparent w-6 h-6 md:w-10 md:h-10"/>
-            <div :class="isFullScreen ? 'text-white': 'text-brand-primary'"  class="font-bold text-3xl md:text-5xl uppercase">Konkolaataa</div>
+            <div :class="isFullScreen ? 'border-violet-200':'border-brand-primary'" class="animate-spin rounded-full border-[5px] sm:border-8 border-solid border-t-transparent w-6 h-6 md:w-10 md:h-10"/>
+            <div :class="isFullScreen ? 'text-violet-200': 'text-brand-primary'"  class="font-bold text-3xl md:text-5xl uppercase ">Konkolata</div>
         </div>
 
         <slot name="description"></slot>
