@@ -20,7 +20,7 @@ class PostCarRequest extends FormRequest
             'priceType' => 'required|in:fixed,negotiable,slightly_negotiable',
             'mileage' => 'required|integer|min:0',
             'cityId' => 'required|exists:cities,id',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'exteriorColorId' => 'required|exists:colors,id',
             'interiorColorId' => 'required|exists:colors,id',
             'transmissionType' => 'required|in:automatic,manual,semi_automatic',
