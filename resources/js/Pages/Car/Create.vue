@@ -16,7 +16,7 @@ const stepLabels = [
     'Car Details',
     'Accidents & Paint Details',
     'Pricing & Location',
-    'Personal Information',
+    'Finance & Personal Information',
     'Upload Car Images',
 ];
 
@@ -35,11 +35,11 @@ watch(() => currentStep.value, (newVal) => {
 const showNextButton = ref(false);
 watch(() => carFormData.value, (newVal) => {
     if (currentStep.value === 1) {
-        showNextButton.value = newVal.stepOne.carBrandId && newVal.stepOne.carModelId && newVal.stepOne.year && newVal.stepOne.carPlateType;
+        showNextButton.value = newVal.stepOne.carBrandId && newVal.stepOne.carModelId && newVal.stepOne.year;
     } else if (currentStep.value === 2) {
         showNextButton.value = newVal.stepTwo.carConditionTypeId && newVal.stepTwo.carBodyTypeId && newVal.stepTwo.transmissionType && newVal.stepTwo.fuelTypeId && newVal.stepTwo.engineTypeId;
     } else if (currentStep.value === 3) {
-        showNextButton.value = newVal.stepThree.exteriorColorId && newVal.stepThree.interiorColorId && newVal.stepThree.isOriginalPaint && newVal.stepThree.isAccidentFree;
+         showNextButton.value = newVal.stepThree.exteriorColorId && newVal.stepThree.interiorColorId;
     } else if (currentStep.value === 4) {
         showNextButton.value = newVal.stepFour.priceType && newVal.stepFour.price && newVal.stepFour.cityId;
     } else if (currentStep.value === 5) {
@@ -79,6 +79,3 @@ watch(() => carFormData.value, (newVal) => {
     </div>
 </template>
 
-<style scoped>
-/* Add any additional styles here */
-</style>

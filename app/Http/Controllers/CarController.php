@@ -101,12 +101,18 @@ class CarController extends Controller
             'phone_number' => $request->phoneNumber,
             'electric_car_range' => $request->electricCarRange,
             'car_id' => $request->carId ?? null,
+            'number_of_seats' => $request->numberOfSeats,
+            'bank_debt_amount' => $request->bankDebtAmount ?? 0,
+            'is_bank_debt_free' => $request->isBankDebtFree,
+            'has_clearance' => $request->hasClearance,
+            'motor_status' => $request->motorStatus ?? 'clean',
+            'is_double_cap' => $request->isDoubleCap ?? null
         ];
 
         $carImages = array_merge($request->exteriorCarImages,  $request->interiorCarImages);
         $result = $this->carService->createOrUpdateCar($data, $carImages);
 
-        return redirect()->back()->with(isset($result['error']) ? 'error' : 'success', $result['message']);
+        return redirect()->back()->with(isset($result['success']) ? 'success' : 'error', $result['message']);
     }
 
     public function userCars()

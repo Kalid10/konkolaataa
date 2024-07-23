@@ -36,11 +36,13 @@ return new class extends Migration
             $table->float('percentage')->default(0);
             $table->float('price');
             $table->string('price_type');
-            $table->string('electric_car_range')->nullable();
             $table->foreignIdFor( CarConditionType::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(FuelType::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(EngineType::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(CarBodyType::class)->constrained()->cascadeOnDelete();
+            $table->string('electric_car_range')->nullable();
+            $table->boolean('is_double_cap')->nullable();
+            $table->integer('number_of_seats');
             $table->foreignIdFor(City::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->longText('description')->nullable();
@@ -50,6 +52,10 @@ return new class extends Migration
             $table->timestamp('posted_at');
             $table->timestamp('post_expires_at')->nullable();
             $table->string('phone_number');
+            $table->boolean('is_bank_debt_free')->default(true);
+            $table->float('bank_debt_amount')->nullable();
+            $table->boolean('has_clearance')->nullable();
+            $table->string('motor_status')->nullable();
             $table->timestamps();
         });
     }

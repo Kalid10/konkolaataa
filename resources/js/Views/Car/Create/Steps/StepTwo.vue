@@ -19,6 +19,7 @@ import Sedan from "@/Icons/Sedan.vue";
 import Electric from "@/Icons/Electric.vue";
 import Wagon from "@/Icons/Wagon.vue";
 import {upperCase} from "lodash";
+import {Switch} from "@/Components/shadcn/ui/switch/index.js";
 
 const props = defineProps(['modelValue']);
 const emit = defineEmits(['update:modelValue']);
@@ -51,6 +52,7 @@ const form = useForm({
     engineTypeId: props.modelValue.engineTypeId || null,
     mileage: props.modelValue.mileage || 0,
     electricCarRange: props.modelValue.range || null,
+    isDoubleCab: props.modelValue.isDoubleCab || null,
 });
 
 watch(form, (newForm) => {
@@ -109,6 +111,12 @@ watch(() => form.carConditionTypeId, (value) => {
                 </SelectContent>
             </Select>
         </div>
+
+        <div v-if="form.carBodyTypeId === 5" class="flex items-center py-4 space-x-4">
+            <InputLabel>Is Double Cab? </InputLabel>
+            <Switch @update:checked="form.isDoubleCab = !form.isDoubleCab" :checked="form.isDoubleCab"/>
+        </div>
+
         <div class="flex flex-col space-y-2">
             <InputLabel>Transmission Type</InputLabel>
             <Select v-model="form.transmissionType">

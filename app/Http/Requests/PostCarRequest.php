@@ -38,6 +38,12 @@ class PostCarRequest extends FormRequest
             'phoneNumber' => 'required|regex:/[0-9]{8}$/|max:13',
             'electricCarRange' => 'nullable|string',
             'carId' => 'nullable|exists:cars,id',
+            'hasClearance' => 'nullable|boolean',
+            'isDoubleCap' => 'nullable|boolean',
+            'numberOfSeats' => 'required|integer|min:1|max:10',
+            'isBankDebtFree' => 'required|boolean',
+            'bankDebtAmount' => 'required_if:isBankDebtFree,0|nullable|numeric|min:0',
+            'motorStatus' => 'nullable|in:clean,repaired,needs_repair,unknown',
         ];
     }
 

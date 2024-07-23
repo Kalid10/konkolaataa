@@ -11,6 +11,7 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/Components/shadcn/ui/select/index.js";
+import {Input} from "@/Components/shadcn/ui/input/index.js";
 
 const carBrands = computed(() => usePage().props.carBrands);
 const carModels = computed(() => usePage().props.carModels);
@@ -24,12 +25,6 @@ const years = [
     '1982', '1981', '1980'
 ];
 
-const carPlateTypes = [
-    {value:1, name: 'Taxi'},
-    {value:2, name: 'Private'},
-    {value: 3, name: 'Company'},
-];
-
 const props = defineProps(['modelValue']);
 const emit = defineEmits(['update:modelValue']);
 
@@ -38,7 +33,6 @@ const form = useForm({
     description: props.modelValue.description || null,
     year: props.modelValue.year || null,
     carModelId: props.modelValue.carModelId || null,
-    carPlateType: props.modelValue.carPlateType || null,
 });
 
 watch(form, (newForm) => {
@@ -53,7 +47,7 @@ const selectedCarModels = computed(() => {
 </script>
 
 <template>
-    <div class="flex flex-col space-y-4 p-2">
+    <div class="flex flex-col space-y-4">
         <div class="flex flex-col space-y-2">
             <InputLabel>Car Brand</InputLabel>
             <Select v-model="form.carBrandId">
@@ -65,14 +59,22 @@ const selectedCarModels = computed(() => {
                         <SelectItem v-for="item in carBrands" :key="item.id" :value="item.id">
                             {{ item.name }}
                         </SelectItem>
+                        <SelectItem value="other">
+                            Other
+                        </SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>
+            <div class="flex flex-col space-y-2 pt-2">
+            <InputLabel v-if="form.carBrandId ==='other'">Car Brand Name</InputLabel>
+            <Input  v-if="form.carBrandId ==='other'" placeholder="Other Car Brand Name"></Input>
+            </div>
         </div>
 
         <div class="flex flex-col space-y-2">
             <InputLabel>Car Model</InputLabel>
-            <Select :disabled="!selectedCarModels.length" v-model="form.carModelId">
+            <Input v-model="form.carModelId" v-if="form.carBrandId ==='other'" placeholder="Other Car Model"></Input>
+            <Select v-else :disabled="!selectedCarModels.length" v-model="form.carModelId">
                 <SelectTrigger>
                     <SelectValue placeholder="Select Car Model"/>
                 </SelectTrigger>
@@ -102,34 +104,9 @@ const selectedCarModels = computed(() => {
             </Select>
         </div>
 
-        <div class="flex flex-col space-y-2">
-            <InputLabel>Car Plate Type</InputLabel>
-            <Select v-model="form.carPlateType">
-                <SelectTrigger>
-                    <SelectValue placeholder="Select Car Plate Type"/>
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        <SelectItem v-for="item in carPlateTypes" :key="item.value" :value="item.value">
-                            <span :class="[item.value === 1 ? 'bg-red-600 text-white' : item.value === 2? 'bg-blue-600 text-white' : item.value === 3 ? 'bg-emerald-400 text-white' :'']" class="px-2 font-semibold rounded-lg">
-                                {{item.value}}
-                            </span>
-                           <span class="pl-2">
-                               {{ item.name }}
-                           </span>
-                        </SelectItem>
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
-        </div>
-
-        <div class="flex flex-col space-y-2">
-            <InputLabel>Describe your car</InputLabel>
-            <Textarea rows="4" v-model="form.description" placeholder="Eg: Suzuki Dzire 2022"/>
+        <div class="flex flex-col space-y-2 pt-2">
+            <InputLabel>Describe your car <span class="text-xs ">(Optional)</span></InputLabel>
+            <Textarea rows="4" v-model="form.description" placeholder="Eg: Has been working ride for six months"/>
         </div>
     </div>
 </template>
-
-<style scoped>
-/* Add any additional styles here */
-</style>

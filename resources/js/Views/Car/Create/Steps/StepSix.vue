@@ -65,8 +65,8 @@ function uploadImages(){
     );
     router.post('/car/store', carData,{
         onSuccess: () => {
-            // clearData();
-            // form.reset();
+            clearData();
+            form.reset();
             updateCurrentStep(1);
         },
         onError:(e) => {
@@ -167,3 +167,4 @@ function uploadImages(){
 
     </div>
 </template>
+

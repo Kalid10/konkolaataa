@@ -48,7 +48,7 @@ watch(() => form.googleMapsLink, (newLink) => {
 </script>
 
 <template>
-    <div class="flex flex-col space-y-4 py-2">
+    <div class="flex flex-col space-y-4">
 
         <div class="flex flex-col space-y-2">
             <InputLabel>Price Type</InputLabel>
@@ -88,21 +88,8 @@ watch(() => form.googleMapsLink, (newLink) => {
         </div>
 
         <div class="flex flex-col space-y-2">
-            <InputLabel>Location</InputLabel>
+            <InputLabel>Location (Optional)</InputLabel>
             <Input class="capitalize" v-model="form.location" placeholder="Eg: Bole, Lideta, Jemo"/>
-        </div>
-
-        <!--        Todo: Check if the google maps link is valid-->
-        <div class="flex flex-col space-y-2">
-            <InputLabel>Google Maps Link</InputLabel>
-            <Input
-                v-model="form.googleMapsLink"
-                placeholder="Eg: https://maps-link"
-                :class="{'border-red-500': !isValidGoogleMapsLink}"
-            />
-            <span v-if="!isValidGoogleMapsLink" class="text-red-500 text-sm">
-      Please enter a valid Google Maps link.
-    </span>
         </div>
     </div>
 </template>

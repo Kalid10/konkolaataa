@@ -9,7 +9,6 @@ export function useCreateCar() {
             description: car ? car.description : null,
             year: car ? String(car.year) : null,
             carModelId: car ? car.car_model_id : null,
-            carPlateType: car ? car.plate_type : null,
         },
         stepTwo: {
             carConditionTypeId: car ? car.car_condition_type_id : null,
@@ -18,14 +17,17 @@ export function useCreateCar() {
             fuelTypeId: car ? car.fuel_type_id : null,
             engineTypeId: car ? car.engine_type_id : null,
             mileage: 0,
-            electricCarRange: null,
+            electricCarRange: car ? car.electric_car_range : null,
+            isDoubleCab: car ? car.is_double_cab : 0,
         },
         stepThree: {
+            numberOfSeats: car ? car.number_of_seats : null,
             exteriorColorId: car ? car.exterior_color_id : null,
             interiorColorId: car ? car.interior_color_id : null,
             isOriginalPaint: car ? car.is_original_paint : 1,
             isAccidentFree: car ? car.accident_severity === 'none' ? 1 : 0 : 1,
             severityOfAccident: car ? car.accident_severity : 'none',
+            motorStatus: car ? car.motor_status : null,
         },
         stepFour: {
             price: car ? car.price : null,
@@ -44,6 +46,11 @@ export function useCreateCar() {
             sellerType: car ? car.seller_type : null,
             percentage: car ? car.percentage : null,
             phoneNumber: car ? car.phone_number : null,
+            isBankDebtFree: car ? car.is_bank_debt_free : 1,
+            bankDebtAmount: car ? car.bank_debt_amount : null,
+            carPlateType: car ? car.plate_type : null,
+            hasClearance: car ? car.has_clearance : null,
+
         },
         finalizePosting: {},
         currentStep: 1,
