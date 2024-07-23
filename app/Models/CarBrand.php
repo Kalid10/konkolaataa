@@ -11,5 +11,6 @@ class CarBrand extends Model
 
     protected $fillable = [
         'name',
+        'is_verified'
     ];
 }

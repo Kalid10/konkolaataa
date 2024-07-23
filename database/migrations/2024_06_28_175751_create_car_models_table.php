@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('car_brand_id')->constrained()->onDelete('cascade');
+            $table->boolean('is_verified')->default(false);
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignIdFor(Image::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->boolean('is_verified')->default(false);
             $table->timestamps();
         });
     }

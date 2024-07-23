@@ -80,12 +80,16 @@ class InitialDataPopulatorHelper
         ];
 
         foreach ($carBrands as $brandName => $models) {
-            $carBrand = CarBrand::create(['name' => $brandName]);
+            $carBrand = CarBrand::create([
+                'name' => $brandName,
+                'is_verified' => true,
+            ]);
 
             foreach ($models as $modelName) {
                 CarModel::create([
                     'name' => $modelName,
                     'car_brand_id' => $carBrand->id,
+                    'is_verified' => true,
                 ]);
             }
         }

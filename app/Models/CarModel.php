@@ -13,6 +13,7 @@ class CarModel extends Model
     protected $fillable = [
         'name',
         'car_brand_id',
+        'is_verified',
     ];
 
     public function carBrand(): BelongsTo
