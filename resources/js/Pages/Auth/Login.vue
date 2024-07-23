@@ -8,6 +8,7 @@ import {Link, router, useForm} from '@inertiajs/vue3';
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import Loading from "@/Components/Loading.vue";
 import {ref} from "vue";
+import {EyeIcon, FacebookIcon} from "lucide-vue-next";
 
 defineProps({
     canResetPassword: {
@@ -47,52 +48,49 @@ function loginViaGoogle(){
 <template>
     <Loading is-full-screen v-if="isLoading" />
     <div class="px-3 w-full flex justify-evenly mx-auto min-h-screen md:min-h-fit py-16 md:pt-0 ">
-        <div class="w-full lg:w-7/12 max-w-sm md:max-w-md">
-            <div class="flex justify-between items-center pb-10">
-                <div class="text-5xl lg:text-6xl font-medium w-full">
-                    Sign in to your account
+        <div class="w-full lg:w-7/12 max-w-sm md:max-w-md flex flex-col space-y-4">
+            <div class="flex flex-col space-y-1 justify-between pb-2">
+                <div class="text-5xl font-semibold w-full">
+                  Welcome Back!
+                </div>
+                <div class="text-sm text-gray-500 pl-1">
+                    To get started, please sign in to your account.
                 </div>
             </div>
             <form @submit.prevent="submit">
                 <div class="flex flex-col space-y-2">
-                    <InputLabel for="login" value="Phone Number"/>
-                    <div class="flex items-center font-semibold min-h-full">
-                        <div class="bg-brand-primary text-white px-3 py-3.5 h-full  rounded-l-lg min-h-full ">+251</div>
-
                         <TextInput
                             id="login"
                             type="number"
-                            class="block w-full !bg-gray-50 !border-black !border !rounded-none !rounded-r-lg"
+                            class="mt-1 block w-full !h-12 !border-none"
                             v-model="form.login"
                             required
                             autofocus
                             autocomplete="number"
                             placeholder="(09/07)12345678"
                         />
-
-                    </div>
                     <InputError class="mt-2" :message="form.errors.login"/>
                 </div>
 
-                <div class="mt-4">
-                    <InputLabel for="password" value="Password"/>
-
+                <div class="mt-8">
                     <TextInput
                         id="password"
                         type="password"
-                        class="mt-1 block w-full !bg-gray-50 !border-black !border"
+                        class="mt-1 block w-full border-none !h-12"
                         v-model="form.password"
                         required
                         autocomplete="current-password"
                         placeholder="Password"
-                    />
+                    >
+                        <EyeIcon/>
+                    </TextInput>
 
                     <InputError class="mt-2" :message="form.errors.password"/>
                 </div>
 
                 <div class="flex justify-between items-center py-2 mt-4">
                     <label class="flex items-center">
-                        <Checkbox name="remember" v-model:checked="form.remember"/>
+                        <Checkbox class="!rounded-2xl" name="remember" v-model:checked="form.remember"/>
                         <span class="ms-2 text-sm text-gray-600">Remember me</span>
                     </label>
                     <Link
@@ -107,27 +105,39 @@ function loginViaGoogle(){
                 <div class="flex items-center text-center mt-4">
 
 
-                    <PrimaryButton class="w-full flex justify-center !bg-brand-150"
+                    <PrimaryButton class="w-full flex justify-center !bg-brand-150 !py-2.5 rounded-xl !text-base"
                                    :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                         Log in
                     </PrimaryButton>
                 </div>
 
-                <div class="flex justify-center py-3">
-                    <Link
-                        :href="route('register')"
-                        class="text-center text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-                    >
-                        Don't have an account? <span class="underline">
-                    Register
-                </span>
-                    </Link>
-                </div>
+<!--                <div class="flex justify-center py-3">-->
+<!--                    <Link-->
+<!--                        :href="route('register')"-->
+<!--                        class="text-center text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"-->
+<!--                    >-->
+<!--                        Don't have an account? <span class="underline">-->
+<!--                    Register-->
+<!--                </span>-->
+<!--                    </Link>-->
+<!--                </div>-->
             </form>
-            <SecondaryButton @click="loginViaGoogle" class="w-full space-x-2 mt-4 md:mt-0">
+
+            <div class="flex justify-between items-center py-3">
+                <div class="w-4/12 bg-gray-200 h-0.5"></div>
+                <div class="text-gray-500 text-sm">Or sign in with </div>
+                <div class="w-4/12 bg-gray-200 h-0.5"></div>
+            </div>
+            <SecondaryButton @click="loginViaGoogle" class="w-full space-x-2 mt-4 md:mt-0 h-12 !rounded-xl !text-sm capitalize">
                     <img src="../../../../public/assets/images/google_logo.png" class="w-4">
                 <span>
-                  Login with Google
+                  Sign in with Google
+              </span>
+            </SecondaryButton>
+            <SecondaryButton @click="loginViaGoogle" class="w-full space-x-2 mt-4 md:mt-0 h-12 !rounded-xl !text-sm capitalize">
+                <img src="../../../../public/assets/images/facebook_logo.png" class="w-4">
+                <span>
+                  Sign in with Facebook
               </span>
             </SecondaryButton>
         </div>
