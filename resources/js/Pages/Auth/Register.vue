@@ -14,6 +14,8 @@ import {
     SelectValue,
 } from "@/Components/shadcn/ui/select/index.js";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
+import Loading from "@/Components/Loading.vue";
+import {ref} from "vue";
 
 const form = useForm({
     name: '',
@@ -23,29 +25,41 @@ const form = useForm({
     type: '',
 });
 
+const isLoading = ref(false)
 const submit = () => {
+    isLoading.value = true;
     form.phone_number = `+251${form.phone_number}`;
     form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
+        onFinish: () => {
+            isLoading.value = false;
+            form.reset('password', 'password_confirmation');
+        },
         preserveState: true,
     });
 };
 </script>
 
 <template>
-    <div class="px-4 w-full flex justify-evenly min-h-screen md:min-h-fit py-16 md:pt-0">
-        <div class="w-full lg:w-7/12 max-w-sm md:max-w-md">
-            <div class="text-5xl md:text-6xl font-medium pb-10">
-                Sign up and start trading
+    <Loading v-if="isLoading" is-full-screen type="brand"/>
+    <div class="px-4 w-full flex justify-evenly min-h-screen md:min-h-fit py-5 md:pt-0">
+        <div class="w-full lg:w-7/12 max-w-sm md:max-w-lg">
+            <div class="flex flex-col space-y-1 pb-7 md:pb-8">
+
+                <div class="text-2xl md:text-4xl font-semibold w-full">
+                    Welcome to Konkolata
+                </div>
+                <div class="text-xs md:text-sm text-gray-500 pl-1">
+                    To get started, please create an account.
+                </div>
             </div>
             <form @submit.prevent="submit">
                 <div>
-                    <InputLabel for="name" value="Full Name" />
+                    <InputLabel for="name" value="Full Name"/>
 
                     <TextInput
                         id="name"
                         type="text"
-                        class="mt-1 block w-full !bg-gray-50 !border-gray-900 !border"
+                        class="mt-1 block w-full border-none !h-12"
                         v-model="form.name"
                         required
                         autofocus
@@ -53,34 +67,32 @@ const submit = () => {
                         placeholder="Abebe Kebede"
                     />
 
-                    <InputError class="mt-2" :message="form.errors.name" />
+                    <InputError class="mt-2" :message="form.errors.name"/>
                 </div>
 
                 <div class="mt-4">
-                    <InputLabel for="phone_number" value="Phone Number" />
+                    <InputLabel for="phone_number" value="Phone Number"/>
 
                     <div class="flex items-center font-semibold min-h-full">
-                        <div class="bg-brand-primary text-white px-3 py-3.5 h-full rounded-l-lg min-h-full">+251</div>
-
                         <TextInput
                             id="phone_number"
                             type="number"
-                            class="block w-full !bg-gray-50 !border-gray-900 !border !rounded-none !rounded-r-lg"
+                            class="mt-1 block w-full border-none !h-12"
                             v-model="form.phone_number"
                             required
                             autocomplete="number"
-                            placeholder="(9/7)11223344"
+                            placeholder="0(9/7)11223344"
                         />
                     </div>
 
-                    <InputError class="mt-2" :message="form.errors.phone_number" />
+                    <InputError class="mt-2" :message="form.errors.phone_number"/>
                 </div>
 
-                <div class="mt-4">
-                    <InputLabel for="type" value="User Type" />
+                <div class="flex flex-col space-y-1 mt-4">
+                    <InputLabel for="type" value="User Type"/>
                     <Select v-model="form.type">
                         <SelectTrigger class="w-full border border-black">
-                            <SelectValue placeholder="Select user type" />
+                            <SelectValue placeholder="Select user type"/>
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
@@ -90,60 +102,65 @@ const submit = () => {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                    <InputError class="mt-2" :message="form.errors.type" />
+                    <InputError class="mt-2" :message="form.errors.type"/>
                 </div>
 
 
                 <div class="mt-4">
-                    <InputLabel for="password" value="Password" />
+                    <InputLabel for="password" value="Password"/>
 
                     <TextInput
                         id="password"
                         type="password"
-                        class="mt-1 block w-full !bg-gray-50 !border-gray-900 !border"
+                        class="mt-1 block w-full border-none !h-12"
                         v-model="form.password"
                         required
                         autocomplete="new-password"
                         placeholder="New Password "
                     />
 
-                    <InputError class="mt-2" :message="form.errors.password" />
+                    <InputError class="mt-2" :message="form.errors.password"/>
                 </div>
 
                 <div class="mt-4">
-                    <InputLabel for="password_confirmation" value="Confirm Password" />
+                    <InputLabel for="password_confirmation" value="Confirm Password"/>
 
                     <TextInput
                         id="password_confirmation"
                         type="password"
-                        class="mt-1 block w-full !bg-gray-50 !border-gray-900 !border"
+                        class="mt-1 block w-full border-none !h-12"
                         v-model="form.password_confirmation"
                         required
                         autocomplete="new-password"
                         placeholder="Confirm Password"
                     />
 
-                    <InputError class="mt-2" :message="form.errors.password_confirmation" />
+                    <InputError class="mt-2" :message="form.errors.password_confirmation"/>
                 </div>
 
-                <div class="flex items-center justify-between mt-6">
-                    <Link
-                        :href="route('login')"
-                        class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        Already registered?
-                    </Link>
-
-                    <PrimaryButton class="ms-4 px-6" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <div class="flex flex-col items-center w-full space-y-4 mt-6">
+                    <PrimaryButton class="w-full flex justify-center !bg-brand-150 !py-2.5 rounded-xl !text-base"
+                                   :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                         Register
                     </PrimaryButton>
+
+                    <div class="flex w-full">
+
+                        <Link
+                            :href="route('login')"
+                            class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                            Already registered?
+                        </Link>
+                    </div>
                 </div>
             </form>
 
-            <SecondaryButton @click="router.visit('/auth/google')" class="w-full space-x-2 mt-4">
+            <SecondaryButton @click="router.visit('/auth/google')"
+                             class="w-full space-x-2 !mt-8 md:mt-0 h-12 !rounded-xl !text-sm capitalize">
                 <img src="../../../../public/assets/images/google_logo.png" class="w-4">
                 <span>
-                  Login with Google
+                  Register with Google
               </span>
             </SecondaryButton>
         </div>

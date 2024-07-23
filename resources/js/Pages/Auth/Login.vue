@@ -67,7 +67,7 @@ function loginViaGoogle(){
                             required
                             autofocus
                             autocomplete="number"
-                            placeholder="(09/07)12345678"
+                            placeholder="0(9/7)12345678"
                         />
                     <InputError class="mt-2" :message="form.errors.login"/>
                 </div>
