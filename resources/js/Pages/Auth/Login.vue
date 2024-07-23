@@ -47,10 +47,10 @@ function loginViaGoogle(){
 
 <template>
     <Loading is-full-screen v-if="isLoading" />
-    <div class="px-3 w-full flex justify-evenly mx-auto min-h-screen md:min-h-fit py-16 md:pt-0 ">
+    <div class="px-3 w-full flex justify-evenly mx-auto min-h-screen md:min-h-fit py-10 md:pt-0 ">
         <div class="w-full lg:w-7/12 max-w-sm md:max-w-md flex flex-col space-y-4">
             <div class="flex flex-col space-y-1 justify-between pb-2">
-                <div class="text-5xl font-semibold w-full">
+                <div class="text-4xl md:text-5xl font-semibold w-full">
                   Welcome Back!
                 </div>
                 <div class="text-sm text-gray-500 pl-1">
@@ -111,16 +111,16 @@ function loginViaGoogle(){
                     </PrimaryButton>
                 </div>
 
-<!--                <div class="flex justify-center py-3">-->
-<!--                    <Link-->
-<!--                        :href="route('register')"-->
-<!--                        class="text-center text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"-->
-<!--                    >-->
-<!--                        Don't have an account? <span class="underline">-->
-<!--                    Register-->
-<!--                </span>-->
-<!--                    </Link>-->
-<!--                </div>-->
+                <div class="flex justify-center pt-6">
+                    <Link
+                        :href="route('register')"
+                        class="text-center text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                    >
+                        Don't have an account? <span class="underline">
+                    Register
+                </span>
+                    </Link>
+                </div>
             </form>
 
             <div class="flex justify-between items-center py-3">
