@@ -126,14 +126,14 @@ const { carFormData } = useCreateCar();
                 </div>
 
             <div class="flex flex-col space-y-2">
-                <InputLabel>Motor Status</InputLabel>
+                <InputLabel>Motor Status{{form.motorStatus}}</InputLabel>
                 <Select v-model="form.motorStatus">
                     <SelectTrigger>
                         <SelectValue placeholder="Select Motor Status"/>
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectItem v-for="(item, key) in motorStatus" :value="key">
+                            <SelectItem v-for="(item, key) in motorStatus" :value="item.value">
                                     <div> {{ item.name }}</div>
                             </SelectItem>
                         </SelectGroup>
