@@ -3,7 +3,18 @@
 import {Input} from "@/Components/shadcn/ui/input/index.js";
 import InputRangeFilter from "@/Views/Filters/InputRangeFilter.vue";
 import CheckBoxFilter from "@/Views/Filters/CheckBoxFilter.vue";
-import {Cog, Fuel, CalendarDays, Gauge, DollarSign, Palette, Percent, Car, RectangleHorizontal} from "lucide-vue-next";
+import {
+    Cog,
+    Fuel,
+    CalendarDays,
+    Gauge,
+    DollarSign,
+    Palette,
+    Percent,
+    Car,
+    RectangleHorizontal,
+    Search
+} from "lucide-vue-next";
 import {computed, ref, watch} from "vue";
 import {router, usePage} from "@inertiajs/vue3";
 import { debounce } from "lodash";
@@ -85,7 +96,14 @@ function handleRangeUpdate(range,category) {
 
 <template>
     <div class="flex flex-col divide-y w-10/12 space-y-2 pb-4 divide-gray-200">
-        <Input class="rounded-full h-fit py-2 mt-5 mb-3 border-gray-400" placeholder="Quick Search" v-model="searchKey" @keyup="search"/>
+        <div class=" flex w-full h-full items-center rounded-full border ">
+            <div class=" border border-r-0 border-gray-100 h-10 py-2 w-fit pl-2 pr-1 rounded-l-full flex items-center justify-center">
+                <Search size="20" />
+            </div>
+            <Input class=" h-10 focus-visible:ring-0 !ring-offset-0 rounded-none py-2 rounded-r-full border border-l-0 border-gray-100" placeholder="Quick Search" v-model="searchKey"
+                   @keyup="search"/>
+
+        </div>
         <CheckBoxFilter :initial-checked-items="selectedFilters.carConditionType" @update:checked="updateChecked" :icon="Percent" title="Car Condition Type" :items="carConditionTypes" />
         <InputRangeFilter
             :initial-from="selectedFilters.price?.from"

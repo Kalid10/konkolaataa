@@ -64,11 +64,11 @@ watch(selectedBodyTypeId, () => {
 
 <template>
     <div class="flex flex-col space-y-6 md:space-y-3">
-        <div class="sm:hidden flex w-full h-full items-center rounded-full">
-            <div class="bg-brand-primary border-2 border-r-0 border-gray-800 h-10 py-2 w-2/12 rounded-l-full flex items-center justify-center">
-            <Search class="text-white"/>
+        <div class="sm:hidden flex w-full h-full items-center rounded-full border-2 ">
+            <div class=" border-2 border-r-0 border-gray-800 h-10 py-2 w-fit pl-2 pr-1 rounded-l-full flex items-center justify-center">
+                <Search size="20" />
             </div>
-        <Input class=" h-10 focus-visible:ring-0  rounded-none py-2 rounded-r-full border-2 border-l-0 border-gray-800" placeholder="Quick Search" v-model="searchKey"
+           <Input class=" h-10 focus-visible:ring-0 !ring-offset-0 rounded-none py-2 rounded-r-full border-2 border-l-0 border-gray-800" placeholder="Quick Search" v-model="searchKey"
                @keyup="search"/>
 
         </div>
